@@ -40,6 +40,8 @@ namespace OmiyaGames
     public class StartMenu : IMenu
     {
         [SerializeField]
+        Button startButton;
+        [SerializeField]
         Button levelSelectButton;
         [SerializeField]
         Button optionsButton;
@@ -78,11 +80,37 @@ namespace OmiyaGames
             }
 
             // Select the level select button by default
-            defaultButton = levelSelectButton.gameObject;
-            Singleton.Get<UnityEngine.EventSystems.EventSystem>().firstSelectedGameObject = defaultButton;
+            if((levelSelectButton != null) && (levelSelectButton.gameObject.activeSelf == true))
+            {
+                if (startButton != null)
+                {
+                    startButton.gameObject.SetActive(false);
+                }
+                defaultButton = levelSelectButton.gameObject;
+                Singleton.Get<UnityEngine.EventSystems.EventSystem>().firstSelectedGameObject = defaultButton;
+            }
+            else if((startButton != null) && (startButton.gameObject.activeSelf == true))
+            {
+                defaultButton = startButton.gameObject;
+                Singleton.Get<UnityEngine.EventSystems.EventSystem>().firstSelectedGameObject = defaultButton;
+            }
         }
 
         #region Button Events
+        public void OnStartClicked()
+        {
+            if (isButtonLocked == false)
+            {
+                // Load the first scene
+                SceneManager manager = Singleton.Get<SceneManager>();
+                manager.LoadScene(manager.Levels[0]);
+                isButtonLocked = true;
+
+                // Indicate button is clicked
+                Manager.ButtonClick.Play();
+            }
+        }
+
         public void OnLevelSelectClicked()
         {
             if (isButtonLocked == false)

@@ -229,6 +229,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -253,6 +254,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -263,6 +265,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -273,6 +276,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -283,6 +287,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &8221844
 AudioSource:
   m_ObjectHideFlags: 1
@@ -295,10 +300,11 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 8300000, guid: 139c825b4c9cd0040a0fd1b5550d5122, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: .5
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
+  Spatialize: 0
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
@@ -323,6 +329,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -333,6 +340,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -343,6 +351,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -353,6 +362,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &8237012
 AudioSource:
   m_ObjectHideFlags: 1
@@ -369,6 +379,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 256
   DopplerLevel: 1
   MinDistance: 1
@@ -393,6 +404,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -403,6 +415,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -413,6 +426,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -423,6 +437,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!82 &8264130
 AudioSource:
   m_ObjectHideFlags: 1
@@ -439,6 +454,7 @@ AudioSource:
   m_Pitch: 1
   Loop: 1
   Mute: 0
+  Spatialize: 0
   Priority: 256
   DopplerLevel: 1
   MinDistance: 1
@@ -463,6 +479,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   panLevelCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -473,6 +490,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   spreadCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -483,6 +501,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
   reverbZoneMixCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -493,6 +512,7 @@ AudioSource:
       tangentMode: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -527,7 +547,7 @@ MonoBehaviour:
   m_Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowActivationOnStandalone: 0
+  m_ForceModuleActive: 0
 --- !u!114 &11406472
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -559,9 +579,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipVariations: []
   mutatePitch: 1
-  pitchMutationRange: {x: .5, y: 1.5}
+  pitchMutationRange: {x: 0.5, y: 1.5}
   mutateVolume: 0
-  volumeMutationRange: {x: .5, y: 1}
+  volumeMutationRange: {x: 0.5, y: 1}
 --- !u!114 &11412146
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -585,7 +605,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4954589407a974cb2c1ba6534fe0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transitionDuration: .5
+  transitionDuration: 0.5
   music1:
     source: {fileID: 8237012}
     snapshot: {fileID: 24508402, guid: 63a239bdfb2dd4519b121d21aa1ed3fb, type: 2}
@@ -632,21 +652,13 @@ MonoBehaviour:
     revertTimeScale: 1
     sceneCursorLockMode: 0
   levels:
-  - sceneName: Level 1
-    displayName: Level 1
+  - sceneName: Garden
+    displayName: Garden
     revertTimeScale: 1
-    sceneCursorLockMode: 0
-  - sceneName: Level 2
-    displayName: Level 2
-    revertTimeScale: 1
-    sceneCursorLockMode: 0
-  - sceneName: Level 3
-    displayName: Level 3
-    revertTimeScale: 1
-    sceneCursorLockMode: 0
+    sceneCursorLockMode: 1
   levelDisplayNameTemplate: Level {0}
   levelRevertsTimeScaleTemplate: 1
-  levelLockModeTemplate: 0
+  levelLockModeTemplate: 1
 --- !u!114 &11442070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -663,8 +675,8 @@ MonoBehaviour:
   m_SubmitButton: Submit
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
-  m_RepeatDelay: .5
-  m_AllowActivationOnMobileDevice: 0
+  m_RepeatDelay: 0.5
+  m_ForceModuleActive: 0
 --- !u!114 &11462580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -699,7 +711,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pauseInput: Pause
-  delaySelectingDefaultUiBy: .5
+  delaySelectingDefaultUiBy: 0.5
   returnToTextTemplate: Return to {0}
   restartTextTemplate: Restart {0}
   completeTextTemplate: '{0} Complete'
@@ -719,9 +731,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipVariations: []
   mutatePitch: 0
-  pitchMutationRange: {x: -.5, y: .5}
+  pitchMutationRange: {x: -0.5, y: 0.5}
   mutateVolume: 0
-  volumeMutationRange: {x: -.5, y: 0}
+  volumeMutationRange: {x: -0.5, y: 0}
 --- !u!114 &11495222
 MonoBehaviour:
   m_ObjectHideFlags: 1
