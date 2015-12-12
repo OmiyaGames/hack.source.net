@@ -39,7 +39,7 @@ namespace OmiyaGames
     public class PauseMenu : ISceneChangingMenu
     {
         [SerializeField]
-        bool pauseOnShow = true;
+        protected bool pauseOnShow = true;
 
         public override bool PauseOnShow
         {
