@@ -38,11 +38,14 @@ namespace OmiyaGames
     /// <seealso cref="TimeManager"/>
     public class PauseMenu : ISceneChangingMenu
     {
+        [SerializeField]
+        bool pauseOnShow = true;
+
         public override bool PauseOnShow
         {
             get
             {
-                return true;
+                return pauseOnShow;
             }
         }
 

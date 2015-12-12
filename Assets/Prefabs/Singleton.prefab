@@ -634,7 +634,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b59fc91b7d8e9924bbdda8bc4c92860b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadLevelAsynchronously: 1
+  loadLevelAsynchronously: 0
   soundEffect: {fileID: 11492550}
   splash:
     sceneName: Splash
@@ -655,7 +655,7 @@ MonoBehaviour:
   - sceneName: Garden
     displayName: Garden
     revertTimeScale: 1
-    sceneCursorLockMode: 1
+    sceneCursorLockMode: 2
   levelDisplayNameTemplate: Level {0}
   levelRevertsTimeScaleTemplate: 1
   levelLockModeTemplate: 1

@@ -366,6 +366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c588aa5a9d106d41a09db291d4bbcde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  controller: {fileID: 11400004}
+  headBob: {fileID: 11400006}
+  view: {fileID: 2000000}
+  listener: {fileID: 8100000}
 --- !u!114 &11427948
 MonoBehaviour:
   m_ObjectHideFlags: 1
