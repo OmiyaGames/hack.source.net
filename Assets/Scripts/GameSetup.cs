@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using OmiyaGames;
 
 [RequireComponent(typeof(NetworkManager))]
 public class GameSetup : MonoBehaviour
@@ -9,5 +10,11 @@ public class GameSetup : MonoBehaviour
         // Only allow 2 players to connect
         NetworkManager manager = GetComponent<NetworkManager>();
         manager.maxConnections = 2;
+    }
+
+    void Start()
+    {
+        SceneManager.CursorMode = CursorLockMode.None;
+        Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.Confined;
     }
 }

@@ -84,6 +84,7 @@ namespace OmiyaGames
         string menuTextCache = null;
         PauseMenu pauseMenuCache = null;
         PopUpManager popUpManager = null;
+        CursorLockMode lockModeOnPause = CursorLockMode.None;
         readonly Dictionary<Type, IMenu> typeToMenuMap = new Dictionary<Type, IMenu>();
         readonly Stack<IMenu> managedMenusStack = new Stack<IMenu>();
 
@@ -226,6 +227,18 @@ namespace OmiyaGames
                 return popUpManager;
             }
         }
+
+        public CursorLockMode CursorModeOnPause
+        {
+            get
+            {
+                return lockModeOnPause;
+            }
+            set
+            {
+                lockModeOnPause = value;
+            }
+        }
         #endregion
 
         public override void SingletonAwake(Singleton instance)
@@ -338,7 +351,7 @@ namespace OmiyaGames
                     else
                     {
                         // Unlock the cursor
-                        SceneManager.CursorMode = CursorLockMode.None;
+                        SceneManager.CursorMode = lockModeOnPause;
                     }
 
                     // Push the current menu onto the stack
@@ -375,6 +388,7 @@ namespace OmiyaGames
                 else
                 {
                     // Lock the cursor to what the scene is set to
+                    Debug.Log(Singleton.Get<SceneManager>().CurrentScene);
                     SceneManager.CursorMode = Singleton.Get<SceneManager>().CurrentScene.LockMode;
                 }
 
