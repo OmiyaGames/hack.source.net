@@ -852,7 +852,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Jump
+          m_StringArgument: Reflect
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -1294,7 +1294,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Jump
+          m_StringArgument: Run
           m_BoolArgument: 0
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
@@ -2070,7 +2070,7 @@ RectTransform:
   m_Children:
   - {fileID: 22476328}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.000022888184, y: -437.5}
@@ -2088,7 +2088,7 @@ RectTransform:
   m_Children:
   - {fileID: 22457248}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.00002670288, y: -152.5}
@@ -2106,7 +2106,7 @@ RectTransform:
   m_Children:
   - {fileID: 22453876}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.000038146973, y: -627.5}
@@ -2142,7 +2142,7 @@ RectTransform:
   m_Children:
   - {fileID: 22432410}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.000038146973, y: -532.5}
@@ -2249,7 +2249,7 @@ RectTransform:
   m_Children:
   - {fileID: 22419904}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.000038146973, y: -722.5}
@@ -2285,7 +2285,7 @@ RectTransform:
   m_Children:
   - {fileID: 22446034}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.00002670288, y: -247.5}
@@ -2388,7 +2388,7 @@ RectTransform:
   m_Children:
   - {fileID: 22453302}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.000022888184, y: -342.5}
@@ -2494,7 +2494,7 @@ RectTransform:
   m_Children:
   - {fileID: 22486124}
   m_Father: {fileID: 22492270}
-  m_RootOrder: 0
+  m_RootOrder: 7
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0.0000038146973, y: -57.5}
@@ -2510,7 +2510,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 22492220}
   - {fileID: 22401416}
   - {fileID: 22442606}
   - {fileID: 22460574}
@@ -2518,6 +2517,7 @@ RectTransform:
   - {fileID: 22411474}
   - {fileID: 22401768}
   - {fileID: 22436458}
+  - {fileID: 22492220}
   m_Father: {fileID: 22481330}
   m_RootOrder: 0
   m_AnchorMin: {x: 0, y: 1}

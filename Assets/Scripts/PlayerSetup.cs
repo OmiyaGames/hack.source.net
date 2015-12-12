@@ -155,14 +155,14 @@ public class PlayerSetup : NetworkBehaviour
             localInstance = this;
 
             // Disable the camera
-            GameObject startCamera = GameObject.Find("StartCamera");
+            GameSetup startCamera = GameObject.FindObjectOfType<GameSetup>();
             startCamera.GetComponent<Camera>().enabled = false;
             startCamera.GetComponent<AudioListener>().enabled = false;
             SceneManager.CursorMode = CursorLockMode.Locked;
 
             if (healthIndicators[0] == null)
             {
-                SetuHUD();
+                SetupHud();
             }
         }
 
@@ -201,7 +201,7 @@ public class PlayerSetup : NetworkBehaviour
         CurrentActiveControls = disabledControls;
     }
 
-    private void SetuHUD()
+    private void SetupHud()
     {
         healthIndicators[0] = healthIndicator;
         GameObject newIndicator = null;

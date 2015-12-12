@@ -19,6 +19,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float JumpForce = 30f;
             public AnimationCurve SlopeCurveModifier = new AnimationCurve(new Keyframe(-90.0f, 1.0f), new Keyframe(0.0f, 1.0f), new Keyframe(90.0f, 0.0f));
             [HideInInspector] public float CurrentTargetSpeed = 8f;
+            internal RigidbodyFirstPersonController controller;
 
 #if !MOBILE_INPUT
             private bool m_Running;
@@ -44,7 +45,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 					CurrentTargetSpeed = ForwardSpeed;
 				}
 #if !MOBILE_INPUT
-	            if (Input.GetKey(RunKey))
+	            if (controller.GetRunInput())
 	            {
 		            CurrentTargetSpeed *= RunMultiplier;
 		            m_Running = true;
@@ -118,8 +119,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private void Start()
+        protected virtual void Start()
         {
+            movementSettings.controller = this;
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
@@ -130,7 +132,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             RotateView();
 
-            if (CrossPlatformInputManager.GetButtonDown("Jump") && !m_Jump)
+            if (GetJumpInput() && !m_Jump)
             {
                 m_Jump = true;
             }
@@ -140,7 +142,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private void FixedUpdate()
         {
             GroundCheck();
-            Vector2 input = GetInput();
+            Vector2 input = GetMovementInput();
 
             if ((Mathf.Abs(input.x) > float.Epsilon || Mathf.Abs(input.y) > float.Epsilon) && (advancedSettings.airControl || m_IsGrounded))
             {
@@ -209,7 +211,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         }
 
 
-        private Vector2 GetInput()
+        protected virtual Vector2 GetMovementInput()
         {
             
             Vector2 input = new Vector2
@@ -217,8 +219,18 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     x = CrossPlatformInputManager.GetAxis("Horizontal"),
                     y = CrossPlatformInputManager.GetAxis("Vertical")
                 };
-			movementSettings.UpdateDesiredTargetSpeed(input);
+            movementSettings.UpdateDesiredTargetSpeed(input);
             return input;
+        }
+
+        protected virtual bool GetJumpInput()
+        {
+            return CrossPlatformInputManager.GetButtonDown("Jump");
+        }
+
+        protected virtual bool GetRunInput()
+        {
+            return Input.GetKey(movementSettings.RunKey);
         }
 
 

@@ -388,7 +388,6 @@ namespace OmiyaGames
                 else
                 {
                     // Lock the cursor to what the scene is set to
-                    Debug.Log(Singleton.Get<SceneManager>().CurrentScene);
                     SceneManager.CursorMode = Singleton.Get<SceneManager>().CurrentScene.LockMode;
                 }
 
