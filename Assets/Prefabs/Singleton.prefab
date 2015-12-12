@@ -655,7 +655,7 @@ MonoBehaviour:
   - sceneName: Garden
     displayName: Garden
     revertTimeScale: 1
-    sceneCursorLockMode: 2
+    sceneCursorLockMode: 1
   levelDisplayNameTemplate: Level {0}
   levelRevertsTimeScaleTemplate: 1
   levelLockModeTemplate: 1
