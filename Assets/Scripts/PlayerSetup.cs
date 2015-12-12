@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections.Generic;
+using OmiyaGames;
 
 public class PlayerSetup : NetworkBehaviour
 {
@@ -146,7 +147,7 @@ public class PlayerSetup : NetworkBehaviour
     #endregion
 
     // Use this for initialization
-    void Awake ()
+    void Start ()
     {
         if (isLocalPlayer == true)
         {
@@ -157,8 +158,9 @@ public class PlayerSetup : NetworkBehaviour
             GameObject startCamera = GameObject.Find("StartCamera");
             startCamera.GetComponent<Camera>().enabled = false;
             startCamera.GetComponent<AudioListener>().enabled = false;
+            SceneManager.CursorMode = CursorLockMode.Locked;
 
-            if(healthIndicators[0] == null)
+            if (healthIndicators[0] == null)
             {
                 SetuHUD();
             }

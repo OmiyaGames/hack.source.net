@@ -6,7 +6,6 @@ using System;
 
 public class HackMenu : IMenu
 {
-    GameObject defaultUi = null;
     byte index = 0;
 
     [SerializeField]
@@ -26,13 +25,14 @@ public class HackMenu : IMenu
     [SerializeField]
     Button Reflect;
 
-    readonly Dictionary<PlayerSetup.ActiveControls, GameObject> buttons = new Dictionary<PlayerSetup.ActiveControls, GameObject>();
+    readonly Dictionary<PlayerSetup.ActiveControls, Button> buttons = new Dictionary<PlayerSetup.ActiveControls, Button>();
+    readonly Dictionary<PlayerSetup.ActiveControls, Text> texts = new Dictionary<PlayerSetup.ActiveControls, Text>();
 
     public override GameObject DefaultUi
     {
         get
         {
-            return defaultUi;
+            return null;
         }
     }
 
@@ -53,8 +53,11 @@ public class HackMenu : IMenu
         set
         {
             index = value;
-            defaultUi = buttons[PlayerSetup.LocalInstance.DeactivatedControls[index]];
-            Manager.SelectGuiGameObject(DefaultUi);
+            foreach(Text text in texts.Values)
+            {
+                text.fontStyle = FontStyle.Normal;
+            }
+            texts[PlayerSetup.LocalInstance.DeactivatedControls[index]].fontStyle = FontStyle.Italic;
         }
     }
 
@@ -63,14 +66,18 @@ public class HackMenu : IMenu
         base.Show(stateChanged);
         if(buttons.Count <= 0)
         {
-            buttons.Add(PlayerSetup.ActiveControls.None, None.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Forward, Up.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Back, Down.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Right, Right.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Left, Left.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Jump, Jump.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Run, Run.gameObject);
-            buttons.Add(PlayerSetup.ActiveControls.Reflect, Reflect.gameObject);
+            buttons.Add(PlayerSetup.ActiveControls.None, None);
+            buttons.Add(PlayerSetup.ActiveControls.Forward, Up);
+            buttons.Add(PlayerSetup.ActiveControls.Back, Down);
+            buttons.Add(PlayerSetup.ActiveControls.Right, Right);
+            buttons.Add(PlayerSetup.ActiveControls.Left, Left);
+            buttons.Add(PlayerSetup.ActiveControls.Jump, Jump);
+            buttons.Add(PlayerSetup.ActiveControls.Run, Run);
+            buttons.Add(PlayerSetup.ActiveControls.Reflect, Reflect);
+            foreach (KeyValuePair<PlayerSetup.ActiveControls, Button> pair in buttons)
+            {
+                texts.Add(pair.Key, pair.Value.GetComponentInChildren<Text>(true));
+            }
         }
     }
 
@@ -81,5 +88,9 @@ public class HackMenu : IMenu
         {
             PlayerSetup.LocalInstance.Hack(Index, controlValue);
         }
+
+        // Indicate button is clicked
+        Manager.ButtonClick.Play();
+        Hide();
     }
 }
