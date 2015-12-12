@@ -97,6 +97,9 @@ public class PlayerSetup : NetworkBehaviour
                     newIndicator.transform.localScale = Vector3.one;
                     healthIndicators[i] = newIndicator;
                 }
+
+                hud.gameObject.SetActive(isLocalPlayer);
+                hud.transform.SetParent(null, true);
             }
         }
 
@@ -104,7 +107,6 @@ public class PlayerSetup : NetworkBehaviour
         controller.enabled = isLocalPlayer;
         view.enabled = isLocalPlayer;
         listener.enabled = isLocalPlayer;
-        hud.gameObject.SetActive(isLocalPlayer);
 
         // Reset variables
         Health = MaxHealth;
