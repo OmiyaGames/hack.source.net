@@ -12,15 +12,23 @@ public class PauseEnhanced : MonoBehaviour
 
     MenuManager manager = null;
     string hack1String, hack2String;
+    System.Action<PlayerSetup> action = null;
 
     void Start()
     {
         manager = Singleton.Get<MenuManager>();
         hack1String = hack1.text;
         hack2String = hack2.text;
+    }
 
-        PlayerSetup.LocalInstance.HackChanged += UpdateText;
-        UpdateText(PlayerSetup.LocalInstance);
+    void Update()
+    {
+        if((action == null) && (PlayerSetup.LocalInstance != null))
+        {
+            action = new System.Action<PlayerSetup>(UpdateText);
+            PlayerSetup.LocalInstance.HackChanged += action;
+            UpdateText(PlayerSetup.LocalInstance);
+        }
     }
 
     public void OnHackClicked(bool id)

@@ -26,7 +26,7 @@ GameObject:
   - 222: {fileID: 22259936}
   - 114: {fileID: 11469774}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Hack Text 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -162,7 +162,7 @@ GameObject:
   - 222: {fileID: 22228268}
   - 114: {fileID: 11489398}
   m_Layer: 5
-  m_Name: Text
+  m_Name: Hack Text 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -670,7 +670,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Hack {0}
+  m_Text: 'Hack (Current: {0})'
 --- !u!114 &11470098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -709,6 +709,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d0f93ecbb434640aca59cff8a8562f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hack1: {fileID: 11489398}
+  hack2: {fileID: 11469774}
 --- !u!114 &11485054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -859,7 +861,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Hack {0}
+  m_Text: 'Hack (Current: {0})'
 --- !u!114 &11496662
 MonoBehaviour:
   m_ObjectHideFlags: 1

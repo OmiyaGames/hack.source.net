@@ -667,7 +667,7 @@ MonoBehaviour:
     MaximumX: 90
     smooth: 1
     smoothTime: 18
-    lockCursor: 1
+    lockCursor: 0
   advancedSettings:
     groundCheckDistance: 0.1
     stickToGroundHelperDistance: 0.6
@@ -1877,6 +1877,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_SortingOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mouseLook.lockCursor
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
