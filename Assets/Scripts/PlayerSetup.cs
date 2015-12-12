@@ -38,6 +38,10 @@ public class PlayerSetup : NetworkBehaviour
     Camera view;
     [SerializeField]
     AudioListener listener;
+    [SerializeField]
+    Canvas hud;
+    [SerializeField]
+    GameObject healthIndicator;
 
     // FIXME: somehow get a reference to the opposing player
     [SyncVar]
@@ -46,6 +50,27 @@ public class PlayerSetup : NetworkBehaviour
     int currentActiveControls = (int)ActiveControls.All;
 
     readonly ActiveControls[] deactivatedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
+    readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
+
+    public int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            int setValueTo = Mathf.Clamp(value, 0, MaxHealth);
+            if(health != setValueTo)
+            {
+                health = setValueTo;
+                for (int i = 0; i < MaxHealth; ++i)
+                {
+                    healthIndicators[i].SetActive(i < health);
+                }
+            }
+        }
+    }
 
     // Use this for initialization
     void Start ()
@@ -59,14 +84,30 @@ public class PlayerSetup : NetworkBehaviour
             GameObject startCamera = GameObject.Find("StartCamera");
             startCamera.GetComponent<Camera>().enabled = false;
             startCamera.GetComponent<AudioListener>().enabled = false;
+
+            if(healthIndicators[0] == null)
+            {
+                healthIndicators[0] = healthIndicator;
+                GameObject newIndicator = null;
+                for(int i = 1; i < MaxHealth; ++i)
+                {
+                    newIndicator = Instantiate<GameObject>(healthIndicator);
+                    newIndicator.transform.SetParent(healthIndicator.transform.parent, false);
+                    newIndicator.transform.SetAsLastSibling();
+                    newIndicator.transform.localScale = Vector3.one;
+                    healthIndicators[i] = newIndicator;
+                }
+            }
         }
 
+        // Setup what's available
         controller.enabled = isLocalPlayer;
         view.enabled = isLocalPlayer;
         listener.enabled = isLocalPlayer;
+        hud.gameObject.SetActive(isLocalPlayer);
 
         // Reset variables
-        health = MaxHealth;
+        Health = MaxHealth;
         currentActiveControls = (int)ActiveControls.All;
     }
 }
