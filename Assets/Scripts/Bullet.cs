@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(CapsuleCollider))]
 public class Bullet : NetworkBehaviour
@@ -9,6 +10,8 @@ public class Bullet : NetworkBehaviour
 
     [SyncVar]
     string ignorePlayer = null;
+
+    static readonly Dictionary<Collider, PlayerStatus> allPlayers = new Dictionary<Collider, PlayerStatus>();
 
     Collider lastCollider = null;
     Rigidbody body = null;
@@ -58,9 +61,22 @@ public class Bullet : NetworkBehaviour
     {
         if((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer) )
         {
-            //Debug.Log("Collide Into: " + info.collider.name);
-            // FIXME: for now, just destroy yourself
+            // Check if this is the player
+            if(info.collider.CompareTag("Player") == true)
+            {
+                // Hit the player
+                PlayerStatus temp = null;
+                if(allPlayers.TryGetValue(info.collider, out temp) == false)
+                {
+                    temp = info.collider.GetComponent<PlayerStatus>();
+                    allPlayers.Add(info.collider, temp);
+                }
+                temp.Health -= 1;
+            }
+
+            // FIXME: Needs more explosion
             Destroy(gameObject);
+            //Network.Destroy(networkView);
             lastCollider = info.collider;
         }
     }
