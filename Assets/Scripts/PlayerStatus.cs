@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(CharacterController))]
@@ -19,16 +20,24 @@ public class PlayerStatus : NetworkBehaviour
     [SerializeField]
     GameObject healthIndicator;
 
+    [Header("Reflection")]
+    [SerializeField]
+    GameObject reflector;
+    [SerializeField]
+    float reflectDuration = 1f;
+    [SerializeField]
+    float cooldownDuration = 0.5f;
+
     [SyncVar(hook = "OnPlayerHealthSynced")]
     int health = MaxHealth;
     [SyncVar]
     int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
-    [SyncVar]
-    bool reflectEnabled = false;  // FIXME: move this to another script
+    [SyncVar(hook = "OnReflectionSynced")]
+    bool reflectEnabled = false;
 
     PlayerSetup playerSetup;
     CharacterController controller;
-    float timeLastInvincible = -1f;
+    float timeLastInvincible = -1f, timeRemoveReflector = -1f, timeAllowReflector = -1f;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
     #region Properties
@@ -95,6 +104,7 @@ public class PlayerStatus : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        playerSetup = GetComponent<PlayerSetup>();
         controller = GetComponent<CharacterController>();
         SetupHud();
 
@@ -108,6 +118,7 @@ public class PlayerStatus : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateInvincibleState();
+            UpdateReflection();
         }
     }
 
@@ -123,6 +134,11 @@ public class PlayerStatus : NetworkBehaviour
                 bullet.PlayerHit(controller, this);
             }
         }
+    }
+
+    void OnReflectionSynced(bool newReflectStatus)
+    {
+        reflector.SetActive(newReflectStatus);
     }
 
     #region Commands
@@ -164,6 +180,27 @@ public class PlayerStatus : NetworkBehaviour
         if ((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
         {
             CurrentState = State.Alive;
+        }
+    }
+
+    [Client]
+    private void UpdateReflection()
+    {
+        if((CurrentState != State.Dead) && (IsReflectEnabled == false) && (Time.time > timeAllowReflector))
+        {
+            // Check if the player pressed reflection
+            Debug.Log("Waiting for input");
+            if ((CrossPlatformInputManager.GetButtonDown("Reflect") == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
+            {
+                Debug.Log("Reflect detected");
+                IsReflectEnabled = true;
+                timeRemoveReflector = Time.time + reflectDuration;
+                timeAllowReflector = timeRemoveReflector + cooldownDuration;
+            }
+        }
+        else if((IsReflectEnabled == true) && (Time.time > timeRemoveReflector))
+        {
+            IsReflectEnabled = false;
         }
     }
 
