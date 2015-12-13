@@ -40,7 +40,7 @@ public class HackableFpsController : RigidbodyFirstPersonController
     {
         if ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Run) != 0)
         {
-            return CrossPlatformInputManager.GetButtonDown("Run");
+            return CrossPlatformInputManager.GetButton("Run");
         }
         else
         {

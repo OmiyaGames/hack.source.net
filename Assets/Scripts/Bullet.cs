@@ -11,7 +11,7 @@ public class Bullet : NetworkBehaviour
     [SyncVar]
     string ignorePlayer = null;
 
-    //static readonly Dictionary<Collider, PlayerStatus> allPlayers = new Dictionary<Collider, PlayerStatus>();
+    static readonly Dictionary<Collider, PlayerStatus> allPlayers = new Dictionary<Collider, PlayerStatus>();
     static readonly Dictionary<Collider, Bullet> allBullets = new Dictionary<Collider, Bullet>();
 
     Collider lastCollider = null;
@@ -54,6 +54,11 @@ public class Bullet : NetworkBehaviour
         }
     }
 
+    void OnDestroy()
+    {
+        allBullets.Remove(GetComponent<Collider>());
+    }
+
     [Command]
     void CmdSetIgnoredPlayer(string newPlayer)
     {
@@ -64,20 +69,6 @@ public class Bullet : NetworkBehaviour
     {
         if((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer) )
         {
-            // FIXME: bring back if we're using rigid body controllers again
-            //// Check if this is the player
-            //if(info.collider.CompareTag("Player") == true)
-            //{
-            //    // Hit the player
-            //    PlayerStatus temp = null;
-            //    if(allPlayers.TryGetValue(info.collider, out temp) == false)
-            //    {
-            //        temp = info.collider.GetComponent<PlayerStatus>();
-            //        allPlayers.Add(info.collider, temp);
-            //    }
-            //    temp.Health -= 1;
-            //}
-
             if (info.collider.CompareTag("ReflectBullet") == true)
             {
                 ReflectDirection(info);
@@ -85,6 +76,36 @@ public class Bullet : NetworkBehaviour
             else if (info.collider.CompareTag("FlipBullet") == true)
             {
                 FlipDirection(info.collider.name);
+            }
+            // Check if this is the player
+            else if (info.collider.CompareTag("Player") == true)
+            {
+                // Hit the player
+                PlayerStatus status = null;
+                if (allPlayers.TryGetValue(info.collider, out status) == false)
+                {
+                    status = info.collider.GetComponent<PlayerStatus>();
+                    allPlayers.Add(info.collider, status);
+                }
+
+                // Check status
+                if (status.IsReflectEnabled == true)
+                {
+                    // Flip direction if player is reflecting
+                    FlipDirection(status.name);
+                }
+                else
+                {
+                    // Decrease health if player is alive
+                    if (status.CurrentState == PlayerStatus.State.Alive)
+                    {
+                        // Decrease player health
+                        status.Health -= 1;
+                    }
+
+                    // Explode
+                    Explode();
+                }
             }
             else
             {

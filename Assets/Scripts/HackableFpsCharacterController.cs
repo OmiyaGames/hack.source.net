@@ -28,7 +28,6 @@ public class HackableFpsCharacterController : MonoBehaviour
     private CharacterController m_CharacterController;
     private CollisionFlags m_CollisionFlags;
     private bool m_PreviouslyGrounded;
-    private Vector3 m_OriginalCameraPosition;
     private float m_StepCycle;
     private float m_NextStep;
     private bool m_Jumping;
@@ -73,7 +72,6 @@ public class HackableFpsCharacterController : MonoBehaviour
     {
         player = GetComponent<PlayerSetup>();
         m_CharacterController = GetComponent<CharacterController>();
-        m_OriginalCameraPosition = m_cameraLook.localPosition;
         m_FovKick.Setup();
         m_StepCycle = 0f;
         m_NextStep = m_StepCycle/2f;
