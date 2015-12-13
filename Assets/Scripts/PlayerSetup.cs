@@ -34,9 +34,12 @@ public class PlayerSetup : NetworkBehaviour
     public class RigidBodyInfo
     {
         public UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
-        public Camera view;
-        public AudioListener listener;
-        public Canvas hud;
+        public GameObject[] playerStuff;
+        public GameObject[] oppositionStuff;
+        [Header("Layers")]
+        public string playerAvatarLayer;
+        public string oppositionAvatarLayer;
+        public GameObject[] updateLayers;
 
         public void Setup(bool isLocal)
         {
@@ -44,20 +47,43 @@ public class PlayerSetup : NetworkBehaviour
             {
                 controller.enabled = isLocal;
             }
-            if (view != null)
+            if (playerStuff != null)
             {
-                view.enabled = isLocal;
-            }
-            if(listener != null)
-            {
-                listener.enabled = isLocal;
-            }
-            if(hud != null)
-            {
-                hud.gameObject.SetActive(isLocal);
-                if(isLocal == true)
+                for (int i = 0; i < playerStuff.Length; ++i)
                 {
-                    hud.transform.SetParent(null, true);
+                    if (playerStuff[i] != null)
+                    {
+                        playerStuff[i].SetActive(isLocal);
+                    }
+                }
+            }
+            if (oppositionStuff != null)
+            {
+                for (int i = 0; i < oppositionStuff.Length; ++i)
+                {
+                    if (oppositionStuff[i] != null)
+                    {
+                        oppositionStuff[i].SetActive(!isLocal);
+                    }
+                }
+            }
+            if(updateLayers != null)
+            {
+                int playerLayer = LayerMask.NameToLayer(playerAvatarLayer);
+                int oppositionLayer = LayerMask.NameToLayer(playerAvatarLayer);
+                for (int i = 0; i < updateLayers.Length; ++i)
+                {
+                    if (updateLayers[i] != null)
+                    {
+                        if(isLocal == true)
+                        {
+                            updateLayers[i].layer = playerLayer;
+                        }
+                        else
+                        {
+                            updateLayers[i].layer = oppositionLayer;
+                        }
+                    }
                 }
             }
         }
