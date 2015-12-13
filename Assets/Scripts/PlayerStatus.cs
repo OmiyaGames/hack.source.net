@@ -106,17 +106,6 @@ public class PlayerStatus : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateInvincibleState();
-            // FIXME: not working
-            if (Input.GetKeyDown(KeyCode.E) == true)
-            {
-                foreach (KeyValuePair<string, PlayerSetup> pair in PlayerSetup.AllIdentifiedPlayers)
-                {
-                    if (pair.Key != name)
-                    {
-                        pair.Value.Status.Health -= 1;
-                    }
-                }
-            }
         }
     }
 
