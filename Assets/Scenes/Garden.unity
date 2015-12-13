@@ -41,7 +41,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 6
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_LightmapsMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -448,7 +448,7 @@ Transform:
   - {fileID: 1292246884}
   - {fileID: 1151017341}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
 --- !u!224 &487547419 stripped
 RectTransform:
   m_PrefabParentObject: {fileID: 22457892, guid: 6b96fa9e7cd8cb14a9bfe3533c9eb76b,

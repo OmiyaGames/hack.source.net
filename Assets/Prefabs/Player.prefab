@@ -28,9 +28,10 @@ GameObject:
   - 54: {fileID: 5400000}
   - 136: {fileID: 13600000}
   - 114: {fileID: 11468164}
-  - 114: {fileID: 11402426}
   - 114: {fileID: 11444526}
   - 114: {fileID: 11427948}
+  - 114: {fileID: 11402426}
+  - 114: {fileID: 11495000}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -796,7 +797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
   m_SendInterval: 0.1
-  m_SyncRotationAxis: 4
+  m_SyncRotationAxis: 0
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
@@ -1141,6 +1142,10 @@ MonoBehaviour:
     slowDownRate: 5
     airControl: 1
     shellOffset: 0
+  m_StepInterval: 0
+  m_FootstepSounds: {fileID: 0}
+  m_JumpSound: {fileID: 0}
+  m_LandSound: {fileID: 0}
 --- !u!114 &11471476
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1336,6 +1341,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11495000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7c57f6c4026a44ca02dd2c27766df4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTransform: {fileID: 400002}
+  cameraTransform: {fileID: 400000}
+  lerpSpeed: 20
+  threshold: 1
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -1950,6 +1970,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_InterpolateRotation
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 400002}
+    - target: {fileID: 0}
+      propertyPath: cameraTransform
+      value: 
+      objectReference: {fileID: 400000}
+    - target: {fileID: 0}
+      propertyPath: lerpSpeed
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
