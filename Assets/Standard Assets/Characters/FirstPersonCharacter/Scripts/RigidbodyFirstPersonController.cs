@@ -56,13 +56,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
 	            }
 #endif
             }
-
-#if !MOBILE_INPUT
             public bool Running
             {
                 get { return m_Running; }
             }
-#endif
         }
 
 
@@ -77,27 +74,28 @@ namespace UnityStandardAssets.Characters.FirstPerson
             public float shellOffset; //reduce the radius by that ratio to avoid getting stuck in wall (a value of 0.1f is nice)
         }
 
-        [SerializeField]
-        private float m_StepInterval;
-        [SerializeField]
-        private AudioClip[] m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
-        [SerializeField]
-        private AudioClip m_JumpSound;           // the sound played when character leaves the ground.
-        [SerializeField]
-        private AudioClip m_LandSound;           // the sound played when character touches back on ground.
-
         public Camera cam;
         public MovementSettings movementSettings = new MovementSettings();
         public MouseLook mouseLook = new MouseLook();
         public AdvancedSettings advancedSettings = new AdvancedSettings();
 
+		[Header("Audio")]
+        [SerializeField]
+        private float m_StepInterval;
+        [SerializeField]
+        private OmiyaGames.SoundEffect m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
+        [SerializeField]
+        private OmiyaGames.SoundEffect m_JumpSound;           // the sound played when character leaves the ground.
+        [SerializeField]
+        private OmiyaGames.SoundEffect m_LandSound;           // the sound played when character touches back on ground.
 
         private Rigidbody m_RigidBody;
         private CapsuleCollider m_Capsule;
         private float m_YRotation;
         private Vector3 m_GroundContactNormal;
         private bool m_Jump, m_PreviouslyGrounded, m_Jumping, m_IsGrounded;
-
+        private float m_StepCycle;
+        private float m_NextStep;
 
         public Vector3 Velocity
         {
@@ -133,6 +131,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_RigidBody = GetComponent<Rigidbody>();
             m_Capsule = GetComponent<CapsuleCollider>();
             mouseLook.Init (transform, cam.transform);
+			m_StepCycle = 0f;
+            m_NextStep = m_StepCycle/2f;
         }
 
 
@@ -167,6 +167,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_RigidBody.AddForce(desiredMove*SlopeMultiplier(), ForceMode.Impulse);
                 }
             }
+			ProgressStepCycle(movementSettings.CurrentTargetSpeed, ref input);
 
             if (m_IsGrounded)
             {
@@ -177,6 +178,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     m_RigidBody.drag = 0f;
                     m_RigidBody.velocity = new Vector3(m_RigidBody.velocity.x, 0f, m_RigidBody.velocity.z);
                     m_RigidBody.AddForce(new Vector3(0f, movementSettings.JumpForce, 0f), ForceMode.Impulse);
+					m_JumpSound.Play();
                     m_Jumping = true;
                 }
 
@@ -240,7 +242,23 @@ namespace UnityStandardAssets.Characters.FirstPerson
         {
             return Input.GetKey(movementSettings.RunKey);
         }
+		
+		private void ProgressStepCycle(float speed, ref Vector2 input)
+        {
+            if (m_RigidBody.velocity.sqrMagnitude > 0 && (input.x != 0 || input.y != 0))
+            {
+                m_StepCycle += (m_RigidBody.velocity.magnitude + (speed*(movementSettings.Running ? movementSettings.RunMultiplier : 1f)))*
+                             Time.fixedDeltaTime;
+            }
 
+            if (!(m_StepCycle > m_NextStep))
+            {
+                return;
+            }
+
+            m_NextStep = m_StepCycle + m_StepInterval;
+			m_FootstepSounds.Play();
+        }
 
         private void RotateView()
         {
@@ -270,6 +288,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_IsGrounded = true;
                 m_GroundContactNormal = hitInfo.normal;
+				if(m_PreviouslyGrounded == false)
+				{
+					m_LandSound.Play();
+					m_NextStep = m_StepCycle + .5f;
+				}
             }
             else
             {
