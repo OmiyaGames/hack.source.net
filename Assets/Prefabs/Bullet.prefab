@@ -10,7 +10,7 @@ GameObject:
   - 4: {fileID: 485136}
   - 33: {fileID: 3370126}
   - 23: {fileID: 2302790}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ GameObject:
   - 114: {fileID: 11473568}
   - 114: {fileID: 11493904}
   - 54: {fileID: 5478534}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Bullet
   m_TagString: Bullet
   m_Icon: {fileID: 0}
@@ -225,6 +225,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_TagString
       value: Bullet
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -27,6 +27,8 @@ public class PlayerStatus : NetworkBehaviour
     float reflectDuration = 1f;
     [SerializeField]
     float cooldownDuration = 0.5f;
+    [SerializeField]
+    Collider[] reflectorColliders;
 
     [SyncVar(hook = "OnPlayerHealthSynced")]
     int health = MaxHealth;
@@ -36,7 +38,7 @@ public class PlayerStatus : NetworkBehaviour
     bool reflectEnabled = false;
 
     PlayerSetup playerSetup;
-    CharacterController controller;
+    //CharacterController controller;
     float timeLastInvincible = -1f, timeRemoveReflector = -1f, timeAllowReflector = -1f;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
@@ -104,13 +106,30 @@ public class PlayerStatus : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+
+        // Grab components
         playerSetup = GetComponent<PlayerSetup>();
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
+
+        // Setup HUD
         SetupHud();
+
+        // Setup shields
+        playerSetup.NameChanged += PlayerSetup_NameChanged;
+        PlayerSetup_NameChanged(playerSetup, name);
 
         // Reset variables
         Health = MaxHealth;
         CurrentState = State.Alive;
+    }
+
+    private void PlayerSetup_NameChanged(PlayerSetup arg1, string arg2)
+    {
+        // Set all the reflectors to have the same name!
+        foreach(Collider collider in reflectorColliders)
+        {
+            collider.name = arg2;
+        }
     }
 
     void Update()
@@ -122,19 +141,19 @@ public class PlayerStatus : NetworkBehaviour
         }
     }
 
-    [Client]
-    void OnControllerColliderHit(ControllerColliderHit info)
-    {
-        // Only check if this very character is hit
-        if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
-        {
-            Bullet bullet = null;
-            if(Bullet.TryGetBullet(info.collider, out bullet) == true)
-            {
-                bullet.PlayerHit(controller, this);
-            }
-        }
-    }
+    //[Client]
+    //void OnControllerColliderHit(ControllerColliderHit info)
+    //{
+    //    // Only check if this very character is hit
+    //    if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
+    //    {
+    //        Bullet bullet = null;
+    //        if(Bullet.TryGetBullet(info.collider, out bullet) == true)
+    //        {
+    //            bullet.PlayerHit(controller, this);
+    //        }
+    //    }
+    //}
 
     void OnReflectionSynced(bool newReflectStatus)
     {
@@ -189,10 +208,8 @@ public class PlayerStatus : NetworkBehaviour
         if((CurrentState != State.Dead) && (IsReflectEnabled == false) && (Time.time > timeAllowReflector))
         {
             // Check if the player pressed reflection
-            Debug.Log("Waiting for input");
             if ((CrossPlatformInputManager.GetButtonDown("Reflect") == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
             {
-                Debug.Log("Reflect detected");
                 IsReflectEnabled = true;
                 timeRemoveReflector = Time.time + reflectDuration;
                 timeAllowReflector = timeRemoveReflector + cooldownDuration;
