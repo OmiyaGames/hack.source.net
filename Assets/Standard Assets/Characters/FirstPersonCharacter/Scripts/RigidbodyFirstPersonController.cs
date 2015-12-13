@@ -81,7 +81,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 		[Header("Audio")]
         [SerializeField]
-        private float m_StepInterval;
+        private float m_StepInterval = 5;
         [SerializeField]
         private OmiyaGames.SoundEffect m_FootstepSounds;    // an array of footstep sounds that will be randomly selected from.
         [SerializeField]
@@ -257,7 +257,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_NextStep = m_StepCycle + m_StepInterval;
-			m_FootstepSounds.Play();
+            if(Grounded == true)
+            {
+                m_FootstepSounds.Play();
+            }
         }
 
         private void RotateView()
