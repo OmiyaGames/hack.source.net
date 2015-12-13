@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 
 [RequireComponent(typeof(PlayerSetup))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerStatus : NetworkBehaviour
 {
     public const int MaxHealth = 4;
@@ -27,6 +27,7 @@ public class PlayerStatus : NetworkBehaviour
     bool reflectEnabled = false;  // FIXME: move this to another script
 
     PlayerSetup playerSetup;
+    CharacterController controller;
     float timeLastInvincible = -1f;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
@@ -94,6 +95,7 @@ public class PlayerStatus : NetworkBehaviour
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
+        controller = GetComponent<CharacterController>();
         SetupHud();
 
         // Reset variables
@@ -106,6 +108,20 @@ public class PlayerStatus : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateInvincibleState();
+        }
+    }
+
+    [Client]
+    void OnControllerColliderHit(ControllerColliderHit info)
+    {
+        // Only check if this very character is hit
+        if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
+        {
+            Bullet bullet = null;
+            if(Bullet.TryGetBullet(info.collider, out bullet) == true)
+            {
+                bullet.PlayerHit(controller, this);
+            }
         }
     }
 

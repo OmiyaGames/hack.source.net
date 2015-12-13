@@ -4,7 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Reflect
+  - FlipBullet
+  - Bullet
+  - ReflectBullet
   layers:
   - Default
   - TransparentFX
