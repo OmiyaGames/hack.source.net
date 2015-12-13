@@ -37,7 +37,7 @@ public class PlayerStatus : NetworkBehaviour
         {
             return health;
         }
-        private set
+        set
         {
             int setValueTo = Mathf.Clamp(value, 0, MaxHealth);
             if (health != setValueTo)
