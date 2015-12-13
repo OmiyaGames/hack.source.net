@@ -35,8 +35,9 @@ public class PlayerSetup : NetworkBehaviour
 
     public const int MaxHealth = 4;
     public event System.Action<PlayerSetup> HackChanged;
-    static PlayerSetup localInstance = null, onlineInstance = null;
+    static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
+    static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
     [SerializeField]
     UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
@@ -75,10 +76,30 @@ public class PlayerSetup : NetworkBehaviour
 
     // Member variables for updating
     ActiveControls lastFramesControls = ActiveControls.All;
+    NetworkInstanceId playerId;
+    string uniquePlayerIdName;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
+
+    public static PlayerSetup FindPlayer(string id)
+    {
+        PlayerSetup returnScript = null;
+        if (allPlayersCache.TryGetValue(id, out returnScript) == false)
+        {
+            GameObject copy = GameObject.Find(id);
+            if(copy != null)
+            {
+                returnScript = copy.GetComponent<PlayerSetup>();
+                if(returnScript != null)
+                {
+                    allPlayersCache.Add(id, returnScript);
+                }
+            }
+        }
+        return returnScript;
+    }
 
     #region Static Properties
     public static PlayerSetup LocalInstance
@@ -89,13 +110,13 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
-    public static PlayerSetup OnlineInstance
-    {
-        get
-        {
-            return onlineInstance;
-        }
-    }
+    //public static PlayerSetup OnlineInstance
+    //{
+    //    get
+    //    {
+    //        return onlineInstance;
+    //    }
+    //}
 
     public static Dictionary<string, ActiveControls> ControlsDictionary
     {
@@ -143,7 +164,7 @@ public class PlayerSetup : NetworkBehaviour
         {
             return (ActiveControls)currentActiveControls;
         }
-        set
+        private set
         {
             int setValueTo = (int)value;
             if (currentActiveControls != setValueTo)
@@ -180,31 +201,17 @@ public class PlayerSetup : NetworkBehaviour
     }
     #endregion
 
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+        ClientSetup();
+        SetName();
+    }
+
     // Use this for initialization
+    [Client]
     void Start ()
     {
-        if (isLocalPlayer == true)
-        {
-            // Indicate this is the local instance
-            localInstance = this;
-
-            // Disable the camera
-            GameSetup startCamera = GameObject.FindObjectOfType<GameSetup>();
-            startCamera.GetComponent<Camera>().enabled = false;
-            startCamera.GetComponent<AudioListener>().enabled = false;
-            SceneManager.CursorMode = CursorLockMode.Locked;
-
-            if (healthIndicators[0] == null)
-            {
-                SetupHud();
-            }
-        }
-        else
-        {
-            // Indicate this is an online instance
-            onlineInstance = this;
-        }
-
         // Setup what's available
         controller.enabled = isLocalPlayer;
         view.enabled = isLocalPlayer;
@@ -212,9 +219,10 @@ public class PlayerSetup : NetworkBehaviour
 
         // Reset variables
         Health = MaxHealth;
-        currentActiveControls = (int)ActiveControls.All;
+        CurrentActiveControls = ActiveControls.All;
     }
 
+    [Client]
     void Update()
     {
         if(lastFramesControls != CurrentActiveControls)
@@ -226,54 +234,119 @@ public class PlayerSetup : NetworkBehaviour
             }
             lastFramesControls = CurrentActiveControls;
         }
+        SetName();
     }
 
+    [Client]
     public void Hack(byte index, ActiveControls controlValue)
     {
-        hackedControls[index] = controlValue;
+        if (isLocalPlayer == true)
+        {
+            hackedControls[index] = controlValue;
 
-        // Update the controls
-        ActiveControls disabledControls = ActiveControls.All;
-        if (hackedControls[0] != ActiveControls.None)
-        {
-            disabledControls ^= hackedControls[0];
-        }
-        if ((hackedControls[1] != ActiveControls.None) && (hackedControls[0] != hackedControls[1]))
-        {
-            disabledControls ^= hackedControls[1];
-        }
+            // Update the controls
+            ActiveControls disabledControls = ActiveControls.All;
+            if (hackedControls[0] != ActiveControls.None)
+            {
+                disabledControls ^= hackedControls[0];
+            }
+            if ((hackedControls[1] != ActiveControls.None) && (hackedControls[0] != hackedControls[1]))
+            {
+                disabledControls ^= hackedControls[1];
+            }
 
-        // Set the online instance to disabled
-        if (OnlineInstance != null)
-        {
-            OnlineInstance.CurrentActiveControls = disabledControls;
-        }
+            CmdSetCurrentActiveControls((int)disabledControls);
 
-        // Run event
-        if (HackChanged != null)
-        {
-            HackChanged(this);
+            // Run event
+            if (HackChanged != null)
+            {
+                HackChanged(this);
+            }
         }
     }
 
     #region Commands
+    [Command]
+    void CmdSubmitName(string name)
+    {
+        uniquePlayerIdName = name;
+    }
+
     // All command functions sets-up the server
     [Command]
     void CmdSetCurrentActiveControls(int setValueTo)
     {
-        currentActiveControls = setValueTo;
+        // Set the online instance to disabled
+        foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
+        {
+            if (pair.Key != name)
+            {
+                pair.Value.currentActiveControls = setValueTo;
+            }
+        }
     }
     #endregion
 
-    #region Transmits
+    #region Client
     [ClientCallback]
     void TransmitCurrentActiveControls()
     {
         CmdSetCurrentActiveControls(currentActiveControls);
     }
+
+    [ClientCallback]
+    void ClientSetup()
+    {
+        // Indicate this is the local instance
+        localInstance = this;
+
+        // Setup ID
+        playerId = GetComponent<NetworkIdentity>().netId;
+        CmdSubmitName(GenerateName());
+
+        // Disable the camera
+        GameSetup startCamera = GameObject.FindObjectOfType<GameSetup>();
+        startCamera.GetComponent<Camera>().enabled = false;
+        startCamera.GetComponent<AudioListener>().enabled = false;
+        SceneManager.CursorMode = CursorLockMode.Locked;
+
+        if (healthIndicators[0] == null)
+        {
+            SetupHud();
+        }
+    }
+
     #endregion
 
     #region Helper Methods
+    private void SetName()
+    {
+        if ((string.IsNullOrEmpty(name) == true) || (name == "Player(Clone)"))
+        {
+            if (isLocalPlayer == false)
+            {
+                name = uniquePlayerIdName;
+                if (allPlayersCache.ContainsKey(name) == false)
+                {
+                    allPlayersCache.Add(name, this);
+                }
+            }
+            else
+            {
+                name = GenerateName();
+                if(allPlayersCache.ContainsKey(name) == false)
+                {
+                    allPlayersCache.Add(name, this);
+                }
+            }
+        }
+    }
+
+    string GenerateName()
+    {
+        return "Player " + playerId.ToString();
+    }
+
     private void SetupHud()
     {
         healthIndicators[0] = healthIndicator;
