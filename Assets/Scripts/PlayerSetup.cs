@@ -29,11 +29,12 @@ public class PlayerSetup : NetworkBehaviour
         ForcedStill,
         Alive,
         Invincible,
-        Reflect,
+        //Reflect,
         Dead
     }
 
     public const int MaxHealth = 4;
+    public const float InvincibilityDuration = 1f;
     public event System.Action<PlayerSetup> HackChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
@@ -72,12 +73,15 @@ public class PlayerSetup : NetworkBehaviour
     int currentActiveControls = (int)ActiveControls.All;
     [SyncVar]
     int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
+    [SyncVar]
+    bool reflectEnabled = false;
 
     // Member variables for updating
     ActiveControls lastFramesControls = ActiveControls.All;
     int lastFramesHealth = MaxHealth;
     NetworkInstanceId playerId;
     string uniquePlayerIdName;
+    float timeLastInvincible = -1f;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
@@ -144,12 +148,22 @@ public class PlayerSetup : NetworkBehaviour
         {
             return health;
         }
-        set
+        private set
         {
             int setValueTo = Mathf.Clamp(value, 0, MaxHealth);
             if(health != setValueTo)
             {
-                TransmitOurHealth(setValueTo);
+                health = setValueTo;
+                if (health > 0)
+                {
+                    CurrentState = State.Invincible;
+                    timeLastInvincible = (Time.time + InvincibilityDuration);
+                }
+                else
+                {
+                    CurrentState = State.Dead;
+                }
+                CmdSetStatus(health, currentState);
             }
         }
     }
@@ -185,12 +199,27 @@ public class PlayerSetup : NetworkBehaviour
         {
             return (State)currentState;
         }
-        set
+        private set
         {
             int setValueTo = (int)value;
             if (currentState != setValueTo)
             {
                 currentState = setValueTo;
+            }
+        }
+    }
+
+    public bool IsReflectEnabled
+    {
+        get
+        {
+            return reflectEnabled;
+        }
+        set
+        {
+            if(reflectEnabled != value)
+            {
+                reflectEnabled = value;
             }
         }
     }
@@ -219,34 +248,28 @@ public class PlayerSetup : NetworkBehaviour
         lastFramesControls = CurrentActiveControls;
     }
 
-    [Client]
     void Update()
     {
-        if(lastFramesControls != CurrentActiveControls)
+        if (isLocalPlayer == true)
         {
-            // Update controls
-            foreach (KeyValuePair<ActiveControls, Image> pair in disableGraphics)
+            UpdateControlsHud();
+            UpdateHealthHud();
+            if((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
             {
-                pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
+                CurrentState = State.Alive;
             }
-            lastFramesControls = CurrentActiveControls;
-        }
-        if(lastFramesHealth != Health)
-        {
-            for (int i = 0; i < MaxHealth; ++i)
+            if(Input.GetKeyDown(KeyCode.Space) == true)
             {
-                healthIndicators[i].SetActive(i < health);
+                foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
+                {
+                    if (pair.Key != name)
+                    {
+                        pair.Value.InflictDamage();
+                    }
+                }
             }
-            lastFramesHealth = Health;
         }
         SetName();
-
-
-        // FIXME: debugging!
-        if((isLocalPlayer == true) && (Input.GetMouseButtonDown(0) == true))
-        {
-            Hit();
-        }
     }
 
     [Client]
@@ -278,9 +301,12 @@ public class PlayerSetup : NetworkBehaviour
     }
 
     [Client]
-    public void Hit(int damage = 1)
+    public void InflictDamage(int damage = 1)
     {
-        CmdDecreaseOpponentsHealth(damage);
+        if(CurrentState == State.Alive)
+        {
+            Health -= damage;
+        }
     }
 
     #region Commands
@@ -309,26 +335,10 @@ public class PlayerSetup : NetworkBehaviour
     }
 
     [Command]
-    void CmdDecreaseOpponentsHealth(int damage)
+    void CmdSetStatus(int newHealth, int newState)
     {
-        foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
-        {
-            if (pair.Key != name)
-            {
-                pair.Value.health -= damage;
-                if(pair.Value.health <= 0)
-                {
-                    pair.Value.health = 0;
-                    pair.Value.currentState = (int)State.Dead;
-                }
-            }
-        }
-    }
-
-    [Command]
-    void CmdSetOurHealth(int setValueTo)
-    {
-        health = setValueTo;
+        health = newHealth;
+        currentState = newState;
     }
     #endregion
 
@@ -338,13 +348,6 @@ public class PlayerSetup : NetworkBehaviour
     {
         currentActiveControls = setValueTo;
         CmdSetOurControls(setValueTo);
-    }
-
-    [Client]
-    void TransmitOurHealth(int setValueTo)
-    {
-        health = setValueTo;
-        CmdSetOurHealth(health);
     }
 
     [Client]
@@ -366,6 +369,33 @@ public class PlayerSetup : NetworkBehaviour
         if (healthIndicators[0] == null)
         {
             SetupHud();
+        }
+    }
+
+    [Client]
+    private void UpdateHealthHud()
+    {
+        if (lastFramesHealth != Health)
+        {
+            for (int i = 0; i < MaxHealth; ++i)
+            {
+                healthIndicators[i].SetActive(i < health);
+            }
+            lastFramesHealth = Health;
+        }
+    }
+
+    [Client]
+    private void UpdateControlsHud()
+    {
+        if (lastFramesControls != CurrentActiveControls)
+        {
+            // Update controls
+            foreach (KeyValuePair<ActiveControls, Image> pair in disableGraphics)
+            {
+                pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
+            }
+            lastFramesControls = CurrentActiveControls;
         }
     }
     #endregion
