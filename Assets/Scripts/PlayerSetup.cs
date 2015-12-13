@@ -258,16 +258,17 @@ public class PlayerSetup : NetworkBehaviour
             {
                 CurrentState = State.Alive;
             }
-            if(Input.GetKeyDown(KeyCode.Space) == true)
-            {
-                foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
-                {
-                    if (pair.Key != name)
-                    {
-                        pair.Value.InflictDamage();
-                    }
-                }
-            }
+            // FIXME: not working
+            //if(Input.GetKeyDown(KeyCode.E) == true)
+            //{
+            //    foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
+            //    {
+            //        if (pair.Key != name)
+            //        {
+            //            pair.Value.InflictDamage();
+            //        }
+            //    }
+            //}
         }
         SetName();
     }
@@ -305,6 +306,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         if(CurrentState == State.Alive)
         {
+            // FIXME: not working
             Health -= damage;
         }
     }
