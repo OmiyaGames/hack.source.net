@@ -141,7 +141,7 @@ MonoBehaviour:
     i14: 3
     i15: 227
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1
+  m_LocalPlayerAuthority: 0
 --- !u!114 &11473568
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -196,7 +196,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_LocalPlayerAuthority
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_RelativeForce.z

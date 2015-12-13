@@ -37,7 +37,10 @@ public class Bullet : NetworkBehaviour
 
     void FixedUpdate()
     {
-        body.velocity = localVelocity;
+        if(isServer == true)
+        {
+            body.velocity = localVelocity;
+        }
     }
 
     public void FlipDirection(string playerId = "")
@@ -53,7 +56,7 @@ public class Bullet : NetworkBehaviour
 
     void OnCollisionEnter(Collision info)
     {
-        if((IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer))
+        if((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer) )
         {
             //Debug.Log("Collide Into: " + info.collider.name);
             // FIXME: for now, just destroy yourself
