@@ -32,7 +32,7 @@ GameObject:
   - 114: {fileID: 11495000}
   - 114: {fileID: 11495746}
   - 114: {fileID: 11462078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - 65: {fileID: 6531924}
   - 23: {fileID: 2363580}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 4
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -321,7 +321,7 @@ GameObject:
   - 65: {fileID: 6548570}
   - 23: {fileID: 2352740}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 1
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -352,7 +352,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 406404}
   - 54: {fileID: 5460244}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Reflector
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
@@ -487,7 +487,7 @@ GameObject:
   - 65: {fileID: 6566172}
   - 23: {fileID: 2389364}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 5
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -640,7 +640,7 @@ GameObject:
   - 65: {fileID: 6587772}
   - 23: {fileID: 2359154}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 3
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +692,7 @@ GameObject:
   - 65: {fileID: 6502510}
   - 23: {fileID: 2343888}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 6
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -744,7 +744,7 @@ GameObject:
   - 65: {fileID: 6577218}
   - 23: {fileID: 2347420}
   m_Layer: 8
-  m_Name: Reflector Collider
+  m_Name: Reflector Collider 2
   m_TagString: FlipBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1788,10 +1788,10 @@ MonoBehaviour:
     - {fileID: 108986}
     - {fileID: 101924}
     oppositionStuff: []
-    playerAvatarLayer: Avatar
-    oppositionAvatarLayer: Default
     updateLayers:
+    - {fileID: 100006}
     - {fileID: 101650}
+    - {fileID: 136624}
     - {fileID: 131110}
     - {fileID: 199304}
     - {fileID: 188136}
@@ -2632,6 +2632,13 @@ MonoBehaviour:
   reflector: {fileID: 136624}
   reflectDuration: 0.75
   cooldownDuration: 0.5
+  reflectorColliders:
+  - {fileID: 6548570}
+  - {fileID: 6577218}
+  - {fileID: 6587772}
+  - {fileID: 6531924}
+  - {fileID: 6566172}
+  - {fileID: 6502510}
 --- !u!136 &13600000
 CapsuleCollider:
   m_ObjectHideFlags: 1
