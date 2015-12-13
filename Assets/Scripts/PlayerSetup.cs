@@ -30,16 +30,80 @@ public class PlayerSetup : NetworkBehaviour
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
     static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
+    [System.Serializable]
+    public class RigidBodyInfo
+    {
+        public UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+        public Camera view;
+        public AudioListener listener;
+        public Canvas hud;
+
+        public void Setup(bool isLocal)
+        {
+            if(controller != null)
+            {
+                controller.enabled = isLocal;
+            }
+            if (view != null)
+            {
+                view.enabled = isLocal;
+            }
+            if(listener != null)
+            {
+                listener.enabled = isLocal;
+            }
+            if(hud != null)
+            {
+                hud.gameObject.SetActive(isLocal);
+                if(isLocal == true)
+                {
+                    hud.transform.SetParent(null, true);
+                }
+            }
+        }
+    }
     [SerializeField]
-    UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+    RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
+
+    [System.Serializable]
+    public class CharacterControllerInfo
+    {
+        public HackableFpsCharacterController controller;
+        public GameObject[] playerStuff;
+        public GameObject[] oppositionStuff;
+
+        public void Setup(bool isLocal)
+        {
+            if (controller != null)
+            {
+                controller.enabled = isLocal;
+            }
+            if (playerStuff != null)
+            {
+                for(int i = 0; i < playerStuff.Length; ++i)
+                {
+                    if(playerStuff[i] != null)
+                    {
+                        playerStuff[i].SetActive(isLocal);
+                    }
+                }
+            }
+            if (oppositionStuff != null)
+            {
+                for (int i = 0; i < oppositionStuff.Length; ++i)
+                {
+                    if (oppositionStuff[i] != null)
+                    {
+                        oppositionStuff[i].SetActive(!isLocal);
+                    }
+                }
+            }
+        }
+    }
     [SerializeField]
-    Camera view;
-    [SerializeField]
-    AudioListener listener;
+    CharacterControllerInfo characterControllerInfo = new CharacterControllerInfo();
 
     [Header("HUD info")]
-    [SerializeField]
-    Canvas hud;
     [SerializeField]
     Image forwardDisabled;
     [SerializeField]
@@ -173,9 +237,8 @@ public class PlayerSetup : NetworkBehaviour
     void Start ()
     {
         // Setup what's available
-        controller.enabled = isLocalPlayer;
-        view.enabled = isLocalPlayer;
-        listener.enabled = isLocalPlayer;
+        rigidBodyInfo.Setup(isLocalPlayer);
+        characterControllerInfo.Setup(isLocalPlayer);
 
         playerStatus = GetComponent<PlayerStatus>();
     }
@@ -274,21 +337,15 @@ public class PlayerSetup : NetworkBehaviour
 
     private void SetupHud()
     {
-        hud.gameObject.SetActive(isLocalPlayer);
-        if (isLocalPlayer == true)
+        if ((isLocalPlayer == true) && (disableGraphics.Count <= 0))
         {
-            hud.transform.SetParent(null, true);
-
-            if (disableGraphics.Count <= 0)
-            {
-                disableGraphics.Add(ActiveControls.Forward, forwardDisabled);
-                disableGraphics.Add(ActiveControls.Back, backDisabled);
-                disableGraphics.Add(ActiveControls.Right, rightDisabled);
-                disableGraphics.Add(ActiveControls.Left, leftDisabled);
-                disableGraphics.Add(ActiveControls.Jump, jumpDisabled);
-                disableGraphics.Add(ActiveControls.Run, runDisabled);
-                disableGraphics.Add(ActiveControls.Reflect, reflectDisabled);
-            }
+            disableGraphics.Add(ActiveControls.Forward, forwardDisabled);
+            disableGraphics.Add(ActiveControls.Back, backDisabled);
+            disableGraphics.Add(ActiveControls.Right, rightDisabled);
+            disableGraphics.Add(ActiveControls.Left, leftDisabled);
+            disableGraphics.Add(ActiveControls.Jump, jumpDisabled);
+            disableGraphics.Add(ActiveControls.Run, runDisabled);
+            disableGraphics.Add(ActiveControls.Reflect, reflectDisabled);
         }
     }
 

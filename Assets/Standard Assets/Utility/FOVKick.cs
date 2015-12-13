@@ -15,12 +15,15 @@ namespace UnityStandardAssets.Utility
         public AnimationCurve IncreaseCurve;
 
 
-        public void Setup(Camera camera)
+        public void Setup(Camera camera = null)
         {
-            CheckStatus(camera);
+            if(camera != null)
+            {
+                Camera = camera;
+            }
+            CheckStatus(Camera);
 
-            Camera = camera;
-            originalFov = camera.fieldOfView;
+            originalFov = Camera.fieldOfView;
         }
 
 
