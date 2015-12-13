@@ -236,7 +236,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 446902}
   - 33: {fileID: 3372518}
-  - 136: {fileID: 13631322}
   - 23: {fileID: 2354722}
   m_Layer: 0
   m_Name: Capsule
@@ -244,7 +243,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &149234
 GameObject:
   m_ObjectHideFlags: 1
@@ -567,7 +566,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 138162}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0.209, y: -0.36900008, z: 0.892}
+  m_LocalPosition: {x: 0.209, y: -0.36900008, z: 1.256}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 400000}
@@ -767,7 +766,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!81 &8100000
 AudioListener:
   m_ObjectHideFlags: 1
@@ -1444,6 +1443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPosition: {fileID: 446902}
   bulletPrefab: {fileID: 11493904, guid: db4a1a375836cce41b1f1868c53c03e3, type: 2}
+  fireRate: 0.5
 --- !u!114 &11464826
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1823,19 +1823,6 @@ CapsuleCollider:
   m_Enabled: 1
   m_Radius: 0.5
   m_Height: 1.6
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!136 &13631322
-CapsuleCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 138162}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!222 &22206868
@@ -2467,6 +2454,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_StepInterval
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: fireRate
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
