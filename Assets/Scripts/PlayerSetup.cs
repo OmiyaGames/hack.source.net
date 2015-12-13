@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 using System.Collections.Generic;
 using OmiyaGames;
 
+[RequireComponent(typeof(PlayerStatus))]
 public class PlayerSetup : NetworkBehaviour
 {
     [System.Flags]
@@ -24,17 +25,6 @@ public class PlayerSetup : NetworkBehaviour
         All = Forward | Back | Right | Left | Jump | Run | Reflect
     }
 
-    public enum State
-    {
-        ForcedStill,
-        Alive,
-        Invincible,
-        //Reflect,
-        Dead
-    }
-
-    public const int MaxHealth = 4;
-    public const float InvincibilityDuration = 1f;
     public event System.Action<PlayerSetup> HackChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
@@ -51,8 +41,6 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField]
     Canvas hud;
     [SerializeField]
-    GameObject healthIndicator;
-    [SerializeField]
     Image forwardDisabled;
     [SerializeField]
     Image backDisabled;
@@ -68,29 +56,22 @@ public class PlayerSetup : NetworkBehaviour
     Image reflectDisabled;
 
     [SyncVar]
-    int health = MaxHealth;
-    [SyncVar]
     int currentActiveControls = (int)ActiveControls.All;
     [SyncVar]
-    int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
-    [SyncVar]
-    bool reflectEnabled = false;
-
-    // Member variables for updating
-    ActiveControls lastFramesControls = ActiveControls.All;
-    int lastFramesHealth = MaxHealth;
-    NetworkInstanceId playerId;
     string uniquePlayerIdName;
-    float timeLastInvincible = -1f;
+
+    // FIXME: remove frame variable in preference of hooking
+    ActiveControls lastFramesControls = ActiveControls.All;
+    NetworkInstanceId playerId;
+    PlayerStatus playerStatus;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
-    readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
 
     public static PlayerSetup FindPlayer(string id)
     {
         PlayerSetup returnScript = null;
-        if (allPlayersCache.TryGetValue(id, out returnScript) == false)
+        if (AllIdentifiedPlayers.TryGetValue(id, out returnScript) == false)
         {
             GameObject copy = GameObject.Find(id);
             if(copy != null)
@@ -98,7 +79,7 @@ public class PlayerSetup : NetworkBehaviour
                 returnScript = copy.GetComponent<PlayerSetup>();
                 if(returnScript != null)
                 {
-                    allPlayersCache.Add(id, returnScript);
+                    AllIdentifiedPlayers.Add(id, returnScript);
                 }
             }
         }
@@ -113,14 +94,6 @@ public class PlayerSetup : NetworkBehaviour
             return localInstance;
         }
     }
-
-    //public static PlayerSetup OnlineInstance
-    //{
-    //    get
-    //    {
-    //        return onlineInstance;
-    //    }
-    //}
 
     public static Dictionary<string, ActiveControls> ControlsDictionary
     {
@@ -139,35 +112,17 @@ public class PlayerSetup : NetworkBehaviour
             return controlsConversion;
         }
     }
-    #endregion
 
-    #region Local Properties
-    public int Health
+    public static Dictionary<string, PlayerSetup> AllIdentifiedPlayers
     {
         get
         {
-            return health;
-        }
-        private set
-        {
-            int setValueTo = Mathf.Clamp(value, 0, MaxHealth);
-            if(health != setValueTo)
-            {
-                health = setValueTo;
-                if (health > 0)
-                {
-                    CurrentState = State.Invincible;
-                    timeLastInvincible = (Time.time + InvincibilityDuration);
-                }
-                else
-                {
-                    CurrentState = State.Dead;
-                }
-                CmdSetStatus(health, currentState);
-            }
+            return allPlayersCache;
         }
     }
+    #endregion
 
+    #region Local Properties
     public ActiveControls CurrentActiveControls
     {
         get
@@ -193,34 +148,11 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
-    public State CurrentState
+    public PlayerStatus Status
     {
         get
         {
-            return (State)currentState;
-        }
-        private set
-        {
-            int setValueTo = (int)value;
-            if (currentState != setValueTo)
-            {
-                currentState = setValueTo;
-            }
-        }
-    }
-
-    public bool IsReflectEnabled
-    {
-        get
-        {
-            return reflectEnabled;
-        }
-        set
-        {
-            if(reflectEnabled != value)
-            {
-                reflectEnabled = value;
-            }
+            return playerStatus;
         }
     }
     #endregion
@@ -230,6 +162,10 @@ public class PlayerSetup : NetworkBehaviour
         base.OnStartLocalPlayer();
         ClientSetup();
         SetName();
+
+        // Reset control variables
+        CurrentActiveControls = ActiveControls.All;
+        lastFramesControls = CurrentActiveControls;
     }
 
     // Use this for initialization
@@ -241,11 +177,7 @@ public class PlayerSetup : NetworkBehaviour
         view.enabled = isLocalPlayer;
         listener.enabled = isLocalPlayer;
 
-        // Reset variables
-        Health = MaxHealth;
-        lastFramesHealth = Health;
-        CurrentActiveControls = ActiveControls.All;
-        lastFramesControls = CurrentActiveControls;
+        playerStatus = GetComponent<PlayerStatus>();
     }
 
     void Update()
@@ -253,22 +185,6 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateControlsHud();
-            UpdateHealthHud();
-            if((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
-            {
-                CurrentState = State.Alive;
-            }
-            // FIXME: not working
-            //if(Input.GetKeyDown(KeyCode.E) == true)
-            //{
-            //    foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
-            //    {
-            //        if (pair.Key != name)
-            //        {
-            //            pair.Value.InflictDamage();
-            //        }
-            //    }
-            //}
         }
         SetName();
     }
@@ -301,16 +217,6 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
-    [Client]
-    public void InflictDamage(int damage = 1)
-    {
-        if(CurrentState == State.Alive)
-        {
-            // FIXME: not working
-            Health -= damage;
-        }
-    }
-
     #region Commands
     [Command]
     void CmdSubmitName(string name)
@@ -321,7 +227,7 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetOpponentsControls(int setValueTo)
     {
-        foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
+        foreach (KeyValuePair<string, PlayerSetup> pair in AllIdentifiedPlayers)
         {
             if (pair.Key != name)
             {
@@ -335,16 +241,57 @@ public class PlayerSetup : NetworkBehaviour
     {
         currentActiveControls = setValueTo;
     }
-
-    [Command]
-    void CmdSetStatus(int newHealth, int newState)
-    {
-        health = newHealth;
-        currentState = newState;
-    }
     #endregion
 
-    #region Client
+    #region Helper Methods
+    private void SetName()
+    {
+        if ((string.IsNullOrEmpty(name) == true) || (name == "Player(Clone)"))
+        {
+            if (isLocalPlayer == false)
+            {
+                name = uniquePlayerIdName;
+                if (AllIdentifiedPlayers.ContainsKey(name) == false)
+                {
+                    AllIdentifiedPlayers.Add(name, this);
+                }
+            }
+            else
+            {
+                name = GenerateName();
+                if(AllIdentifiedPlayers.ContainsKey(name) == false)
+                {
+                    AllIdentifiedPlayers.Add(name, this);
+                }
+            }
+        }
+    }
+
+    string GenerateName()
+    {
+        return "Player " + playerId.ToString();
+    }
+
+    private void SetupHud()
+    {
+        hud.gameObject.SetActive(isLocalPlayer);
+        if (isLocalPlayer == true)
+        {
+            hud.transform.SetParent(null, true);
+
+            if (disableGraphics.Count <= 0)
+            {
+                disableGraphics.Add(ActiveControls.Forward, forwardDisabled);
+                disableGraphics.Add(ActiveControls.Back, backDisabled);
+                disableGraphics.Add(ActiveControls.Right, rightDisabled);
+                disableGraphics.Add(ActiveControls.Left, leftDisabled);
+                disableGraphics.Add(ActiveControls.Jump, jumpDisabled);
+                disableGraphics.Add(ActiveControls.Run, runDisabled);
+                disableGraphics.Add(ActiveControls.Reflect, reflectDisabled);
+            }
+        }
+    }
+
     [Client]
     void TransmitOurControls(int setValueTo)
     {
@@ -368,23 +315,7 @@ public class PlayerSetup : NetworkBehaviour
         startCamera.GetComponent<AudioListener>().enabled = false;
         SceneManager.CursorMode = CursorLockMode.Locked;
 
-        if (healthIndicators[0] == null)
-        {
-            SetupHud();
-        }
-    }
-
-    [Client]
-    private void UpdateHealthHud()
-    {
-        if (lastFramesHealth != Health)
-        {
-            for (int i = 0; i < MaxHealth; ++i)
-            {
-                healthIndicators[i].SetActive(i < health);
-            }
-            lastFramesHealth = Health;
-        }
+        SetupHud();
     }
 
     [Client]
@@ -398,64 +329,6 @@ public class PlayerSetup : NetworkBehaviour
                 pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
             }
             lastFramesControls = CurrentActiveControls;
-        }
-    }
-    #endregion
-
-    #region Helper Methods
-    private void SetName()
-    {
-        if ((string.IsNullOrEmpty(name) == true) || (name == "Player(Clone)"))
-        {
-            if (isLocalPlayer == false)
-            {
-                name = uniquePlayerIdName;
-                if (allPlayersCache.ContainsKey(name) == false)
-                {
-                    allPlayersCache.Add(name, this);
-                }
-            }
-            else
-            {
-                name = GenerateName();
-                if(allPlayersCache.ContainsKey(name) == false)
-                {
-                    allPlayersCache.Add(name, this);
-                }
-            }
-        }
-    }
-
-    string GenerateName()
-    {
-        return "Player " + playerId.ToString();
-    }
-
-    private void SetupHud()
-    {
-        healthIndicators[0] = healthIndicator;
-        GameObject newIndicator = null;
-        for (int i = 1; i < MaxHealth; ++i)
-        {
-            newIndicator = Instantiate<GameObject>(healthIndicator);
-            newIndicator.transform.SetParent(healthIndicator.transform.parent, false);
-            newIndicator.transform.SetAsLastSibling();
-            newIndicator.transform.localScale = Vector3.one;
-            healthIndicators[i] = newIndicator;
-        }
-
-        hud.gameObject.SetActive(isLocalPlayer);
-        hud.transform.SetParent(null, true);
-
-        if(disableGraphics.Count <= 0)
-        {
-            disableGraphics.Add(ActiveControls.Forward, forwardDisabled);
-            disableGraphics.Add(ActiveControls.Back, backDisabled);
-            disableGraphics.Add(ActiveControls.Right, rightDisabled);
-            disableGraphics.Add(ActiveControls.Left, leftDisabled);
-            disableGraphics.Add(ActiveControls.Jump, jumpDisabled);
-            disableGraphics.Add(ActiveControls.Run, runDisabled);
-            disableGraphics.Add(ActiveControls.Reflect, reflectDisabled);
         }
     }
     #endregion
