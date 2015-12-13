@@ -66,7 +66,6 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField]
     Image reflectDisabled;
 
-    // FIXME: somehow get a reference to the opposing player
     [SyncVar]
     int health = MaxHealth;
     [SyncVar]
@@ -76,6 +75,7 @@ public class PlayerSetup : NetworkBehaviour
 
     // Member variables for updating
     ActiveControls lastFramesControls = ActiveControls.All;
+    int lastFramesHealth = MaxHealth;
     NetworkInstanceId playerId;
     string uniquePlayerIdName;
 
@@ -149,11 +149,7 @@ public class PlayerSetup : NetworkBehaviour
             int setValueTo = Mathf.Clamp(value, 0, MaxHealth);
             if(health != setValueTo)
             {
-                health = setValueTo;
-                for (int i = 0; i < MaxHealth; ++i)
-                {
-                    healthIndicators[i].SetActive(i < health);
-                }
+                TransmitOurHealth(setValueTo);
             }
         }
     }
@@ -170,8 +166,7 @@ public class PlayerSetup : NetworkBehaviour
             if (currentActiveControls != setValueTo)
             {
                 // Send the server the information of the current active controls
-                currentActiveControls = setValueTo;
-                TransmitCurrentActiveControls();
+                TransmitOurControls(setValueTo);
             }
         }
     }
@@ -219,7 +214,9 @@ public class PlayerSetup : NetworkBehaviour
 
         // Reset variables
         Health = MaxHealth;
+        lastFramesHealth = Health;
         CurrentActiveControls = ActiveControls.All;
+        lastFramesControls = CurrentActiveControls;
     }
 
     [Client]
@@ -234,7 +231,22 @@ public class PlayerSetup : NetworkBehaviour
             }
             lastFramesControls = CurrentActiveControls;
         }
+        if(lastFramesHealth != Health)
+        {
+            for (int i = 0; i < MaxHealth; ++i)
+            {
+                healthIndicators[i].SetActive(i < health);
+            }
+            lastFramesHealth = Health;
+        }
         SetName();
+
+
+        // FIXME: debugging!
+        if((isLocalPlayer == true) && (Input.GetMouseButtonDown(0) == true))
+        {
+            Hit();
+        }
     }
 
     [Client]
@@ -255,7 +267,7 @@ public class PlayerSetup : NetworkBehaviour
                 disabledControls ^= hackedControls[1];
             }
 
-            CmdSetCurrentActiveControls((int)disabledControls);
+            CmdSetOpponentsControls((int)disabledControls);
 
             // Run event
             if (HackChanged != null)
@@ -265,6 +277,12 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
+    [Client]
+    public void Hit(int damage = 1)
+    {
+        CmdDecreaseOpponentsHealth(damage);
+    }
+
     #region Commands
     [Command]
     void CmdSubmitName(string name)
@@ -272,11 +290,9 @@ public class PlayerSetup : NetworkBehaviour
         uniquePlayerIdName = name;
     }
 
-    // All command functions sets-up the server
     [Command]
-    void CmdSetCurrentActiveControls(int setValueTo)
+    void CmdSetOpponentsControls(int setValueTo)
     {
-        // Set the online instance to disabled
         foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
         {
             if (pair.Key != name)
@@ -285,16 +301,53 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
     }
+
+    [Command]
+    void CmdSetOurControls(int setValueTo)
+    {
+        currentActiveControls = setValueTo;
+    }
+
+    [Command]
+    void CmdDecreaseOpponentsHealth(int damage)
+    {
+        foreach (KeyValuePair<string, PlayerSetup> pair in allPlayersCache)
+        {
+            if (pair.Key != name)
+            {
+                pair.Value.health -= damage;
+                if(pair.Value.health <= 0)
+                {
+                    pair.Value.health = 0;
+                    pair.Value.currentState = (int)State.Dead;
+                }
+            }
+        }
+    }
+
+    [Command]
+    void CmdSetOurHealth(int setValueTo)
+    {
+        health = setValueTo;
+    }
     #endregion
 
     #region Client
-    [ClientCallback]
-    void TransmitCurrentActiveControls()
+    [Client]
+    void TransmitOurControls(int setValueTo)
     {
-        CmdSetCurrentActiveControls(currentActiveControls);
+        currentActiveControls = setValueTo;
+        CmdSetOurControls(setValueTo);
     }
 
-    [ClientCallback]
+    [Client]
+    void TransmitOurHealth(int setValueTo)
+    {
+        health = setValueTo;
+        CmdSetOurHealth(health);
+    }
+
+    [Client]
     void ClientSetup()
     {
         // Indicate this is the local instance
@@ -315,7 +368,6 @@ public class PlayerSetup : NetworkBehaviour
             SetupHud();
         }
     }
-
     #endregion
 
     #region Helper Methods
