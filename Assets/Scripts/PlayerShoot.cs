@@ -44,7 +44,8 @@ public class PlayerShoot : NetworkBehaviour
     void CmdSpawn()
     {
         GameObject clone = (GameObject)Instantiate(bulletPrefab.gameObject, spawnPosition.position, spawnPosition.rotation);
-        NetworkServer.SpawnWithClientAuthority(clone, connectionToClient);
+        //NetworkServer.SpawnWithClientAuthority(clone, connectionToClient);
+        NetworkServer.Spawn(clone);
         clone.GetComponent<Bullet>().IgnoredPlayer = name;
     }
 }
