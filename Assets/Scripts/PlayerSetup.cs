@@ -70,7 +70,7 @@ public class PlayerSetup : NetworkBehaviour
             if(updateLayers != null)
             {
                 int playerLayer = LayerMask.NameToLayer(playerAvatarLayer);
-                int oppositionLayer = LayerMask.NameToLayer(playerAvatarLayer);
+                int oppositionLayer = LayerMask.NameToLayer(oppositionAvatarLayer);
                 for (int i = 0; i < updateLayers.Length; ++i)
                 {
                     if (updateLayers[i] != null)
