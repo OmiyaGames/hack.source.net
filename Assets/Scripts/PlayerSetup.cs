@@ -44,8 +44,6 @@ public class PlayerSetup : NetworkBehaviour
     Camera view;
     [SerializeField]
     AudioListener listener;
-    [SerializeField]
-    float cameraRotateLerpSpeed = 10f;
 
     [Header("HUD info")]
     [SerializeField]
@@ -72,15 +70,11 @@ public class PlayerSetup : NetworkBehaviour
     int health = MaxHealth;
     [SyncVar]
     int currentActiveControls = (int)ActiveControls.All;
-    //[SyncVar]
-    //float cameraAngle = 0f;
     [SyncVar]
     int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
 
     // Member variables for updating
     ActiveControls lastFramesControls = ActiveControls.All;
-    Transform cameraTransform = null;
-    Vector3 eularCameraAngles;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
@@ -216,11 +210,6 @@ public class PlayerSetup : NetworkBehaviour
         view.enabled = isLocalPlayer;
         listener.enabled = isLocalPlayer;
 
-        // Setup camera transform
-        cameraTransform = controller.transform;
-        eularCameraAngles = cameraTransform.localEulerAngles;
-        //cameraAngle = eularCameraAngles.x;
-
         // Reset variables
         Health = MaxHealth;
         currentActiveControls = (int)ActiveControls.All;
@@ -237,16 +226,6 @@ public class PlayerSetup : NetworkBehaviour
             }
             lastFramesControls = CurrentActiveControls;
         }
-
-        //if(isLocalPlayer == false)
-        //{
-        //    eularCameraAngles.x = Mathf.Lerp(eularCameraAngles.x, cameraAngle, (Time.deltaTime * cameraRotateLerpSpeed));
-        //    cameraTransform.localEulerAngles = eularCameraAngles;
-        //}
-        //else
-        //{
-        //    TransmitCurrentCameraAngle();
-        //}
     }
 
     public void Hack(byte index, ActiveControls controlValue)
@@ -284,12 +263,6 @@ public class PlayerSetup : NetworkBehaviour
     {
         currentActiveControls = setValueTo;
     }
-
-    //[Command]
-    //void CmdSetCurrentCameraAngle(float setValueTo)
-    //{
-    //    cameraAngle = setValueTo;
-    //}
     #endregion
 
     #region Transmits
@@ -298,12 +271,6 @@ public class PlayerSetup : NetworkBehaviour
     {
         CmdSetCurrentActiveControls(currentActiveControls);
     }
-
-    //[ClientCallback]
-    //void TransmitCurrentCameraAngle()
-    //{
-    //    CmdSetCurrentCameraAngle(cameraTransform.localEulerAngles.x);
-    //}
     #endregion
 
     #region Helper Methods
