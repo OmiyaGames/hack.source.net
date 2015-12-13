@@ -15,6 +15,6 @@ public class GameSetup : MonoBehaviour
     void Start()
     {
         SceneManager.CursorMode = CursorLockMode.None;
-        Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.Confined;
+        Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
     }
 }

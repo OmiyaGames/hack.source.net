@@ -24,9 +24,18 @@ public class PlayerSetup : NetworkBehaviour
         All = Forward | Back | Right | Left | Jump | Run | Reflect
     }
 
+    public enum State
+    {
+        ForcedStill,
+        Alive,
+        Invincible,
+        Reflect,
+        Dead
+    }
+
     public const int MaxHealth = 4;
     public event System.Action<PlayerSetup> HackChanged;
-    static PlayerSetup localInstance = null;
+    static PlayerSetup localInstance = null, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
 
     [SerializeField]
@@ -35,6 +44,8 @@ public class PlayerSetup : NetworkBehaviour
     Camera view;
     [SerializeField]
     AudioListener listener;
+    [SerializeField]
+    float cameraRotateLerpSpeed = 10f;
 
     [Header("HUD info")]
     [SerializeField]
@@ -61,6 +72,15 @@ public class PlayerSetup : NetworkBehaviour
     int health = MaxHealth;
     [SyncVar]
     int currentActiveControls = (int)ActiveControls.All;
+    //[SyncVar]
+    //float cameraAngle = 0f;
+    [SyncVar]
+    int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
+
+    // Member variables for updating
+    ActiveControls lastFramesControls = ActiveControls.All;
+    Transform cameraTransform = null;
+    Vector3 eularCameraAngles;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
@@ -72,6 +92,14 @@ public class PlayerSetup : NetworkBehaviour
         get
         {
             return localInstance;
+        }
+    }
+
+    public static PlayerSetup OnlineInstance
+    {
+        get
+        {
+            return onlineInstance;
         }
     }
 
@@ -126,13 +154,9 @@ public class PlayerSetup : NetworkBehaviour
             int setValueTo = (int)value;
             if (currentActiveControls != setValueTo)
             {
+                // Send the server the information of the current active controls
                 currentActiveControls = setValueTo;
-
-                // Update controls
-                foreach (KeyValuePair<ActiveControls, Image> pair in disableGraphics)
-                {
-                    pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
-                }
+                TransmitCurrentActiveControls();
             }
         }
     }
@@ -142,6 +166,22 @@ public class PlayerSetup : NetworkBehaviour
         get
         {
             return hackedControls;
+        }
+    }
+
+    public State CurrentState
+    {
+        get
+        {
+            return (State)currentState;
+        }
+        set
+        {
+            int setValueTo = (int)value;
+            if (currentState != setValueTo)
+            {
+                currentState = setValueTo;
+            }
         }
     }
     #endregion
@@ -165,15 +205,48 @@ public class PlayerSetup : NetworkBehaviour
                 SetupHud();
             }
         }
+        else
+        {
+            // Indicate this is an online instance
+            onlineInstance = this;
+        }
 
         // Setup what's available
         controller.enabled = isLocalPlayer;
         view.enabled = isLocalPlayer;
         listener.enabled = isLocalPlayer;
 
+        // Setup camera transform
+        cameraTransform = controller.transform;
+        eularCameraAngles = cameraTransform.localEulerAngles;
+        //cameraAngle = eularCameraAngles.x;
+
         // Reset variables
         Health = MaxHealth;
         currentActiveControls = (int)ActiveControls.All;
+    }
+
+    void Update()
+    {
+        if(lastFramesControls != CurrentActiveControls)
+        {
+            // Update controls
+            foreach (KeyValuePair<ActiveControls, Image> pair in disableGraphics)
+            {
+                pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
+            }
+            lastFramesControls = CurrentActiveControls;
+        }
+
+        //if(isLocalPlayer == false)
+        //{
+        //    eularCameraAngles.x = Mathf.Lerp(eularCameraAngles.x, cameraAngle, (Time.deltaTime * cameraRotateLerpSpeed));
+        //    cameraTransform.localEulerAngles = eularCameraAngles;
+        //}
+        //else
+        //{
+        //    TransmitCurrentCameraAngle();
+        //}
     }
 
     public void Hack(byte index, ActiveControls controlValue)
@@ -191,16 +264,49 @@ public class PlayerSetup : NetworkBehaviour
             disabledControls ^= hackedControls[1];
         }
 
+        // Set the online instance to disabled
+        if (OnlineInstance != null)
+        {
+            OnlineInstance.CurrentActiveControls = disabledControls;
+        }
+
         // Run event
         if (HackChanged != null)
         {
             HackChanged(this);
         }
-
-        // FIXME: debugging by setting this instance's controls
-        CurrentActiveControls = disabledControls;
     }
 
+    #region Commands
+    // All command functions sets-up the server
+    [Command]
+    void CmdSetCurrentActiveControls(int setValueTo)
+    {
+        currentActiveControls = setValueTo;
+    }
+
+    //[Command]
+    //void CmdSetCurrentCameraAngle(float setValueTo)
+    //{
+    //    cameraAngle = setValueTo;
+    //}
+    #endregion
+
+    #region Transmits
+    [ClientCallback]
+    void TransmitCurrentActiveControls()
+    {
+        CmdSetCurrentActiveControls(currentActiveControls);
+    }
+
+    //[ClientCallback]
+    //void TransmitCurrentCameraAngle()
+    //{
+    //    CmdSetCurrentCameraAngle(cameraTransform.localEulerAngles.x);
+    //}
+    #endregion
+
+    #region Helper Methods
     private void SetupHud()
     {
         healthIndicators[0] = healthIndicator;
@@ -228,5 +334,5 @@ public class PlayerSetup : NetworkBehaviour
             disableGraphics.Add(ActiveControls.Reflect, reflectDisabled);
         }
     }
-
+    #endregion
 }
