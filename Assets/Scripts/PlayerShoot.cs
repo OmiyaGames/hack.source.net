@@ -26,7 +26,8 @@ public class PlayerShoot : NetworkBehaviour
     void Update ()
     {
         // Check if this is a local instance firing
-        if((isLocalPlayer == true) && (Input.GetButton("Fire1") == true) && (status.IsReflectEnabled == false) && (pauseMenu.CurrentState == IMenu.State.Hidden) && (Time.time > nextFire))
+        if((isLocalPlayer == true) && (Input.GetButton("Fire1") == true) && (Time.time > nextFire) &&
+            (status.IsReflectEnabled == false) && (pauseMenu.CurrentState == IMenu.State.Hidden))
         {
             // Check if the player can fire
             switch (status.CurrentState)

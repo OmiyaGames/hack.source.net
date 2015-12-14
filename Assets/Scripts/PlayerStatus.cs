@@ -229,7 +229,7 @@ public class PlayerStatus : NetworkBehaviour
                 // Indicate death
                 Debug.Log("PlayerStatus: Death detected");
                 Singleton.Get<MenuManager>().Hide<PauseMenu>();
-                Singleton.Get<MenuManager>().Show<LevelFailedMenu>();
+                Singleton.Get<MenuManager>().Show<LoseMenu>();
 
                 Debug.Log("Menu shown");
                 playerSetup.CmdSetLosingPlayer();
@@ -239,7 +239,7 @@ public class PlayerStatus : NetworkBehaviour
                 // Indicate death
                 Debug.Log("PlayerStatus: Victory detected");
                 Singleton.Get<MenuManager>().Hide<PauseMenu>();
-                Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
+                Singleton.Get<MenuManager>().Show<WinMenu>();
 
                 Debug.Log("Menu shown");
             }
