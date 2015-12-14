@@ -156,7 +156,6 @@ public class PlayerSetup : NetworkBehaviour
     ActiveControls lastFramesControls = ActiveControls.All;
     NetworkInstanceId playerId;
     PlayerStatus playerStatus;
-    int playerBulletLayerId, oppositionBulletLayerId;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
@@ -220,15 +219,15 @@ public class PlayerSetup : NetworkBehaviour
             }
             return returnControls;
         }
-        private set
-        {
-            int setValueTo = (int)value;
-            if (currentActiveControls != setValueTo)
-            {
-                // Send the server the information of the current active controls
-                TransmitOurControls(setValueTo);
-            }
-        }
+        //private set
+        //{
+        //    int setValueTo = (int)value;
+        //    if (currentActiveControls != setValueTo)
+        //    {
+        //        // Send the server the information of the current active controls
+        //        TransmitOurControls(setValueTo);
+        //    }
+        //}
     }
 
     public ActiveControls[] DeactivatedControls
@@ -255,7 +254,6 @@ public class PlayerSetup : NetworkBehaviour
         SetName();
 
         // Reset control variables
-        CurrentActiveControls = ActiveControls.All;
         lastFramesControls = CurrentActiveControls;
     }
 
@@ -297,7 +295,7 @@ public class PlayerSetup : NetworkBehaviour
                 disabledControls ^= hackedControls[1];
             }
 
-            CmdSetOpponentsControls((int)disabledControls);
+            CmdSetOpponentsControls((int)disabledControls, uniquePlayerIdName);
 
             // Run event
             if (HackChanged != null)
@@ -322,22 +320,24 @@ public class PlayerSetup : NetworkBehaviour
     }
 
     [Command]
-    void CmdSetOpponentsControls(int setValueTo)
+    void CmdSetOpponentsControls(int setValueTo, string ignorePlayer)
     {
+        Debug.Log("Hacking: ignore " + uniquePlayerIdName);
         foreach (KeyValuePair<string, PlayerSetup> pair in AllIdentifiedPlayers)
         {
-            if (pair.Key != name)
+            if (pair.Key != ignorePlayer)
             {
+                Debug.Log("Hacking: affect " + pair.Key);
                 pair.Value.currentActiveControls = setValueTo;
             }
         }
     }
 
-    [Command]
-    void CmdSetOurControls(int setValueTo)
-    {
-        currentActiveControls = setValueTo;
-    }
+    //[Command]
+    //void CmdSetOurControls(int setValueTo)
+    //{
+    //    currentActiveControls = setValueTo;
+    //}
 
     [Command]
     void CmdSetupGameSetup(string name)
@@ -362,28 +362,31 @@ public class PlayerSetup : NetworkBehaviour
             if (isLocalPlayer == false)
             {
                 name = uniquePlayerIdName;
-                if(NameChanged != null)
+                AddPlayer(name);
+                if (NameChanged != null)
                 {
                     NameChanged(this, name);
-                }
-                if (AllIdentifiedPlayers.ContainsKey(name) == false)
-                {
-                    AllIdentifiedPlayers.Add(name, this);
                 }
             }
             else
             {
                 name = GenerateName();
                 CmdSetupGameSetup(name);
+                AddPlayer(name);
                 if (NameChanged != null)
                 {
                     NameChanged(this, name);
                 }
-                if (AllIdentifiedPlayers.ContainsKey(name) == false)
-                {
-                    AllIdentifiedPlayers.Add(name, this);
-                }
             }
+        }
+    }
+
+    private void AddPlayer(string name)
+    {
+        if ((string.IsNullOrEmpty(name) == false) && (AllIdentifiedPlayers.ContainsKey(name) == false) && (name != "Player(Clone)"))
+        {
+            Debug.Log("Added player: " + name);
+            AllIdentifiedPlayers.Add(name, this);
         }
     }
 
@@ -406,12 +409,12 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
-    [Client]
-    void TransmitOurControls(int setValueTo)
-    {
-        currentActiveControls = setValueTo;
-        CmdSetOurControls(setValueTo);
-    }
+    //[Client]
+    //void TransmitOurControls(int setValueTo)
+    //{
+    //    currentActiveControls = setValueTo;
+    //    CmdSetOurControls(setValueTo);
+    //}
 
     [Client]
     void ClientSetup()
