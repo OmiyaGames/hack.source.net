@@ -9,6 +9,10 @@ public class RandomizeColor : MonoBehaviour
     [SerializeField]
     Color maxRange;
 
+    [Header("Randomizer")]
+    [SerializeField]
+    Vector2 scaleRange = new Vector2(0.5f, 1.5f);
+
     // Use this for initialization
     void Start ()
     {
@@ -33,4 +37,18 @@ public class RandomizeColor : MonoBehaviour
     {
         allRenderers = GetComponentsInChildren<Renderer>();
 	}
+
+    // Update is called once per frame
+    [ContextMenu("Random Scale")]
+    void RandomizeScale()
+    {
+        Vector3 angles;
+        foreach (Renderer renderer in allRenderers)
+        {
+            renderer.transform.localScale = Vector3.one * Random.Range(scaleRange.x, scaleRange.y);
+            angles = renderer.transform.eulerAngles;
+            angles.y = Random.Range(0f, 360f);
+            renderer.transform.rotation = Quaternion.Euler(angles);
+        }
+    }
 }
