@@ -31,6 +31,12 @@ public class PlayerStatus : NetworkBehaviour
     [SerializeField]
     Collider[] reflectorColliders;
 
+    [Header("Sound")]
+    [SerializeField]
+    SoundEffect reflectorSound;
+    [SerializeField]
+    SoundEffect hurtSound;
+
     [SyncVar(hook = "OnPlayerHealthSynced")]
     int health = MaxHealth;
     [SyncVar(hook = "OnPlayerStateSynced")]
@@ -41,8 +47,7 @@ public class PlayerStatus : NetworkBehaviour
     double timeLastInvincible = -1;
 
     PlayerSetup playerSetup;
-    //CharacterController controller;
-    //double timeRemoveReflector = -1f, timeAllowReflector = -1f;
+    bool lastReflectorState = false;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
     #region Properties
@@ -59,6 +64,7 @@ public class PlayerStatus : NetworkBehaviour
             {
                 if (setValueTo < health)
                 {
+                    hurtSound.Play();
                     if (setValueTo > 0)
                     {
                         playerSetup.avatarAnimations.SetTrigger(PlayerSetup.HitTrigger);
@@ -263,7 +269,12 @@ public class PlayerStatus : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             // Turn on or off the reflector
+            if((lastReflectorState == false) && (IsReflectEnabled == true))
+            {
+                reflectorSound.Play();
+            }
             playerSetup.hudAnimations.SetBool(PlayerSetup.ReflectBool, IsReflectEnabled);
+            lastReflectorState = IsReflectEnabled;
         }
 
         // Check if we are allowed to bring up the reflector
