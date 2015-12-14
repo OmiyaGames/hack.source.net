@@ -131,6 +131,12 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField]
     GameState gameInfoPrefab;
 
+    [Header("Animations")]
+    [SerializeField]
+    Animator hudAnimations;
+    [SerializeField]
+    Animator avatarAnimations;
+
     [Header("HUD info")]
     [SerializeField]
     Image forwardDisabled;

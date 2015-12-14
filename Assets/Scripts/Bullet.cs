@@ -7,6 +7,12 @@ public class Bullet : NetworkBehaviour
 {
     [SerializeField]
     Vector3 moveVelocity = new Vector3(0, 1, 0);
+    [SerializeField]
+    Transform spawnPosition;
+    [SerializeField]
+    GameObject spark;
+    [SerializeField]
+    GameObject explosion;
 
     [SyncVar(hook = "OnIgnorePlayerSynced")]
     string ignorePlayer = null;
@@ -76,11 +82,27 @@ public class Bullet : NetworkBehaviour
         }
     }
 
+    #region Commands
     [Command]
     void CmdSetIgnoredPlayer(string newPlayer)
     {
         ignorePlayer = newPlayer;
     }
+
+    [Command]
+    void CmdSpawnSpark()
+    {
+        GameObject clone = (GameObject)Instantiate(spark.gameObject, spawnPosition.position, spawnPosition.rotation);
+        NetworkServer.Spawn(clone);
+    }
+
+    [Command]
+    void CmdSpawnExplosion()
+    {
+        GameObject clone = (GameObject)Instantiate(explosion.gameObject, spawnPosition.position, spawnPosition.rotation);
+        NetworkServer.Spawn(clone);
+    }
+    #endregion
 
     void OnCollisionEnter(Collision info)
     {
@@ -143,18 +165,19 @@ public class Bullet : NetworkBehaviour
             {
                 // Flip direction if player is reflecting
                 FlipDirection(controller.name);
+                Spark(false);
             }
-            else
+            else if (status.CurrentState == PlayerStatus.State.Alive)
             {
-                // Decrease health if player is alive
-                if (status.CurrentState == PlayerStatus.State.Alive)
-                {
-                    // Decrease player health
-                    status.Health -= 1;
-                }
+                // Decrease player health
+                status.Health -= 1;
 
                 // Explode
                 Explode();
+            }
+            else
+            {
+                Spark(true);
             }
 
             lastCharacter = controller;
@@ -184,8 +207,18 @@ public class Bullet : NetworkBehaviour
 
     void Explode()
     {
-        // FIXME: Needs more explosion
+        CmdSpawnExplosion();
         Destroy(gameObject);
         NetworkServer.Destroy(gameObject);
+    }
+
+    void Spark(bool destroy)
+    {
+        CmdSpawnSpark();
+        if (destroy == true)
+        {
+            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
+        }
     }
 }

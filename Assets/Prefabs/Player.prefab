@@ -152,6 +152,7 @@ GameObject:
   - 95: {fileID: 9597824}
   - 114: {fileID: 11456152}
   - 114: {fileID: 11474922}
+  - 114: {fileID: 11423686}
   m_Layer: 0
   m_Name: BoxUnityChan
   m_TagString: Untagged
@@ -1481,7 +1482,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -2.679, y: 1, z: -0.076}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 400000}
@@ -3106,7 +3107,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
-  - {fileID: 2100000, guid: 88157e674d7d0314db76940c73b69405, type: 2}
+  - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3133,7 +3134,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
-  - {fileID: 2100000, guid: 88157e674d7d0314db76940c73b69405, type: 2}
+  - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3186,7 +3187,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
-  - {fileID: 2100000, guid: 88157e674d7d0314db76940c73b69405, type: 2}
+  - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3265,7 +3266,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
-  - {fileID: 2100000, guid: 88157e674d7d0314db76940c73b69405, type: 2}
+  - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -3396,7 +3397,7 @@ MeshRenderer:
   m_ReceiveShadows: 1
   m_Materials:
   - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
-  - {fileID: 2100000, guid: 88157e674d7d0314db76940c73b69405, type: 2}
+  - {fileID: 2100000, guid: 9481cb12a46c9a74b81a12294eabd1cd, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -4340,6 +4341,53 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &11423686
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 104694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadbfa418e769964d9da31b798502da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allRenderers:
+  - {fileID: 2317146}
+  - {fileID: 2394194}
+  - {fileID: 2378880}
+  - {fileID: 2378258}
+  - {fileID: 2341362}
+  - {fileID: 2368816}
+  - {fileID: 2396098}
+  - {fileID: 2389474}
+  - {fileID: 2381628}
+  - {fileID: 2300004}
+  - {fileID: 2398530}
+  - {fileID: 2367616}
+  - {fileID: 2353036}
+  - {fileID: 2348556}
+  - {fileID: 2377000}
+  - {fileID: 2333926}
+  - {fileID: 2392674}
+  - {fileID: 2308836}
+  - {fileID: 2305432}
+  - {fileID: 2327886}
+  - {fileID: 2384098}
+  - {fileID: 2313402}
+  - {fileID: 2394524}
+  - {fileID: 2386750}
+  - {fileID: 2319742}
+  - {fileID: 2372684}
+  - {fileID: 2339228}
+  - {fileID: 2375386}
+  - {fileID: 2354862}
+  - {fileID: 2399894}
+  - {fileID: 2375900}
+  - {fileID: 2313894}
+  - {fileID: 2319510}
+  minRange: {r: 0.7205882, g: 0.41857696, b: 0.41857696, a: 1}
+  maxRange: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11427676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4923,7 +4971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 9597824}
-  m_ParameterSendBits: 0
+  m_ParameterSendBits: 7
   param0: 
   param1: 
   param2: 

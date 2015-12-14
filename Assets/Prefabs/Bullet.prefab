@@ -13,6 +13,7 @@ GameObject:
   - 114: {fileID: 11473568}
   - 114: {fileID: 11493904}
   - 54: {fileID: 5478534}
+  - 114: {fileID: 11486500}
   m_Layer: 10
   m_Name: Bullet
   m_TagString: Bullet
@@ -222,6 +223,21 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &11486500
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 147542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eadbfa418e769964d9da31b798502da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allRenderers:
+  - {fileID: 2314222}
+  minRange: {r: 1, g: 0.33088237, b: 0.33088237, a: 1}
+  maxRange: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11493904
 MonoBehaviour:
   m_ObjectHideFlags: 1
