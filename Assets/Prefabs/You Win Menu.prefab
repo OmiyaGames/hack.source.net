@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afb5d1f8490290444be8e175477aa357, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultButton: {fileID: 0}
+  defaultButton: {fileID: 11459048}
   completeLabel: {fileID: 11421626}
   failedLabel: {fileID: 0}
   nextSceneLabel: {fileID: 0}
