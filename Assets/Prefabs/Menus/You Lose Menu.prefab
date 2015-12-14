@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &103054
 GameObject:
   m_ObjectHideFlags: 1
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - 224: {fileID: 22469696}
   - 95: {fileID: 9574064}
-  - 114: {fileID: 11429702}
+  - 114: {fileID: 11436084}
   m_Layer: 5
   m_Name: You Lose Menu
   m_TagString: Untagged
@@ -286,8 +286,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: OnRestartClicked
+      - m_Target: {fileID: 144260}
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -331,7 +331,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Return to Main Menu
+  m_Text: Return to Menu
 --- !u!114 &11425026
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -359,24 +359,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11429702
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 144260}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a148a506c3235f0458ee4950483c7510, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultButton: {fileID: 11420352}
-  completeLabel: {fileID: 0}
-  failedLabel: {fileID: 0}
-  nextSceneLabel: {fileID: 0}
-  restartLabel: {fileID: 11463708}
-  returnToMenuLabel: {fileID: 11423152}
-  pauseGameOnShow: 1
 --- !u!114 &11435600
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -416,8 +398,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: OnReturnToMenuClicked
+      - m_Target: {fileID: 11436084}
+        m_MethodName: OnQuitClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -429,6 +411,18 @@ MonoBehaviour:
         m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
+--- !u!114 &11436084
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 144260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92b7bfd444fed604589d3088ca624693, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  defaultButton: {fileID: 11435600}
 --- !u!114 &11463708
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -461,7 +455,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Restart
+  m_Text: Rematch
 --- !u!114 &11480416
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -517,7 +511,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You Lose!
+  m_Text: Maybe Next Time...
 --- !u!114 &11492508
 MonoBehaviour:
   m_ObjectHideFlags: 1
