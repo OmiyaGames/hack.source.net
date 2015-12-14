@@ -300,6 +300,13 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
+    [Command]
+    public void CmdSetLosingPlayer()
+    {
+        Debug.Log("PlayerSetup.SetLosingPlayer()");
+        Game.Info.CmdSetLosingPlayer(name);
+    }
+
     #region Commands
     [Command]
     void CmdSubmitName(string name)

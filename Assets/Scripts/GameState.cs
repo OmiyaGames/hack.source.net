@@ -122,13 +122,13 @@ public class GameState : NetworkBehaviour
     void OnLosingPlayerSynced(string playerLost)
     {
         Debug.Log("GameState: show window");
-        if (localPlayerId == playerLost)
+        if (localPlayerId != playerLost)
         {
-            Singleton.Get<MenuManager>().Show<LevelFailedMenu>(CheckButton);
-        }
-        else
-        {
-            Singleton.Get<MenuManager>().Show<LevelCompleteMenu>(CheckButton);
+            Singleton.Get<MenuManager>().Hide<PauseMenu>();
+            if (Singleton.Get<MenuManager>().NumManagedMenus <= 0)
+            {
+                Singleton.Get<MenuManager>().Show<LevelCompleteMenu>(CheckButton);
+            }
         }
     }
 

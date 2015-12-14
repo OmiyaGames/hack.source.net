@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
+using OmiyaGames;
 
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(CharacterController))]
@@ -213,15 +214,18 @@ public class PlayerStatus : NetworkBehaviour
         }
     }
 
-    [Server]
+    [Client]
     private void OnPlayerStateSynced(int latestState)
     {
-        Debug.Log("PlayerStatus: Death detected");
-        if (/*(isServer == true) && (*/latestState == (int)State.Dead)
+        if ((isLocalPlayer == true) && (latestState == (int)State.Dead))
         {
             // Indicate death
             Debug.Log("PlayerStatus: Death detected");
-            playerSetup.Game.Info.CmdSetLosingPlayer(name);
+            Singleton.Get<MenuManager>().Hide<PauseMenu>();
+            Singleton.Get<MenuManager>().Show<LevelFailedMenu>();
+
+            Debug.Log("Menu shown");
+            playerSetup.CmdSetLosingPlayer();
         }
     }
 
