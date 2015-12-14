@@ -19,24 +19,11 @@ public class GameSetup : ISingletonScript
         playerAvatarLayerCache = -1,
         oppositionAvatarLayerCache = -1;
 
-    GameState currentState;
     SceneManager scenes;
     NetworkManager network;
     Singleton eventBind;
 
     #region Properties
-    public GameState Info
-    {
-        get
-        {
-            return currentState;
-        }
-        set
-        {
-            currentState = value;
-        }
-    }
-
     public static int playerBulletLayerInt
     {
         get
@@ -124,27 +111,16 @@ public class GameSetup : ISingletonScript
         }
         else
         {
-            currentState = null;
             GameState.Reset();
         }
     }
 
     private void CheckPlayerNumber(float obj)
     {
-        //if((queueLocalId != null) && (Info == null))
-        //{
-        //    // Check if the server is active
-        //    if (NetworkServer.active == true)
-        //    {
-
-        //        // Indicate we're done
-        //        queueLocalId = null;
-        //    }
-        //}
-        /*else */if((GameState.NumPlayers >= MaxConnections) && (Info != null))
+        if((GameState.NumPlayers >= MaxConnections) && (GameState.Instance != null))
         {
             // Check if the proper number of players are connected
-            Info.CmdStartMatch();
+            GameState.Instance.CmdStartMatch();
             eventBind.OnUpdate -= CheckPlayerNumber;
             eventBind = null;
         }
@@ -155,20 +131,11 @@ public class GameSetup : ISingletonScript
         get
         {
             GameState.MatchState state = GameState.MatchState.Setup;
-            if (currentState != null)
+            if (GameState.Instance != null)
             {
-                state = currentState.State;
+                state = GameState.Instance.State;
             }
             return state;
         }
-    }
-
-    public void Setup(GameState instance, string localId)
-    {
-        Debug.Log("Setup success!");
-
-        // Update its information
-        currentState = instance;
-        currentState.LocalPlayerId = localId;
     }
 }

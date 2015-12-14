@@ -15,6 +15,16 @@ public class GameState : NetworkBehaviour
         Finished
     }
 
+    private static GameState instance;
+
+    public static GameState Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
     [SerializeField]
     float startupTime = 3f;
 
@@ -49,7 +59,12 @@ public class GameState : NetworkBehaviour
 
     void Start()
     {
-        Singleton.Get<GameSetup>().Info = this;
+        instance = this;
+    }
+
+    void OnDestroy()
+    {
+        instance = null;
     }
 
     public IEnumerable<PlayerSetup> Oppositions()
