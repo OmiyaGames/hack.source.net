@@ -354,12 +354,12 @@ GameObject:
   - 224: {fileID: 22451324}
   - 114: {fileID: 11458634}
   m_Layer: 5
-  m_Name: Time Panel
+  m_Name: Debug Time Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &136624
 GameObject:
   m_ObjectHideFlags: 0
@@ -2434,8 +2434,8 @@ MonoBehaviour:
     XSensitivity: 2
     YSensitivity: 2
     clampVerticalRotation: 1
-    MinimumX: -45
-    MaximumX: 90
+    MinimumX: -60
+    MaximumX: 60
     smooth: 0
     smoothTime: 18
     lockCursor: 0
@@ -3173,7 +3173,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.9312633}
   m_AnchorMax: {x: 0.5020045, y: 1}
   m_AnchoredPosition: {x: 0, y: -5.000005}
-  m_SizeDelta: {x: 0, y: -9.99999}
+  m_SizeDelta: {x: 80.23996, y: -9.99999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &22452978
 RectTransform:
@@ -3387,7 +3387,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: mouseLook.MinimumX
-      value: -45
+      value: -60
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: mouseLook.smoothTime
@@ -3484,6 +3484,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: reflectDuration
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: mouseLook.MaximumX
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
