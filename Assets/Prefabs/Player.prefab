@@ -1837,6 +1837,7 @@ MonoBehaviour:
     controller: {fileID: 0}
     playerStuff: []
     oppositionStuff: []
+  gameInfoPrefab: {fileID: 11481442, guid: 4e2f0bb97e8e1754f8055348657a753b, type: 2}
   forwardDisabled: {fileID: 11401780}
   backDisabled: {fileID: 11441914}
   rightDisabled: {fileID: 11436046}
@@ -3489,6 +3490,11 @@ Prefab:
       propertyPath: mouseLook.MaximumX
       value: 60
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: gameInfoPrefab
+      value: 
+      objectReference: {fileID: 11481442, guid: 4e2f0bb97e8e1754f8055348657a753b,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100006}
