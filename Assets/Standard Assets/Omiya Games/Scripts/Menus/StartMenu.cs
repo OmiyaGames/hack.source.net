@@ -82,10 +82,6 @@ namespace OmiyaGames
             // Select the level select button by default
             if((levelSelectButton != null) && (levelSelectButton.gameObject.activeSelf == true))
             {
-                if (startButton != null)
-                {
-                    startButton.gameObject.SetActive(false);
-                }
                 defaultButton = levelSelectButton.gameObject;
                 Singleton.Get<UnityEngine.EventSystems.EventSystem>().firstSelectedGameObject = defaultButton;
             }
@@ -97,13 +93,18 @@ namespace OmiyaGames
         }
 
         #region Button Events
+        public virtual void StartAction()
+        {
+            // Load setup menu
+            SceneManager manager = Singleton.Get<SceneManager>();
+            manager.LoadScene(manager.Levels[0]);
+        }
+
         public void OnStartClicked()
         {
             if (isButtonLocked == false)
             {
-                // Load the first scene
-                SceneManager manager = Singleton.Get<SceneManager>();
-                manager.LoadScene(manager.Levels[0]);
+                StartAction();
                 isButtonLocked = true;
 
                 // Indicate button is clicked
