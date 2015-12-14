@@ -173,7 +173,7 @@ public class PlayerStatus : NetworkBehaviour
     [Command]
     void CmdDie()
     {
-        foreach (KeyValuePair<string, PlayerSetup> setup in GameState.allPlayers)
+        foreach (KeyValuePair<string, PlayerSetup> setup in PlayerSetup.AllIdentifiedPlayers)
         {
             if (setup.Key == name)
             {

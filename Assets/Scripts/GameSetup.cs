@@ -111,13 +111,13 @@ public class GameSetup : ISingletonScript
         }
         else
         {
-            GameState.Reset();
+            PlayerSetup.Reset();
         }
     }
 
     private void CheckPlayerNumber(float obj)
     {
-        if((GameState.NumPlayers >= MaxConnections) && (GameState.Instance != null))
+        if((PlayerSetup.AllIdentifiedPlayers.Count >= MaxConnections) && (GameState.Instance != null))
         {
             // Check if the proper number of players are connected
             GameState.Instance.CmdStartMatch();

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
-using System.Collections.Generic;
 using OmiyaGames;
 
 public class GameState : NetworkBehaviour
@@ -31,30 +30,6 @@ public class GameState : NetworkBehaviour
     [SyncVar(hook = "OnMatchStartSynced")]
     double matchStart = -1f;
 
-    public readonly static Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
-    string localPlayerId = string.Empty;
-
-    public static int NumPlayers
-    {
-        get
-        {
-            return allPlayers.Count;
-        }
-    }
-
-    public static void Reset()
-    {
-        allPlayers.Clear();
-    }
-
-    public string LocalPlayerId
-    {
-        set
-        {
-            localPlayerId = value;
-        }
-    }
-
     void Start()
     {
         instance = this;
@@ -63,22 +38,6 @@ public class GameState : NetworkBehaviour
     void OnDestroy()
     {
         instance = null;
-    }
-
-    public IEnumerable<PlayerSetup> Oppositions()
-    {
-        foreach (KeyValuePair<string, PlayerSetup> pair in allPlayers)
-        {
-            if (pair.Key != localPlayerId)
-            {
-                yield return pair.Value;
-            }
-        }
-    }
-
-    public ICollection<PlayerSetup> AllPlayers()
-    {
-        return allPlayers.Values;
     }
 
     public MatchState State
@@ -99,25 +58,6 @@ public class GameState : NetworkBehaviour
                 }
             }
             return state;
-        }
-    }
-
-    public static void UpdatePlayerSetup(PlayerSetup setup = null, string formerName = null)
-    {
-        if ((string.IsNullOrEmpty(formerName) == false) && (allPlayers.ContainsKey(formerName) == true))
-        {
-            allPlayers.Remove(formerName);
-        }
-        if (setup != null)
-        {
-            if (allPlayers.ContainsKey(setup.name) == true)
-            {
-                allPlayers[setup.name] = setup;
-            }
-            else
-            {
-                allPlayers.Add(setup.name, setup);
-            }
         }
     }
 
