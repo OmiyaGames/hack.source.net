@@ -24,8 +24,8 @@ public class GameState : NetworkBehaviour
     [SyncVar(hook = "OnMatchStartSynced")]
     double matchStart = -1f;
 
-    readonly Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
-    string localPlayerId = string.Empty;
+    readonly static Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
+    static string localPlayerId = string.Empty;
 
     public static GameState Instance
     {
@@ -35,7 +35,7 @@ public class GameState : NetworkBehaviour
         }
     }
 
-    public string LocalPlayerId
+    public static string LocalPlayerId
     {
         set
         {
@@ -89,25 +89,28 @@ public class GameState : NetworkBehaviour
         }
     }
 
-    public void UpdatePlayerSetup(PlayerSetup setup, string formerName = null)
+    public static void UpdatePlayerSetup(PlayerSetup setup = null, string formerName = null)
     {
         if ((string.IsNullOrEmpty(formerName) == false) && (allPlayers.ContainsKey(formerName) == true))
         {
             allPlayers.Remove(formerName);
         }
-        if (allPlayers.ContainsKey(setup.name) == true)
+        if (setup != null)
         {
-            allPlayers[setup.name] = setup;
-        }
-        else
-        {
-            allPlayers.Add(setup.name, setup);
+            if (allPlayers.ContainsKey(setup.name) == true)
+            {
+                allPlayers[setup.name] = setup;
+            }
+            else
+            {
+                allPlayers.Add(setup.name, setup);
+            }
         }
 
         // Check if the proper number of players are connected
-        if(allPlayers.Count >= GameSetup.MaxConnections)
+        if((Instance != null) && (allPlayers.Count >= GameSetup.MaxConnections))
         {
-            CmdStartMatch();
+            Instance.CmdStartMatch();
         }
     }
 

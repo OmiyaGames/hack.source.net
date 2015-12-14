@@ -252,6 +252,11 @@ public class PlayerSetup : NetworkBehaviour
         SetName();
     }
 
+    void OnDestroy()
+    {
+        GameState.UpdatePlayerSetup(null, name);
+    }
+
     [Client]
     public void Hack(byte index, ActiveControls controlValue)
     {
@@ -312,7 +317,7 @@ public class PlayerSetup : NetworkBehaviour
             if (isLocalPlayer == false)
             {
                 name = uniquePlayerIdName;
-                GameState.Instance.UpdatePlayerSetup(this, formerName);
+                GameState.UpdatePlayerSetup(this, formerName);
                 if(NameChanged != null)
                 {
                     NameChanged(this, name);
@@ -321,8 +326,8 @@ public class PlayerSetup : NetworkBehaviour
             else
             {
                 name = GenerateName();
-                GameState.Instance.LocalPlayerId = name;
-                GameState.Instance.UpdatePlayerSetup(this, formerName);
+                GameState.LocalPlayerId = name;
+                GameState.UpdatePlayerSetup(this, formerName);
                 if (NameChanged != null)
                 {
                     NameChanged(this, name);
