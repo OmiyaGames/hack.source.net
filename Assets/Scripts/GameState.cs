@@ -31,7 +31,7 @@ public class GameState : NetworkBehaviour
     [SyncVar(hook = "OnMatchStartSynced")]
     double matchStart = -1f;
 
-    readonly static Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
+    public readonly static Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
     string localPlayerId = string.Empty;
 
     public static int NumPlayers
