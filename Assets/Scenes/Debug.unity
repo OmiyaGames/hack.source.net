@@ -2220,13 +2220,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 11
       objectReference: {fileID: 0}
-    - target: {fileID: 22453694, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
-      propertyPath: m_SizeDelta.x
-      value: 161.5
-      objectReference: {fileID: 0}
     - target: {fileID: 22458408, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
       propertyPath: m_SizeDelta.x
       value: 175.80002
+      objectReference: {fileID: 0}
+    - target: {fileID: 22453694, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: m_SizeDelta.x
+      value: 161.5
       objectReference: {fileID: 0}
     - target: {fileID: 22427954, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
       propertyPath: m_SizeDelta.x
