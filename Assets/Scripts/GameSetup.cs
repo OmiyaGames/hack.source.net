@@ -22,10 +22,20 @@ public class GameSetup : ISingletonScript
     [SerializeField]
     GameState gameInfoPrefab;
 
+    GameState currentState;
     SceneManager scenes;
     NetworkManager network;
+    Singleton eventBind;
 
     #region Properties
+    public GameState Info
+    {
+        get
+        {
+            return currentState;
+        }
+    }
+
     public static int playerBulletLayerInt
     {
         get
@@ -95,15 +105,59 @@ public class GameSetup : ISingletonScript
     public override void SceneAwake(Singleton instance)
     {
         // Check if we're in the game scene
-        if(scenes.CurrentScene == scenes.Levels[0])
+        if (scenes.CurrentScene == scenes.Levels[0])
         {
-            // Setup cursors
-            SceneManager.CursorMode = CursorLockMode.None;
-            Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
+            //// Setup cursors
+            //SceneManager.CursorMode = CursorLockMode.None;
+            //Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
 
-            // Setup game state
-            GameObject clone = Instantiate(gameInfoPrefab.gameObject);
-            NetworkServer.Spawn(clone);
+            //// Setup game state
+            //GameObject clone = Instantiate(gameInfoPrefab.gameObject);
+            //NetworkServer.Spawn(clone);
+            if(eventBind != null)
+            {
+                eventBind.OnUpdate -= CheckPlayerNumber;
+            }
+            instance.OnUpdate += CheckPlayerNumber;
+            eventBind = instance;
         }
+        else
+        {
+            currentState = null;
+            GameState.Reset();
+        }
+    }
+
+    private void CheckPlayerNumber(float obj)
+    {
+        if((GameState.NumPlayers >= MaxConnections) && (Info != null))
+        {
+            // Check if the proper number of players are connected
+            Info.CmdStartMatch();
+            eventBind.OnUpdate -= CheckPlayerNumber;
+            eventBind = null;
+        }
+    }
+
+    public GameState.MatchState State
+    {
+        get
+        {
+            GameState.MatchState state = GameState.MatchState.Setup;
+            if (currentState != null)
+            {
+                state = currentState.State;
+            }
+            return state;
+        }
+    }
+
+    public void Setup(string localId)
+    {
+        // Setup game state
+        GameObject clone = Instantiate(gameInfoPrefab.gameObject);
+        NetworkServer.Spawn(clone);
+        currentState = clone.GetComponent<GameState>();
+        currentState.LocalPlayerId = localId;
     }
 }

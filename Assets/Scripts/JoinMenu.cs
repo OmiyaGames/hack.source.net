@@ -23,7 +23,6 @@ public class JoinMenu : IMenu
     Button backButton;
 
     string lastIpAddress;
-    NetworkManager network;
 
     public override GameObject DefaultUi
     {
@@ -44,8 +43,6 @@ public class JoinMenu : IMenu
     public override void Show(Action<IMenu> stateChanged)
     {
         base.Show(stateChanged);
-
-        network = Singleton.Get<NetworkManager>();
 
         ipAddress.interactable = true;
         connectButton.interactable = true;

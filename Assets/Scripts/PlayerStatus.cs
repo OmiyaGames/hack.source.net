@@ -66,7 +66,7 @@ public class PlayerStatus : NetworkBehaviour
                     {
                         // Indicate death
                         CmdSetHealthState(setValueTo, State.Dead);
-                        GameState.Instance.CmdSetLosingPlayer(name);
+                        playerSetup.Game.Info.CmdSetLosingPlayer(name);
                     }
                 }
                 else
