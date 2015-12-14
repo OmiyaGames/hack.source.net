@@ -2,6 +2,7 @@
 using UnityEngine.Networking;
 using UnityStandardAssets.CrossPlatformInput;
 using OmiyaGames;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(CharacterController))]
@@ -172,16 +173,16 @@ public class PlayerStatus : NetworkBehaviour
     [Command]
     void CmdDie()
     {
-        foreach (PlayerSetup setup in GameState.Instance.AllPlayers())
+        foreach (KeyValuePair<string, PlayerSetup> setup in GameState.allPlayers)
         {
-            if (setup == playerSetup)
+            if (setup.Key == name)
             {
                 health = 0;
                 currentState = (int)State.Dead;
             }
             else
             {
-                setup.Status.currentState = (int)State.Victory;
+                setup.Value.Status.currentState = (int)State.Victory;
             }
         }
     }
