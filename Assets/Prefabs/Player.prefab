@@ -4375,6 +4375,7 @@ MonoBehaviour:
   - {fileID: 2319510}
   minRange: {r: 0.4705882, g: 0, b: 0, a: 1}
   maxRange: {r: 1, g: 0, b: 0, a: 1}
+  scaleRange: {x: 0.5, y: 1.5}
 --- !u!114 &11427676
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5296,7 +5297,7 @@ CapsuleCollider:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100006}
-  m_Material: {fileID: 13400000, guid: c2815a7ab32e42c4bb42f59caacb8ec1, type: 2}
+  m_Material: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.35
@@ -7609,6 +7610,11 @@ Prefab:
       propertyPath: minRange.b
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: e52fb17f9b1e7fd48b8955f1391d3688,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 100006}
