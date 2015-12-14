@@ -92,6 +92,7 @@ public class Bullet : NetworkBehaviour
     [Command]
     void CmdSpawnSpark()
     {
+        Debug.Log("Clone spark");
         GameObject clone = (GameObject)Instantiate(spark.gameObject, spawnPosition.position, spawnPosition.rotation);
         NetworkServer.Spawn(clone);
     }
@@ -99,6 +100,7 @@ public class Bullet : NetworkBehaviour
     [Command]
     void CmdSpawnExplosion()
     {
+        Debug.Log("Clone explosion");
         GameObject clone = (GameObject)Instantiate(explosion.gameObject, spawnPosition.position, spawnPosition.rotation);
         NetworkServer.Spawn(clone);
     }
@@ -165,7 +167,6 @@ public class Bullet : NetworkBehaviour
             {
                 // Flip direction if player is reflecting
                 FlipDirection(controller.name);
-                Spark(false);
             }
             else if (status.CurrentState == PlayerStatus.State.Alive)
             {
@@ -186,6 +187,9 @@ public class Bullet : NetworkBehaviour
 
     void FlipDirection(string playerId)
     {
+        // Create sparks
+        Spark(false);
+
         // Do a full 180
         Vector3 angles = transform.eulerAngles;
         angles.x += 180f;
@@ -207,18 +211,20 @@ public class Bullet : NetworkBehaviour
 
     void Explode()
     {
-        CmdSpawnExplosion();
+        Debug.Log("Explode called");
         Destroy(gameObject);
         NetworkServer.Destroy(gameObject);
+        CmdSpawnExplosion();
     }
 
     void Spark(bool destroy)
     {
-        CmdSpawnSpark();
+        Debug.Log("Spark called");
         if (destroy == true)
         {
             Destroy(gameObject);
             NetworkServer.Destroy(gameObject);
         }
+        CmdSpawnSpark();
     }
 }
