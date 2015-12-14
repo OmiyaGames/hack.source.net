@@ -26,6 +26,7 @@ public class PlayerSetup : NetworkBehaviour
     }
 
     public event System.Action<PlayerSetup> HackChanged;
+    public event System.Action<PlayerSetup, string> NameChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
     static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
@@ -37,8 +38,6 @@ public class PlayerSetup : NetworkBehaviour
         public GameObject[] playerStuff;
         public GameObject[] oppositionStuff;
         [Header("Layers")]
-        public string playerAvatarLayer;
-        public string oppositionAvatarLayer;
         public GameObject[] updateLayers;
 
         public void Setup(bool isLocal)
@@ -69,19 +68,17 @@ public class PlayerSetup : NetworkBehaviour
             }
             if(updateLayers != null)
             {
-                int playerLayer = LayerMask.NameToLayer(playerAvatarLayer);
-                int oppositionLayer = LayerMask.NameToLayer(oppositionAvatarLayer);
                 for (int i = 0; i < updateLayers.Length; ++i)
                 {
                     if (updateLayers[i] != null)
                     {
                         if(isLocal == true)
                         {
-                            updateLayers[i].layer = playerLayer;
+                            updateLayers[i].layer = GameSetup.playerAvatarLayerInt;
                         }
                         else
                         {
-                            updateLayers[i].layer = oppositionLayer;
+                            updateLayers[i].layer = GameSetup.oppositionAvatarLayerInt;
                         }
                     }
                 }
@@ -154,6 +151,7 @@ public class PlayerSetup : NetworkBehaviour
     ActiveControls lastFramesControls = ActiveControls.All;
     NetworkInstanceId playerId;
     PlayerStatus playerStatus;
+    int playerBulletLayerId, oppositionBulletLayerId;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
@@ -340,6 +338,10 @@ public class PlayerSetup : NetworkBehaviour
             if (isLocalPlayer == false)
             {
                 name = uniquePlayerIdName;
+                if(NameChanged != null)
+                {
+                    NameChanged(this, name);
+                }
                 if (AllIdentifiedPlayers.ContainsKey(name) == false)
                 {
                     AllIdentifiedPlayers.Add(name, this);
@@ -348,7 +350,11 @@ public class PlayerSetup : NetworkBehaviour
             else
             {
                 name = GenerateName();
-                if(AllIdentifiedPlayers.ContainsKey(name) == false)
+                if (NameChanged != null)
+                {
+                    NameChanged(this, name);
+                }
+                if (AllIdentifiedPlayers.ContainsKey(name) == false)
                 {
                     AllIdentifiedPlayers.Add(name, this);
                 }

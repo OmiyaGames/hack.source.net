@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
+using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof(PlayerSetup))]
 [RequireComponent(typeof(CharacterController))]
@@ -19,16 +20,28 @@ public class PlayerStatus : NetworkBehaviour
     [SerializeField]
     GameObject healthIndicator;
 
+    [Header("Reflection")]
+    [SerializeField]
+    GameObject reflector;
+    [SerializeField]
+    float reflectDuration = 1f;
+    [SerializeField]
+    float cooldownDuration = 0.5f;
+    [SerializeField]
+    Collider[] reflectorColliders;
+
     [SyncVar(hook = "OnPlayerHealthSynced")]
     int health = MaxHealth;
     [SyncVar]
     int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
     [SyncVar]
-    bool reflectEnabled = false;  // FIXME: move this to another script
+    double timeReflectorIsOn = -1;
+    [SyncVar]
+    double timeLastInvincible = -1;
 
     PlayerSetup playerSetup;
-    CharacterController controller;
-    float timeLastInvincible = -1f;
+    //CharacterController controller;
+    //double timeRemoveReflector = -1f, timeAllowReflector = -1f;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
     #region Properties
@@ -47,15 +60,17 @@ public class PlayerStatus : NetworkBehaviour
                 {
                     if (setValueTo > 0)
                     {
-                        CurrentState = State.Invincible;
-                        timeLastInvincible = (Time.time + InvincibilityDuration);
+                        CmdSetHealthInvincibility(setValueTo, Network.time);
                     }
                     else
                     {
-                        CurrentState = State.Dead;
+                        CmdSetHealthState(setValueTo, State.Dead);
                     }
                 }
-                CmdSetHealth(setValueTo);
+                else
+                {
+                    CmdSetHealth(setValueTo);
+                }
             }
         }
     }
@@ -64,7 +79,14 @@ public class PlayerStatus : NetworkBehaviour
     {
         get
         {
-            return (State)currentState;
+            if((timeLastInvincible > 0) && (Network.time < (timeLastInvincible + InvincibilityDuration)))
+            {
+                return State.Invincible;
+            }
+            else
+            {
+                return (State)currentState;
+            }
         }
         private set
         {
@@ -80,50 +102,69 @@ public class PlayerStatus : NetworkBehaviour
     {
         get
         {
-            return reflectEnabled;
-        }
-        set
-        {
-            if (reflectEnabled != value)
+            bool returnFlag = false;
+            if(timeReflectorIsOn > 0)
             {
-                CmdSetReflect(value);
+                returnFlag = ReflectorCheck(timeReflectorIsOn);
             }
+            return returnFlag;
         }
+    }
+
+    public bool ReflectorCheck(double time)
+    {
+        return (Network.time < (time + reflectDuration));
     }
     #endregion
 
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
-        controller = GetComponent<CharacterController>();
+
+        // Grab components
+        playerSetup = GetComponent<PlayerSetup>();
+        //controller = GetComponent<CharacterController>();
+
+        // Setup HUD
         SetupHud();
+
+        // Setup shields
+        playerSetup.NameChanged += PlayerSetup_NameChanged;
+        PlayerSetup_NameChanged(playerSetup, name);
 
         // Reset variables
         Health = MaxHealth;
         CurrentState = State.Alive;
     }
 
-    void Update()
+    private void PlayerSetup_NameChanged(PlayerSetup arg1, string arg2)
     {
-        if (isLocalPlayer == true)
+        // Set all the reflectors to have the same name!
+        foreach(Collider collider in reflectorColliders)
         {
-            UpdateInvincibleState();
+            collider.name = arg2;
         }
     }
 
-    [Client]
-    void OnControllerColliderHit(ControllerColliderHit info)
+    void Update()
     {
-        // Only check if this very character is hit
-        if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
-        {
-            Bullet bullet = null;
-            if(Bullet.TryGetBullet(info.collider, out bullet) == true)
-            {
-                bullet.PlayerHit(controller, this);
-            }
-        }
+        UpdateInvincibleState();
+        UpdateReflection();
     }
+
+    //[Client]
+    //void OnControllerColliderHit(ControllerColliderHit info)
+    //{
+    //    // Only check if this very character is hit
+    //    if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
+    //    {
+    //        Bullet bullet = null;
+    //        if(Bullet.TryGetBullet(info.collider, out bullet) == true)
+    //        {
+    //            bullet.PlayerHit(controller, this);
+    //        }
+    //    }
+    //}
 
     #region Commands
     [Command]
@@ -133,15 +174,29 @@ public class PlayerStatus : NetworkBehaviour
     }
 
     [Command]
+    void CmdSetHealthState(int newHealth, State newState)
+    {
+        health = newHealth;
+        currentState = (int)newState;
+    }
+
+    [Command]
+    void CmdSetHealthInvincibility(int newHealth, double time)
+    {
+        health = newHealth;
+        timeLastInvincible = time;
+    }
+
+    [Command]
     void CmdSetState(int newState)
     {
         currentState = newState;
     }
 
     [Command]
-    void CmdSetReflect(bool newReflect)
+    void CmdSetReflect(double time)
     {
-        reflectEnabled = newReflect;
+        timeReflectorIsOn = time;
     }
     #endregion
 
@@ -161,9 +216,26 @@ public class PlayerStatus : NetworkBehaviour
     [Client]
     private void UpdateInvincibleState()
     {
-        if ((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
+        // FIXME: update invincibility graphics
+        //if ((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
+        //{
+        //    CurrentState = State.Alive;
+        //}
+    }
+
+    private void UpdateReflection()
+    {
+        // Turn on or off the reflector
+        reflector.SetActive(IsReflectEnabled);
+
+        // Check if we are allowed to bring up the reflector
+        if ((isLocalPlayer == true) && (CurrentState != State.Dead) && (IsReflectEnabled == false) && (Network.time > (timeReflectorIsOn + cooldownDuration + reflectDuration)))
         {
-            CurrentState = State.Alive;
+            // Check if the player pressed reflection
+            if ((CrossPlatformInputManager.GetButtonDown("Reflect") == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
+            {
+                CmdSetReflect(Network.time);
+            }
         }
     }
 

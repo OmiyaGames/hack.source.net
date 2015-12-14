@@ -16,11 +16,11 @@ TagManager:
   - UI
   - 
   - 
-  - Avatar
-  - 
-  - 
-  - 
-  - 
+  - Player Avatar
+  - Opposition Avatar
+  - Player Bullet
+  - Opposition Bullet
+  - Neutral Bullet
   - 
   - 
   - 
