@@ -122,14 +122,14 @@ public class GameState : NetworkBehaviour
     void OnLosingPlayerSynced(string playerLost)
     {
         Debug.Log("GameState: show window");
-        if (localPlayerId != playerLost)
-        {
-            Singleton.Get<MenuManager>().Hide<PauseMenu>();
-            if (Singleton.Get<MenuManager>().NumManagedMenus <= 0)
-            {
-                Singleton.Get<MenuManager>().Show<LevelCompleteMenu>(CheckButton);
-            }
-        }
+        //if (localPlayerId != playerLost)
+        //{
+        //    Singleton.Get<MenuManager>().Hide<PauseMenu>();
+        //    if (Singleton.Get<MenuManager>().NumManagedMenus <= 0)
+        //    {
+        //        Singleton.Get<MenuManager>().Show<LevelCompleteMenu>(CheckButton);
+        //    }
+        //}
     }
 
     void OnMatchStartSynced(double matchTime)

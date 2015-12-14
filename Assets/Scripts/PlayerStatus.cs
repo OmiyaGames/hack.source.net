@@ -151,21 +151,8 @@ public class PlayerStatus : NetworkBehaviour
     {
         UpdateInvincibleState();
         UpdateReflection();
+        UpdateWin();
     }
-
-    //[Client]
-    //void OnControllerColliderHit(ControllerColliderHit info)
-    //{
-    //    // Only check if this very character is hit
-    //    if((isLocalPlayer == true) && (info.collider.CompareTag("Bullet") == true))
-    //    {
-    //        Bullet bullet = null;
-    //        if(Bullet.TryGetBullet(info.collider, out bullet) == true)
-    //        {
-    //            bullet.PlayerHit(controller, this);
-    //        }
-    //    }
-    //}
 
     #region Commands
     [Command]
@@ -252,6 +239,18 @@ public class PlayerStatus : NetworkBehaviour
             {
                 CmdSetReflect(Network.time);
             }
+        }
+    }
+
+    private void UpdateWin()
+    {
+        if ((isLocalPlayer == true) &&
+            (playerSetup.Game.State == GameState.MatchState.Finished) &&
+            (CurrentState != State.Dead) &&
+            !(Singleton.Get<MenuManager>().LastManagedMenu is LevelCompleteMenu))
+        {
+            Singleton.Get<MenuManager>().Hide<PauseMenu>();
+            Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
         }
     }
 
