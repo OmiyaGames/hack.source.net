@@ -15,7 +15,8 @@ public class PlayerStatus : NetworkBehaviour
         ForcedStill,
         Alive,
         Invincible,
-        Dead
+        Dead,
+        Victory
     }
 
     [SerializeField]
@@ -65,7 +66,7 @@ public class PlayerStatus : NetworkBehaviour
                     }
                     else
                     {
-                        CmdSetHealthState(setValueTo, State.Dead);
+                        CmdDie();
                     }
                 }
                 else
@@ -151,7 +152,7 @@ public class PlayerStatus : NetworkBehaviour
     {
         UpdateInvincibleState();
         UpdateReflection();
-        UpdateWin();
+        //UpdateWin();
     }
 
     #region Commands
@@ -166,6 +167,23 @@ public class PlayerStatus : NetworkBehaviour
     {
         health = newHealth;
         currentState = (int)newState;
+    }
+
+    [Command]
+    void CmdDie()
+    {
+        foreach (PlayerSetup setup in GameState.Instance.AllPlayers())
+        {
+            if (setup == playerSetup)
+            {
+                health = 0;
+                currentState = (int)State.Dead;
+            }
+            else
+            {
+                setup.Status.currentState = (int)State.Victory;
+            }
+        }
     }
 
     [Command]
@@ -204,15 +222,27 @@ public class PlayerStatus : NetworkBehaviour
     [Client]
     private void OnPlayerStateSynced(int latestState)
     {
-        if ((isLocalPlayer == true) && (latestState == (int)State.Dead))
+        if (isLocalPlayer == true)
         {
-            // Indicate death
-            Debug.Log("PlayerStatus: Death detected");
-            Singleton.Get<MenuManager>().Hide<PauseMenu>();
-            Singleton.Get<MenuManager>().Show<LevelFailedMenu>();
+            if (latestState == (int)State.Dead)
+            {
+                // Indicate death
+                Debug.Log("PlayerStatus: Death detected");
+                Singleton.Get<MenuManager>().Hide<PauseMenu>();
+                Singleton.Get<MenuManager>().Show<LevelFailedMenu>();
 
-            Debug.Log("Menu shown");
-            playerSetup.CmdSetLosingPlayer();
+                Debug.Log("Menu shown");
+                playerSetup.CmdSetLosingPlayer();
+            }
+            else if (latestState == (int)State.Victory)
+            {
+                // Indicate death
+                Debug.Log("PlayerStatus: Victory detected");
+                Singleton.Get<MenuManager>().Hide<PauseMenu>();
+                Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
+
+                Debug.Log("Menu shown");
+            }
         }
     }
 
@@ -242,31 +272,31 @@ public class PlayerStatus : NetworkBehaviour
         }
     }
 
-    private void UpdateWin()
-    {
-        if ((isLocalPlayer == true) && (CurrentState != State.Dead) &&
-            (GameState.Instance != null) && 
-            !(Singleton.Get<MenuManager>().LastManagedMenu is LevelCompleteMenu))
-        {
-            if (GameState.Instance.State == GameState.MatchState.Finished)
-            {
-                Singleton.Get<MenuManager>().Hide<PauseMenu>();
-                Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
-            }
-            else
-            {
-                foreach(PlayerSetup player in GameState.Instance.Oppositions())
-                {
-                    if(player.Status.CurrentState == State.Dead)
-                    {
-                        Singleton.Get<MenuManager>().Hide<PauseMenu>();
-                        Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
-                        break;
-                    }
-                }
-            }
-        }
-    }
+    //private void UpdateWin()
+    //{
+    //    if ((isLocalPlayer == true) && (CurrentState != State.Dead) &&
+    //        (GameState.Instance != null) && 
+    //        !(Singleton.Get<MenuManager>().LastManagedMenu is LevelCompleteMenu))
+    //    {
+    //        if (GameState.Instance.State == GameState.MatchState.Finished)
+    //        {
+    //            Singleton.Get<MenuManager>().Hide<PauseMenu>();
+    //            Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
+    //        }
+    //        else
+    //        {
+    //            foreach(PlayerSetup player in GameState.Instance.Oppositions())
+    //            {
+    //                if(player.Status.CurrentState == State.Dead)
+    //                {
+    //                    Singleton.Get<MenuManager>().Hide<PauseMenu>();
+    //                    Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
+    //                    break;
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
     private void SetupHud()
     {

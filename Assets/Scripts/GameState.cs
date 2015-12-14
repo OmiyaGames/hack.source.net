@@ -76,6 +76,11 @@ public class GameState : NetworkBehaviour
         }
     }
 
+    public ICollection<PlayerSetup> AllPlayers()
+    {
+        return allPlayers.Values;
+    }
+
     public MatchState State
     {
         get

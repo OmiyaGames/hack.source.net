@@ -193,7 +193,18 @@ public class PlayerSetup : NetworkBehaviour
     {
         get
         {
-            return (ActiveControls)currentActiveControls;
+            ActiveControls returnControls = ActiveControls.None;
+            if (playerStatus != null)
+            {
+                switch (playerStatus.CurrentState)
+                {
+                    case PlayerStatus.State.Alive:
+                    case PlayerStatus.State.Invincible:
+                        returnControls = (ActiveControls)currentActiveControls;
+                        break;
+                }
+            }
+            return returnControls;
         }
         private set
         {
