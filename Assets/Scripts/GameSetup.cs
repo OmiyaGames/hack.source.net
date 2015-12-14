@@ -26,6 +26,7 @@ public class GameSetup : ISingletonScript
     SceneManager scenes;
     NetworkManager network;
     Singleton eventBind;
+    string queueLocalId = null;
 
     #region Properties
     public GameState Info
@@ -130,7 +131,24 @@ public class GameSetup : ISingletonScript
 
     private void CheckPlayerNumber(float obj)
     {
-        if((GameState.NumPlayers >= MaxConnections) && (Info != null))
+        if((queueLocalId != null) && (Info == null))
+        {
+            // Check if the server is active
+            if (NetworkServer.active == true)
+            {
+                // Spawn GameState
+                GameObject clone = Instantiate(gameInfoPrefab.gameObject);
+                NetworkServer.Spawn(clone);
+
+                // Update its information
+                currentState = clone.GetComponent<GameState>();
+                currentState.LocalPlayerId = queueLocalId;
+
+                // Indicate we're done
+                queueLocalId = null;
+            }
+        }
+        else if((GameState.NumPlayers >= MaxConnections) && (Info != null))
         {
             // Check if the proper number of players are connected
             Info.CmdStartMatch();
@@ -155,9 +173,6 @@ public class GameSetup : ISingletonScript
     public void Setup(string localId)
     {
         // Setup game state
-        GameObject clone = Instantiate(gameInfoPrefab.gameObject);
-        NetworkServer.Spawn(clone);
-        currentState = clone.GetComponent<GameState>();
-        currentState.LocalPlayerId = localId;
+        queueLocalId = localId;
     }
 }
