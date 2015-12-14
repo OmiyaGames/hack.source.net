@@ -29,8 +29,8 @@ public class PlayerSetup : NetworkBehaviour
     public event System.Action<PlayerSetup, string> NameChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
-    static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
+    #region Helper Classes
     [System.Serializable]
     public class RigidBodyInfo
     {
@@ -85,8 +85,6 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
     }
-    [SerializeField]
-    RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
 
     [System.Serializable]
     public class CharacterControllerInfo
@@ -123,6 +121,10 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
     }
+    #endregion
+
+    [SerializeField]
+    RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     [SerializeField]
     CharacterControllerInfo characterControllerInfo = new CharacterControllerInfo();
 
@@ -156,24 +158,6 @@ public class PlayerSetup : NetworkBehaviour
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
 
-    public static PlayerSetup FindPlayer(string id)
-    {
-        PlayerSetup returnScript = null;
-        if (AllIdentifiedPlayers.TryGetValue(id, out returnScript) == false)
-        {
-            GameObject copy = GameObject.Find(id);
-            if(copy != null)
-            {
-                returnScript = copy.GetComponent<PlayerSetup>();
-                if(returnScript != null)
-                {
-                    AllIdentifiedPlayers.Add(id, returnScript);
-                }
-            }
-        }
-        return returnScript;
-    }
-
     #region Static Properties
     public static PlayerSetup LocalInstance
     {
@@ -198,14 +182,6 @@ public class PlayerSetup : NetworkBehaviour
                 }
             }
             return controlsConversion;
-        }
-    }
-
-    public static Dictionary<string, PlayerSetup> AllIdentifiedPlayers
-    {
-        get
-        {
-            return allPlayersCache;
         }
     }
     #endregion
@@ -314,12 +290,9 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetOpponentsControls(int setValueTo)
     {
-        foreach (KeyValuePair<string, PlayerSetup> pair in AllIdentifiedPlayers)
+        foreach (PlayerSetup opposition in GameState.Instance.Oppositions())
         {
-            if (pair.Key != name)
-            {
-                pair.Value.currentActiveControls = setValueTo;
-            }
+            opposition.currentActiveControls = setValueTo;
         }
     }
 
@@ -335,28 +308,24 @@ public class PlayerSetup : NetworkBehaviour
     {
         if ((string.IsNullOrEmpty(name) == true) || (name == "Player(Clone)"))
         {
+            string formerName = name;
             if (isLocalPlayer == false)
             {
                 name = uniquePlayerIdName;
+                GameState.Instance.UpdatePlayerSetup(this, formerName);
                 if(NameChanged != null)
                 {
                     NameChanged(this, name);
-                }
-                if (AllIdentifiedPlayers.ContainsKey(name) == false)
-                {
-                    AllIdentifiedPlayers.Add(name, this);
                 }
             }
             else
             {
                 name = GenerateName();
+                GameState.Instance.LocalPlayerId = name;
+                GameState.Instance.UpdatePlayerSetup(this, formerName);
                 if (NameChanged != null)
                 {
                     NameChanged(this, name);
-                }
-                if (AllIdentifiedPlayers.ContainsKey(name) == false)
-                {
-                    AllIdentifiedPlayers.Add(name, this);
                 }
             }
         }
@@ -399,9 +368,8 @@ public class PlayerSetup : NetworkBehaviour
         CmdSubmitName(GenerateName());
 
         // Disable the camera
-        GameSetup startCamera = GameObject.FindObjectOfType<GameSetup>();
-        startCamera.GetComponent<Camera>().enabled = false;
-        startCamera.GetComponent<AudioListener>().enabled = false;
+        GameObject startCamera = GameObject.Find("StartCamera");
+        startCamera.SetActive(false);
         SceneManager.CursorMode = CursorLockMode.Locked;
 
         SetupHud();

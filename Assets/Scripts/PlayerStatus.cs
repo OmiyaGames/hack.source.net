@@ -64,7 +64,9 @@ public class PlayerStatus : NetworkBehaviour
                     }
                     else
                     {
+                        // Indicate death
                         CmdSetHealthState(setValueTo, State.Dead);
+                        GameState.Instance.CmdSetLosingPlayer(name);
                     }
                 }
                 else

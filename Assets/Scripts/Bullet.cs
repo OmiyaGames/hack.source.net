@@ -186,6 +186,6 @@ public class Bullet : NetworkBehaviour
     {
         // FIXME: Needs more explosion
         Destroy(gameObject);
-        //Network.Destroy(networkView);
+        NetworkServer.Destroy(gameObject);
     }
 }
