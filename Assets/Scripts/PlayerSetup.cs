@@ -159,7 +159,6 @@ public class PlayerSetup : NetworkBehaviour
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
-    GameSetup gameCache = null;
     
     #region Static Properties
     public static PlayerSetup LocalInstance
@@ -220,18 +219,6 @@ public class PlayerSetup : NetworkBehaviour
         get
         {
             return playerStatus;
-        }
-    }
-
-    public GameSetup Game
-    {
-        get
-        {
-            if(gameCache == null)
-            {
-                gameCache = Singleton.Get<GameSetup>();
-            }
-            return gameCache;
         }
     }
     #endregion
@@ -317,9 +304,9 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetOpponentsControls(int setValueTo)
     {
-        if(Game.Info != null)
+        if(GameState.Instance != null)
         {
-            foreach (PlayerSetup opposition in Game.Info.Oppositions())
+            foreach (PlayerSetup opposition in GameState.Instance.Oppositions())
             {
                 opposition.currentActiveControls = setValueTo;
             }
@@ -337,7 +324,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         Debug.Log("Local Name" + name);
 
-        if (Game.Info == null)
+        if (GameState.Instance == null)
         {
             // Spawn GameState
             GameObject clone = Instantiate(gameInfoPrefab.gameObject);
@@ -349,7 +336,7 @@ public class PlayerSetup : NetworkBehaviour
         }
         else
         {
-            Game.Info.LocalPlayerId = name;
+            GameState.Instance.LocalPlayerId = name;
         }
     }
     #endregion

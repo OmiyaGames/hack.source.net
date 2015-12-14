@@ -245,14 +245,15 @@ public class PlayerStatus : NetworkBehaviour
     private void UpdateWin()
     {
         if ((isLocalPlayer == true) && (CurrentState != State.Dead) &&
+            (GameState.Instance != null) && 
             !(Singleton.Get<MenuManager>().LastManagedMenu is LevelCompleteMenu))
         {
-            if (playerSetup.Game.State == GameState.MatchState.Finished)
+            if (GameState.Instance.State == GameState.MatchState.Finished)
             {
                 Singleton.Get<MenuManager>().Hide<PauseMenu>();
                 Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
             }
-            else if(GameState.Instance != null)
+            else
             {
                 foreach(PlayerSetup player in GameState.Instance.Oppositions())
                 {

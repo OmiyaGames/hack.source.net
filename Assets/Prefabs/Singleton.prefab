@@ -632,13 +632,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100000}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 227461547, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 0}
-  showGUI: 1
+  showGUI: 0
   offsetX: 0
   offsetY: 0
 --- !u!114 &11428526
@@ -688,7 +688,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65695283c1b0dbc4295a0d05cf2c7a3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameInfoPrefab: {fileID: 11481442, guid: 4e2f0bb97e8e1754f8055348657a753b, type: 2}
 --- !u!114 &11442070
 MonoBehaviour:
   m_ObjectHideFlags: 1

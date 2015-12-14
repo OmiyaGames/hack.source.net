@@ -5,8 +5,6 @@ using OmiyaGames;
 
 public class GameState : NetworkBehaviour
 {
-    public const string StartUpState = "Setup";
-
     public enum MatchState
     {
         Setup,
