@@ -15,12 +15,15 @@ GameObject:
   - 114: {fileID: 11406472}
   - 114: {fileID: 11462580}
   - 114: {fileID: 11420754}
-  m_Layer: 0
+  - 114: {fileID: 11479658}
+  - 114: {fileID: 11424592}
+  - 114: {fileID: 11438840}
+  m_Layer: 2
   m_Name: Singleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &104202
 GameObject:
@@ -32,12 +35,12 @@ GameObject:
   - 4: {fileID: 489720}
   - 82: {fileID: 8221844}
   - 114: {fileID: 11410914}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Button Click Sound Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &106402
 GameObject:
@@ -48,12 +51,12 @@ GameObject:
   m_Component:
   - 4: {fileID: 479606}
   - 114: {fileID: 11419168}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Background Music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &112224
 GameObject:
@@ -64,12 +67,12 @@ GameObject:
   m_Component:
   - 4: {fileID: 486568}
   - 82: {fileID: 8264130}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Music 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &120378
 GameObject:
@@ -81,12 +84,12 @@ GameObject:
   - 4: {fileID: 490124}
   - 82: {fileID: 8202916}
   - 114: {fileID: 11492550}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Scene Transition Sound Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &129462
 GameObject:
@@ -100,12 +103,12 @@ GameObject:
   - 114: {fileID: 11442070}
   - 114: {fileID: 11406140}
   - 114: {fileID: 11480656}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Menu Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!1 &185162
 GameObject:
@@ -116,12 +119,12 @@ GameObject:
   m_Component:
   - 4: {fileID: 483340}
   - 82: {fileID: 8237012}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Music 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &400000
 Transform:
@@ -623,6 +626,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 163abccb43f295e4689a98e63247ec27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &11424592
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 227461547, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  manager: {fileID: 0}
+  showGUI: 1
+  offsetX: 0
+  offsetY: 0
 --- !u!114 &11428526
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -659,6 +677,18 @@ MonoBehaviour:
   levelDisplayNameTemplate: Level {0}
   levelRevertsTimeScaleTemplate: 1
   levelLockModeTemplate: 1
+--- !u!114 &11438840
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65695283c1b0dbc4295a0d05cf2c7a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameInfoPrefab: {fileID: 11481442, guid: 4e2f0bb97e8e1754f8055348657a753b, type: 2}
 --- !u!114 &11442070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -699,6 +729,73 @@ MonoBehaviour:
   soundEffectsPitch:
   - Sound Effects Pitch
   musicDuckField: Music Duck Level
+--- !u!114 &11479658
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -822479833, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NetworkPort: 7777
+  m_ServerBindToIP: 0
+  m_ServerBindAddress: 
+  m_NetworkAddress: localhost
+  m_DontDestroyOnLoad: 1
+  m_RunInBackground: 1
+  m_ScriptCRCCheck: 1
+  m_MaxDelay: 0.01
+  m_LogLevel: 2
+  m_PlayerPrefab: {fileID: 100006, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+  m_AutoCreatePlayer: 1
+  m_PlayerSpawnMethod: 0
+  m_OfflineScene: Main Menu
+  m_OnlineScene: Garden
+  m_SpawnPrefabs:
+  - {fileID: 147542, guid: db4a1a375836cce41b1f1868c53c03e3, type: 2}
+  - {fileID: 125670, guid: 4e2f0bb97e8e1754f8055348657a753b, type: 2}
+  m_CustomConfig: 0
+  m_MaxConnections: 4
+  m_ConnectionConfig:
+    m_PacketSize: 1500
+    m_FragmentSize: 500
+    m_ResendTimeout: 1200
+    m_DisconnectTimeout: 2000
+    m_ConnectTimeout: 2000
+    m_MinUpdateTimeout: 10
+    m_PingTimeout: 500
+    m_ReducedPingTimeout: 100
+    m_AllCostTimeout: 20
+    m_NetworkDropThreshold: 5
+    m_OverflowDropThreshold: 5
+    m_MaxConnectionAttempt: 10
+    m_AckDelay: 33
+    m_MaxCombinedReliableMessageSize: 100
+    m_MaxCombinedReliableMessageCount: 10
+    m_MaxSentMessageQueueSize: 128
+    m_IsAcksLong: 0
+    m_UsePlatformSpecificProtocols: 0
+    m_Channels: []
+  m_GlobalConfig:
+    m_ThreadAwakeTimeout: 1
+    m_ReactorModel: 0
+    m_ReactorMaximumReceivedMessages: 1024
+    m_ReactorMaximumSentMessages: 1024
+    m_MaxPacketSize: 2000
+  m_Channels: 
+  m_UseWebSockets: 0
+  m_UseSimulator: 0
+  m_SimulatedLatency: 1
+  m_PacketLossPercentage: 0
+  m_MatchHost: mm.unet.unity3d.com
+  m_MatchPort: 443
+  isNetworkActive: 0
+  matchMaker: {fileID: 0}
+  matchName: default
+  matchSize: 4
 --- !u!114 &11480656
 MonoBehaviour:
   m_ObjectHideFlags: 1

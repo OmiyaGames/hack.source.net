@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 using OmiyaGames;
+using System.Collections;
 
 [RequireComponent(typeof(NetworkManager))]
-public class GameSetup : MonoBehaviour
+public class GameSetup : ISingletonScript
 {
+    public const int MaxConnections = 2;
     public const string playerBulletLayer = "Player Bullet",
         oppositionBulletLayer = "Opposition Bullet",
         neutralBulletLayer = "Neautral Bullet",
@@ -17,6 +19,13 @@ public class GameSetup : MonoBehaviour
         playerAvatarLayerCache = -1,
         oppositionAvatarLayerCache = -1;
 
+    [SerializeField]
+    GameState gameInfoPrefab;
+
+    SceneManager scenes;
+    NetworkManager network;
+
+    #region Properties
     public static int playerBulletLayerInt
     {
         get
@@ -72,16 +81,29 @@ public class GameSetup : MonoBehaviour
             return oppositionAvatarLayerCache;
         }
     }
-    void Awake()
+#endregion
+
+    public override void SingletonAwake(Singleton instance)
     {
+        scenes = Singleton.Get<SceneManager>();
+        network = Singleton.Get<NetworkManager>();
+
         // Only allow 2 players to connect
-        NetworkManager manager = GetComponent<NetworkManager>();
-        manager.maxConnections = 2;
+        network.maxConnections = MaxConnections;
     }
 
-    void Start()
+    public override void SceneAwake(Singleton instance)
     {
-        SceneManager.CursorMode = CursorLockMode.None;
-        Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
+        // Check if we're in the game scene
+        if(scenes.CurrentScene == scenes.Levels[0])
+        {
+            // Setup cursors
+            SceneManager.CursorMode = CursorLockMode.None;
+            Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
+
+            // Setup game state
+            GameObject clone = Instantiate(gameInfoPrefab.gameObject);
+            NetworkServer.Spawn(clone);
+        }
     }
 }
