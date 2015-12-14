@@ -213,11 +213,11 @@ public class PlayerStatus : NetworkBehaviour
         }
     }
 
-    [Client]
+    [Server]
     private void OnPlayerStateSynced(int latestState)
     {
-        Debug.Log("PlayerStatus: state changed " + ((State)latestState).ToString());
-        if ((isLocalPlayer == true) && (latestState == (int)State.Dead))
+        Debug.Log("PlayerStatus: Death detected");
+        if (/*(isServer == true) && (*/latestState == (int)State.Dead)
         {
             // Indicate death
             Debug.Log("PlayerStatus: Death detected");
