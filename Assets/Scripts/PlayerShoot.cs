@@ -21,6 +21,7 @@ public class PlayerShoot : NetworkBehaviour
     {
         base.OnStartLocalPlayer();
         status = GetComponent<PlayerStatus>();
+        setup = GetComponent<PlayerSetup>();
         pauseMenu = Singleton.Get<MenuManager>().GetMenu<PauseMenu>();
     }
 
