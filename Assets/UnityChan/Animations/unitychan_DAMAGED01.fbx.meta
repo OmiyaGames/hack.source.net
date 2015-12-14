@@ -616,7 +616,10 @@ ModelImporter:
     optimizeGameObjects: 0
     motionNodeName: 
     animationImportErrors: 
-    animationImportWarnings: 
+    animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
+      might lower retargeting quality:\nNote: Activate translation DOF on avatar to
+      improve retargeting quality.\n\t'Character1_Spine' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     animationCompression: 0
@@ -630,7 +633,7 @@ ModelImporter:
       name: DAMAGED01
       takeName: Take 001
       firstFrame: 1
-      lastFrame: 108
+      lastFrame: 50
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

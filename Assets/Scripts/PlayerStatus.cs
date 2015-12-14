@@ -25,8 +25,6 @@ public class PlayerStatus : NetworkBehaviour
 
     [Header("Reflection")]
     [SerializeField]
-    GameObject reflector;
-    [SerializeField]
     float reflectDuration = 1f;
     [SerializeField]
     float cooldownDuration = 0.5f;
@@ -63,6 +61,7 @@ public class PlayerStatus : NetworkBehaviour
                 {
                     if (setValueTo > 0)
                     {
+                        playerSetup.avatarAnimations.SetTrigger(PlayerSetup.HitTrigger);
                         CmdSetHealthInvincibility(setValueTo, Network.time);
                     }
                     else
@@ -74,6 +73,7 @@ public class PlayerStatus : NetworkBehaviour
                 {
                     CmdSetHealth(setValueTo);
                 }
+                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, (setValueTo > 0));
             }
         }
     }
@@ -250,17 +250,21 @@ public class PlayerStatus : NetworkBehaviour
     [Client]
     private void UpdateInvincibleState()
     {
-        // FIXME: update invincibility graphics
-        //if ((CurrentState == State.Invincible) && (Time.time > timeLastInvincible))
-        //{
-        //    CurrentState = State.Alive;
-        //}
+        // TODO: take out this conditional if it doesn't work
+        if (isLocalPlayer == true)
+        {
+            playerSetup.hudAnimations.SetBool(PlayerSetup.InvincibleBool, (CurrentState == State.Invincible));
+        }
     }
 
     private void UpdateReflection()
     {
-        // Turn on or off the reflector
-        reflector.SetActive(IsReflectEnabled);
+        // TODO: take out this conditional if it doesn't work
+        if (isLocalPlayer == true)
+        {
+            // Turn on or off the reflector
+            playerSetup.hudAnimations.SetBool(PlayerSetup.ReflectBool, IsReflectEnabled);
+        }
 
         // Check if we are allowed to bring up the reflector
         if ((isLocalPlayer == true) && (CurrentState != State.Dead) && (IsReflectEnabled == false) && (Network.time > (timeReflectorIsOn + cooldownDuration + reflectDuration)))

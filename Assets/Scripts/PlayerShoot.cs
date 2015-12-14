@@ -14,6 +14,7 @@ public class PlayerShoot : NetworkBehaviour
 
     PauseMenu pauseMenu;
     PlayerStatus status;
+    PlayerSetup setup;
     float nextFire = 0f;
 
     public override void OnStartLocalPlayer()
@@ -35,6 +36,7 @@ public class PlayerShoot : NetworkBehaviour
                 case PlayerStatus.State.Alive:
                 case PlayerStatus.State.Invincible:
                     CmdSpawn();
+                    setup.hudAnimations.SetTrigger(PlayerSetup.ShootTrigger);
                     nextFire = Time.time + fireRate;
                     break;
             }

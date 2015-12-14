@@ -25,6 +25,13 @@ public class PlayerSetup : NetworkBehaviour
         All = Forward | Back | Right | Left | Jump | Run | Reflect
     }
 
+    public const string ShootTrigger = "Shoot";
+    public const string HackTrigger = "Hack";
+    public const string ReflectBool = "Reflect";
+    public const string InvincibleBool = "Invincible";
+    public const string HitTrigger = "hit";
+    public const string AliveBool = "alive";
+
     public event System.Action<PlayerSetup> HackChanged;
     public event System.Action<PlayerSetup, string> NameChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
@@ -133,9 +140,9 @@ public class PlayerSetup : NetworkBehaviour
 
     [Header("Animations")]
     [SerializeField]
-    Animator hudAnimations;
+    public Animator hudAnimations;
     [SerializeField]
-    Animator avatarAnimations;
+    public Animator avatarAnimations;
 
     [Header("HUD info")]
     [SerializeField]
