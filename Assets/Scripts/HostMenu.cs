@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using OmiyaGames;
 using System;
+using System.Net;
 
 public class HostMenu : IMenu
 {
@@ -31,8 +32,8 @@ public class HostMenu : IMenu
     {
         base.Show(stateChanged);
         
-        // FIXME: get this host IP address somehow
-        hostIpAddress.text = "127.0.0.1";
+        // Get this host IP address somehow
+        hostIpAddress.text = GetIpAddress();
 
         // FIXME: start the server
         NetworkManager.singleton.StartHost();
@@ -45,4 +46,15 @@ public class HostMenu : IMenu
         Manager.ButtonClick.Play();
     }
 
+    public static string GetIpAddress()
+    {
+        // FIXME: polish this part significantly!
+        string strIp = "127.0.0.1";
+        IPHostEntry IpEntry = Dns.GetHostEntry(Dns.GetHostName());
+        if (IpEntry != null)
+        {
+            strIp = IpEntry.AddressList[0].ToString();
+        }
+        return strIp;
+    }
 }
