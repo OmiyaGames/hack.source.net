@@ -8,7 +8,7 @@ public class Bullet : NetworkBehaviour
     [SerializeField]
     Vector3 moveVelocity = new Vector3(0, 1, 0);
 
-    [SyncVar]
+    [SyncVar(hook = "OnIgnorePlayerSynced")]
     string ignorePlayer = null;
 
     static readonly Dictionary<Collider, PlayerStatus> allPlayers = new Dictionary<Collider, PlayerStatus>();
@@ -57,6 +57,23 @@ public class Bullet : NetworkBehaviour
     void OnDestroy()
     {
         allBullets.Remove(GetComponent<Collider>());
+    }
+
+    void OnIgnorePlayerSynced(string newPlayer)
+    {
+        // Update bullet layer
+        if(string.IsNullOrEmpty(newPlayer) == true)
+        {
+            gameObject.layer = GameSetup.neutralBulletLayerInt;
+        }
+        else if(newPlayer == PlayerSetup.LocalInstance.name)
+        {
+            gameObject.layer = GameSetup.playerBulletLayerInt;
+        }
+        else
+        {
+            gameObject.layer = GameSetup.oppositionBulletLayerInt;
+        }
     }
 
     [Command]
@@ -146,8 +163,16 @@ public class Bullet : NetworkBehaviour
 
     void FlipDirection(string playerId)
     {
-        // FIXME: do something about this!
-        // FIXME: rotate, and recalculate the local velocity
+        // Do a full 180
+        Vector3 angles = transform.eulerAngles;
+        angles.x += 180f;
+        body.rotation = Quaternion.Euler(angles);
+
+        // Recalculate the local velocity
+        localVelocity = body.rotation * moveVelocity;
+
+        // Ignore this player
+        IgnoredPlayer = playerId;
     }
 
     void ReflectDirection(Collision info)
