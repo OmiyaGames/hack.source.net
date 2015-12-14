@@ -29,7 +29,7 @@ public class PlayerShoot : NetworkBehaviour
     {
         // Check if this is a local instance firing
         if((isLocalPlayer == true) && (Input.GetButton("Fire1") == true) && (Time.time > nextFire) &&
-            (status.IsReflectEnabled == false) && (pauseMenu.CurrentState == IMenu.State.Hidden))
+            (status.IsReflectEnabled == false) && (pauseMenu.CurrentState == IMenu.State.Hidden) && (setup.CurrentActiveControls != PlayerSetup.ActiveControls.None))
         {
             // Check if the player can fire
             switch (status.CurrentState)

@@ -212,19 +212,19 @@ public class Bullet : NetworkBehaviour
     void Explode()
     {
         Debug.Log("Explode called");
+        CmdSpawnExplosion();
         Destroy(gameObject);
         NetworkServer.Destroy(gameObject);
-        CmdSpawnExplosion();
     }
 
     void Spark(bool destroy)
     {
         Debug.Log("Spark called");
+        CmdSpawnSpark();
         if (destroy == true)
         {
             Destroy(gameObject);
             NetworkServer.Destroy(gameObject);
         }
-        CmdSpawnSpark();
     }
 }

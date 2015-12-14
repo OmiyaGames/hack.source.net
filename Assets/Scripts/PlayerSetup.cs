@@ -219,7 +219,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         get
         {
-            ActiveControls returnControls = ActiveControls.None;
+            ActiveControls returnControls = ActiveControls.All;
             if ((AllIdentifiedPlayers.Count >= GameSetup.MaxConnections) && (playerStatus != null))
             {
                 switch (playerStatus.CurrentState)
