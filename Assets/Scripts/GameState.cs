@@ -6,7 +6,6 @@ using OmiyaGames;
 public class GameState : NetworkBehaviour
 {
     public const string StartUpState = "Setup";
-    static GameState instance = null;
 
     public enum MatchState
     {
@@ -25,37 +24,28 @@ public class GameState : NetworkBehaviour
     double matchStart = -1f;
 
     readonly static Dictionary<string, PlayerSetup> allPlayers = new Dictionary<string, PlayerSetup>();
-    static string localPlayerId = string.Empty;
+    string localPlayerId = string.Empty;
 
-    public static GameState Instance
+    public static int NumPlayers
     {
         get
         {
-            return instance;
+            return allPlayers.Count;
         }
     }
 
-    public static string LocalPlayerId
+    public static void Reset()
+    {
+        allPlayers.Clear();
+    }
+
+    public string LocalPlayerId
     {
         set
         {
             localPlayerId = value;
         }
     }
-
-    #region Unity events
-    public override void OnStartLocalPlayer()
-    {
-        base.OnStartLocalPlayer();
-        instance = this;
-    }
-
-    public override void OnNetworkDestroy()
-    {
-        base.OnNetworkDestroy();
-        instance = null;
-    }
-    #endregion
 
     public IEnumerable<PlayerSetup> Oppositions()
     {
@@ -105,12 +95,6 @@ public class GameState : NetworkBehaviour
             {
                 allPlayers.Add(setup.name, setup);
             }
-        }
-
-        // Check if the proper number of players are connected
-        if((Instance != null) && (allPlayers.Count >= GameSetup.MaxConnections))
-        {
-            Instance.CmdStartMatch();
         }
     }
 
