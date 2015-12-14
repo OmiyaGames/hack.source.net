@@ -236,7 +236,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allRenderers:
   - {fileID: 2314222}
-  minRange: {r: 1, g: 0.33088237, b: 0.33088237, a: 1}
+  minRange: {r: 0.86764705, g: 0.32536763, b: 0.32536763, a: 1}
   maxRange: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &11493904
 MonoBehaviour:
@@ -249,7 +249,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd9f0ddec7aa5949b8f92c3ca300d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveVelocity: {x: 0, y: 40, z: 0}
+  moveVelocity: {x: 0, y: 35, z: 0}
+  spawnPosition: {fileID: 430480}
+  spark: {fileID: 137542, guid: 3efefb2a4bbadbb419a9b7fb8b79d742, type: 2}
+  explosion: {fileID: 142424, guid: e8f5dd20e791ba44ebf21dbda0173fdd, type: 2}
 --- !u!136 &13636590
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -3331,7 +3334,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: moveVelocity.y
-      value: 40
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_TagString
@@ -3340,6 +3343,30 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: spawnPosition
+      value: 
+      objectReference: {fileID: 430480}
+    - target: {fileID: 0}
+      propertyPath: spark
+      value: 
+      objectReference: {fileID: 137542, guid: 3efefb2a4bbadbb419a9b7fb8b79d742, type: 2}
+    - target: {fileID: 0}
+      propertyPath: explosion
+      value: 
+      objectReference: {fileID: 142424, guid: e8f5dd20e791ba44ebf21dbda0173fdd, type: 2}
+    - target: {fileID: 0}
+      propertyPath: minRange.r
+      value: 0.86764705
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: minRange.g
+      value: 0.32536763
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: minRange.b
+      value: 0.32536763
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

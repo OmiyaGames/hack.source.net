@@ -95,14 +95,14 @@ public class GameSetup : ISingletonScript
         // Check if we're in the game scene
         if (scenes.CurrentScene == scenes.Levels[0])
         {
-            //// Setup cursors
-            //SceneManager.CursorMode = CursorLockMode.None;
-            //Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
+            // Setup cursors
+            SceneManager.CursorMode = CursorLockMode.None;
+            Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
 
             //// Setup game state
             //GameObject clone = Instantiate(gameInfoPrefab.gameObject);
             //NetworkServer.Spawn(clone);
-            if(eventBind != null)
+            if (eventBind != null)
             {
                 eventBind.OnUpdate -= CheckPlayerNumber;
             }

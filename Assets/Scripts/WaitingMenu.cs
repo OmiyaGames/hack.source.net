@@ -34,6 +34,10 @@ public class WaitingMenu : IMenu
     {
         base.Show(stateChanged);
 
+        // Setup cursors
+        SceneManager.CursorMode = CursorLockMode.None;
+        Singleton.Get<MenuManager>().CursorModeOnPause = CursorLockMode.None;
+
         // Show IP address
         ipAddress.text = HostMenu.GetIpAddress();
 

@@ -13,23 +13,23 @@ public class CleanUpParticles : NetworkBehaviour
     [SyncVar]
     double spawnTime = -1;
 
-    [Client]
     public override void OnStartLocalPlayer()
     {
         base.OnStartLocalPlayer();
         CmdSetTime();
+        Debug.Log("Particle created");
     }
 
-    [Client]
-    void Update()
-    {
-        if((isCleanedUp == false) && (isLocalPlayer == true) && (spawnTime > 0) && (Network.time > (spawnTime + lifeTime)))
-        {
-            Destroy(gameObject);
-            NetworkServer.Destroy(gameObject);
-            isCleanedUp = true;
-        }
-    }
+    //[Client]
+    //void Update()
+    //{
+    //    if((isCleanedUp == false) && (isLocalPlayer == true) && (spawnTime > 0) && (Network.time > (spawnTime + lifeTime)))
+    //    {
+    //        Destroy(gameObject);
+    //        NetworkServer.Destroy(gameObject);
+    //        isCleanedUp = true;
+    //    }
+    //}
 
     //[Command]
     //void CmdDestroy()
