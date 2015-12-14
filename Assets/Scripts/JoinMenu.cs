@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using OmiyaGames;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using OmiyaGames;
 using System;
 
 public class JoinMenu : IMenu
@@ -22,6 +23,7 @@ public class JoinMenu : IMenu
     Button backButton;
 
     string lastIpAddress;
+    NetworkManager network;
 
     public override GameObject DefaultUi
     {
@@ -42,6 +44,9 @@ public class JoinMenu : IMenu
     public override void Show(Action<IMenu> stateChanged)
     {
         base.Show(stateChanged);
+
+        network = Singleton.Get<NetworkManager>();
+
         ipAddress.interactable = true;
         connectButton.interactable = true;
         connectLabel.text = StartConnectionText;
@@ -59,6 +64,8 @@ public class JoinMenu : IMenu
         connectLabel.fontStyle = WorkingOnConnectionStyle;
 
         // FIXME: attempt to connect
+        NetworkManager.singleton.networkAddress = lastIpAddress;
+        NetworkManager.singleton.StartClient();
 
         // Play music
         Manager.ButtonClick.Play();
@@ -70,5 +77,4 @@ public class JoinMenu : IMenu
         Hide();
         Manager.ButtonClick.Play();
     }
-
 }

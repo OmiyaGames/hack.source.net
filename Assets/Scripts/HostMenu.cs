@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
 using OmiyaGames;
 using System;
 
@@ -28,10 +29,13 @@ public class HostMenu : IMenu
 
     public override void Show(Action<IMenu> stateChanged)
     {
-        // FIXME: start the server
+        base.Show(stateChanged);
+        
         // FIXME: get this host IP address somehow
         hostIpAddress.text = "127.0.0.1";
-        base.Show(stateChanged);
+
+        // FIXME: start the server
+        NetworkManager.singleton.StartHost();
     }
 
     public void OnBackClicked()
