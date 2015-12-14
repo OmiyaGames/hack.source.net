@@ -29,6 +29,7 @@ public class PlayerSetup : NetworkBehaviour
     public event System.Action<PlayerSetup, string> NameChanged;
     static PlayerSetup localInstance = null;//, onlineInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
+    static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
     #region Helper Classes
     [System.Serializable]
@@ -161,6 +162,11 @@ public class PlayerSetup : NetworkBehaviour
     readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
     
     #region Static Properties
+    public static void Reset()
+    {
+        allPlayersCache.Clear();
+    }
+
     public static PlayerSetup LocalInstance
     {
         get
@@ -186,6 +192,14 @@ public class PlayerSetup : NetworkBehaviour
             return controlsConversion;
         }
     }
+
+    public static Dictionary<string, PlayerSetup> AllIdentifiedPlayers
+    {
+        get
+        {
+            return allPlayersCache;
+        }
+    }
     #endregion
 
     #region Local Properties
@@ -194,7 +208,7 @@ public class PlayerSetup : NetworkBehaviour
         get
         {
             ActiveControls returnControls = ActiveControls.None;
-            if (playerStatus != null)
+            if ((AllIdentifiedPlayers.Count >= GameSetup.MaxConnections) && (playerStatus != null))
             {
                 switch (playerStatus.CurrentState)
                 {
@@ -265,11 +279,6 @@ public class PlayerSetup : NetworkBehaviour
         SetName();
     }
 
-    void OnDestroy()
-    {
-        GameState.UpdatePlayerSetup(null, name);
-    }
-
     [Client]
     public void Hack(byte index, ActiveControls controlValue)
     {
@@ -315,11 +324,11 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetOpponentsControls(int setValueTo)
     {
-        if(GameState.Instance != null)
+        foreach (KeyValuePair<string, PlayerSetup> pair in AllIdentifiedPlayers)
         {
-            foreach (PlayerSetup opposition in GameState.Instance.Oppositions())
+            if (pair.Key != name)
             {
-                opposition.currentActiveControls = setValueTo;
+                pair.Value.currentActiveControls = setValueTo;
             }
         }
     }
@@ -341,13 +350,6 @@ public class PlayerSetup : NetworkBehaviour
             GameObject clone = Instantiate(gameInfoPrefab.gameObject);
             NetworkServer.SpawnWithClientAuthority(clone, connectionToClient);
             Debug.Log("Clone success!");
-
-            // Update its information
-            clone.GetComponent<GameState>().LocalPlayerId = name;
-        }
-        else
-        {
-            GameState.Instance.LocalPlayerId = name;
         }
     }
     #endregion
@@ -357,25 +359,29 @@ public class PlayerSetup : NetworkBehaviour
     {
         if ((string.IsNullOrEmpty(name) == true) || (name == "Player(Clone)"))
         {
-            string formerName = name;
             if (isLocalPlayer == false)
             {
                 name = uniquePlayerIdName;
-                GameState.UpdatePlayerSetup(this, formerName);
                 if(NameChanged != null)
                 {
                     NameChanged(this, name);
+                }
+                if (AllIdentifiedPlayers.ContainsKey(name) == false)
+                {
+                    AllIdentifiedPlayers.Add(name, this);
                 }
             }
             else
             {
                 name = GenerateName();
-                GameState.UpdatePlayerSetup(this, formerName);
-                Debug.Log("Name changed " + name);
                 CmdSetupGameSetup(name);
                 if (NameChanged != null)
                 {
                     NameChanged(this, name);
+                }
+                if (AllIdentifiedPlayers.ContainsKey(name) == false)
+                {
+                    AllIdentifiedPlayers.Add(name, this);
                 }
             }
         }
