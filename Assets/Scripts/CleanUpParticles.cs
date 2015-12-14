@@ -6,6 +6,8 @@ public class CleanUpParticles : NetworkBehaviour
 {
     [SerializeField]
     float lifeTime = 1f;
+    [SerializeField]
+    OmiyaGames.SoundEffect playOnAwake;
     // FIXME: testing here
     [SerializeField]
     bool isCleanedUp = false;
@@ -20,23 +22,31 @@ public class CleanUpParticles : NetworkBehaviour
         Debug.Log("Particle created");
     }
 
-    //[Client]
-    //void Update()
-    //{
-    //    if((isCleanedUp == false) && (isLocalPlayer == true) && (spawnTime > 0) && (Network.time > (spawnTime + lifeTime)))
-    //    {
-    //        Destroy(gameObject);
-    //        NetworkServer.Destroy(gameObject);
-    //        isCleanedUp = true;
-    //    }
-    //}
+    void Start()
+    {
+        if(playOnAwake != null)
+        {
+            playOnAwake.Play();
+        }
+    }
 
-    //[Command]
-    //void CmdDestroy()
-    //{
-    //    Destroy(gameObject);
-    //    NetworkServer.Destroy(gameObject);
-    //}
+    [Client]
+    void Update()
+    {
+        if ((isCleanedUp == false) && (isLocalPlayer == true) && (spawnTime > 0) && (Network.time > (spawnTime + lifeTime)))
+        {
+            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
+            isCleanedUp = true;
+        }
+    }
+
+    [Command]
+    void CmdDestroy()
+    {
+        Destroy(gameObject);
+        NetworkServer.Destroy(gameObject);
+    }
 
     [Command]
     void CmdSetTime()

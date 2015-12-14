@@ -11,6 +11,8 @@ public class PlayerShoot : NetworkBehaviour
     Bullet bulletPrefab;
     [SerializeField]
     float fireRate = 0.3f;
+    [SerializeField]
+    SoundEffect fireSound;
 
     PauseMenu pauseMenu;
     PlayerStatus status;
@@ -37,6 +39,7 @@ public class PlayerShoot : NetworkBehaviour
                 case PlayerStatus.State.Alive:
                 case PlayerStatus.State.Invincible:
                     CmdSpawn();
+                    fireSound.Play();
                     setup.hudAnimations.SetTrigger(PlayerSetup.ShootTrigger);
                     nextFire = Time.time + fireRate;
                     break;
