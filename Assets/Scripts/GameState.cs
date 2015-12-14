@@ -47,6 +47,11 @@ public class GameState : NetworkBehaviour
         }
     }
 
+    void Start()
+    {
+        Singleton.Get<GameSetup>().Info = this;
+    }
+
     public IEnumerable<PlayerSetup> Oppositions()
     {
         foreach (KeyValuePair<string, PlayerSetup> pair in allPlayers)
@@ -102,6 +107,7 @@ public class GameState : NetworkBehaviour
     [Command]
     public void CmdSetLosingPlayer(string playerId)
     {
+        Debug.Log("GameState: set lose to " + playerId);
         losingPlayer = playerId;
     }
 
@@ -115,7 +121,8 @@ public class GameState : NetworkBehaviour
     // Update is called once per frame
     void OnLosingPlayerSynced(string playerLost)
     {
-        if(localPlayerId == playerLost)
+        Debug.Log("GameState: show window");
+        if (localPlayerId == playerLost)
         {
             Singleton.Get<MenuManager>().Show<LevelFailedMenu>(CheckButton);
         }

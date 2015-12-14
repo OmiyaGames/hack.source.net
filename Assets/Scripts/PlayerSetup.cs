@@ -127,6 +127,8 @@ public class PlayerSetup : NetworkBehaviour
     RigidBodyInfo rigidBodyInfo = new RigidBodyInfo();
     [SerializeField]
     CharacterControllerInfo characterControllerInfo = new CharacterControllerInfo();
+    [SerializeField]
+    GameState gameInfoPrefab;
 
     [Header("HUD info")]
     [SerializeField]
@@ -322,6 +324,27 @@ public class PlayerSetup : NetworkBehaviour
     {
         currentActiveControls = setValueTo;
     }
+
+    [Command]
+    void CmdSetupGameSetup(string name)
+    {
+        Debug.Log("Local Name" + name);
+
+        if (Game.Info == null)
+        {
+            // Spawn GameState
+            GameObject clone = Instantiate(gameInfoPrefab.gameObject);
+            NetworkServer.Spawn(clone);
+            Debug.Log("Clone success!");
+
+            // Update its information
+            clone.GetComponent<GameState>().LocalPlayerId = name;
+        }
+        else
+        {
+            Game.Info.LocalPlayerId = name;
+        }
+    }
     #endregion
 
     #region Helper Methods
@@ -342,8 +365,9 @@ public class PlayerSetup : NetworkBehaviour
             else
             {
                 name = GenerateName();
-                Game.Setup(name);
                 GameState.UpdatePlayerSetup(this, formerName);
+                Debug.Log("Name changed " + name);
+                CmdSetupGameSetup(name);
                 if (NameChanged != null)
                 {
                     NameChanged(this, name);

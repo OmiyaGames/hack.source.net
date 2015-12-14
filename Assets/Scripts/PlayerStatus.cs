@@ -32,7 +32,7 @@ public class PlayerStatus : NetworkBehaviour
 
     [SyncVar(hook = "OnPlayerHealthSynced")]
     int health = MaxHealth;
-    [SyncVar]
+    [SyncVar(hook = "OnPlayerStateSynced")]
     int currentState = (int)State.Alive;    // FIXME: change this to forcedstill at some point
     [SyncVar]
     double timeReflectorIsOn = -1;
@@ -64,9 +64,7 @@ public class PlayerStatus : NetworkBehaviour
                     }
                     else
                     {
-                        // Indicate death
                         CmdSetHealthState(setValueTo, State.Dead);
-                        playerSetup.Game.Info.CmdSetLosingPlayer(name);
                     }
                 }
                 else
@@ -212,6 +210,18 @@ public class PlayerStatus : NetworkBehaviour
             {
                 healthIndicators[i].SetActive(i < latestHealth);
             }
+        }
+    }
+
+    [Client]
+    private void OnPlayerStateSynced(int latestState)
+    {
+        Debug.Log("PlayerStatus: state changed " + ((State)latestState).ToString());
+        if ((isLocalPlayer == true) && (latestState == (int)State.Dead))
+        {
+            // Indicate death
+            Debug.Log("PlayerStatus: Death detected");
+            playerSetup.Game.Info.CmdSetLosingPlayer(name);
         }
     }
 
