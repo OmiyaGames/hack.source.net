@@ -163,12 +163,12 @@ public class GameSetup : ISingletonScript
         }
     }
 
-    //public void Setup(GameState instance, string localId)
-    //{
-    //    Debug.Log("Setup success!");
+    public void Setup(GameState instance, string localId)
+    {
+        Debug.Log("Setup success!");
 
-    //    // Update its information
-    //    currentState = instance;
-    //    currentState.LocalPlayerId = localId;
-    //}
+        // Update its information
+        currentState = instance;
+        currentState.LocalPlayerId = localId;
+    }
 }

@@ -334,7 +334,7 @@ public class PlayerSetup : NetworkBehaviour
         {
             // Spawn GameState
             GameObject clone = Instantiate(gameInfoPrefab.gameObject);
-            NetworkServer.Spawn(clone);
+            NetworkServer.SpawnWithClientAuthority(clone, connectionToClient);
             Debug.Log("Clone success!");
 
             // Update its information
