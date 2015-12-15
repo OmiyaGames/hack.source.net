@@ -33,7 +33,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     float lastVelocity = 0f, currentVelocity = 0f;
     int lastHealth = PlayerStatus.MaxHealth;
     bool lastRunning = false, currentRunning = false,
-        lastOnGround = true, lastHitToggle = false;
+        lastOnGround = true;
 
     public override void OnStartLocalPlayer()
     {
@@ -51,18 +51,6 @@ public class PlayerAvatarSync : NetworkBehaviour
             UpdateRunning();
             UpdateOnGround();
         }
-        //else
-        //{
-        //    VelocityChanged(velocity);
-        //    AliveChanged(alive);
-        //    if (lastHitToggle != hitToggle)
-        //    {
-        //        HitChanged(hitToggle);
-        //        lastHitToggle = hitToggle;
-        //    }
-        //    IsRunningChanged(isRunning);
-        //    IsRunningChanged(onGround);
-        //}
     }
 
     #region Helper Methods
@@ -81,7 +69,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     private void UpdateAliveHit()
     {
         // Check if health changed
-        Debug.Log("Status.Health: " + status.Health);
+        //Debug.Log("Status.Health: " + status.Health);
         if (status.Health != lastHealth)
         {
             if (status.Health <= 0)
