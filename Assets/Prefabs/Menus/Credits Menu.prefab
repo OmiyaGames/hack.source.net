@@ -423,7 +423,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "<b>Special Thanks:</b>\n\tLudum Dare 34\n\tTech Valley Game Space\n"
+  m_Text: "<b>Special Thanks:</b>\n\tLudum Dare 34\n\tTech Valley Game Space"
 --- !u!114 &11416540
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -474,7 +474,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "<b>Fonts:</b>\n\t<i>Fira-sans</i> by Mozilla\n\t<size=20>Licensed under
-    OFL\n\t(SIL Open Font License)\n\thttp://scripts.sil.org/OFL</size>\n"
+    OFL\n\t(SIL Open Font License)\n\thttp://scripts.sil.org/OFL</size>"
 --- !u!114 &11424550
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -626,7 +626,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "<b>Graphics:</b>\n\tAssets pulled from Unity packages:\n\t\"Box-chan\"
-    by Unity-chan package\n\tEverything else from Unity Standard Assets\n"
+    by Unity-chan package\n\tEverything else from Unity Standard Assets"
 --- !u!114 &11440086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -798,7 +798,7 @@ MonoBehaviour:
     m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "<b>Music:</b>\n\t<i>Ichabot Crane</i> by Taro Omiya\n\t<i>Star Driller
-    Ultra</i> by Taro Omiya\n"
+    Ultra</i> by Taro Omiya"
 --- !u!114 &11473380
 MonoBehaviour:
   m_ObjectHideFlags: 1
