@@ -31,6 +31,9 @@ public class PlayerSetup : NetworkBehaviour
     public const string InvincibleBool = "Invincible";
     public const string HitTrigger = "hit";
     public const string AliveBool = "alive";
+    public const string VelocityFloat = "velocity";
+    public const string EnabledBool = "Enabled";
+    public const string PressedTriger = "Pressed";
 
     public event System.Action<PlayerSetup> HackChanged;
     public event System.Action<PlayerSetup, string> NameChanged;
@@ -146,19 +149,25 @@ public class PlayerSetup : NetworkBehaviour
 
     [Header("HUD info")]
     [SerializeField]
-    Image forwardDisabled;
+    Animator forwardDisabled;
     [SerializeField]
-    Image backDisabled;
+    Animator backDisabled;
     [SerializeField]
-    Image rightDisabled;
+    Animator rightDisabled;
     [SerializeField]
-    Image leftDisabled;
+    Animator leftDisabled;
     [SerializeField]
-    Image jumpDisabled;
+    Animator jumpDisabled;
     [SerializeField]
-    Image runDisabled;
+    Animator runDisabled;
     [SerializeField]
-    Image reflectDisabled;
+    Animator reflectDisabled;
+
+    [Header("HUD info")]
+    [SerializeField]
+    SoundEffect hackedSound;
+    [SerializeField]
+    SoundEffect disabledSound;
 
     [SyncVar]
     int currentActiveControls = (int)ActiveControls.All;
@@ -171,7 +180,7 @@ public class PlayerSetup : NetworkBehaviour
     PlayerStatus playerStatus;
 
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
-    readonly Dictionary<ActiveControls, Image> disableGraphics = new Dictionary<ActiveControls, Image>();
+    readonly Dictionary<ActiveControls, Animator> disableGraphics = new Dictionary<ActiveControls, Animator>();
     
     #region Static Properties
     public static void Reset()
@@ -286,6 +295,7 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateControlsHud();
+            avatarAnimations.SetFloat(VelocityFloat, rigidBodyInfo.controller.Velocity.sqrMagnitude);
         }
         SetName();
     }
@@ -453,11 +463,29 @@ public class PlayerSetup : NetworkBehaviour
         if (lastFramesControls != CurrentActiveControls)
         {
             // Update controls
-            foreach (KeyValuePair<ActiveControls, Image> pair in disableGraphics)
+            foreach (KeyValuePair<ActiveControls, Animator> pair in disableGraphics)
             {
-                pair.Value.enabled = ((pair.Key & CurrentActiveControls) == 0);
+                pair.Value.SetBool(EnabledBool, ((pair.Key & CurrentActiveControls) != 0));
             }
+            hackedSound.Play();
             lastFramesControls = CurrentActiveControls;
+        }
+    }
+
+    [Client]
+    public void PressControls(ActiveControls control, bool pressed)
+    {
+        Animator temp = null;
+        if(disableGraphics.TryGetValue(control, out temp) == true)
+        {
+            if(temp.GetBool(PressedTriger) != pressed)
+            {
+                if((pressed == true) && ((control & CurrentActiveControls) != 0))
+                {
+                    disabledSound.Play();
+                }
+                temp.SetBool(PressedTriger, pressed);
+            }
         }
     }
     #endregion
