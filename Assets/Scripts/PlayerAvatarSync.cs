@@ -51,18 +51,18 @@ public class PlayerAvatarSync : NetworkBehaviour
             UpdateRunning();
             UpdateOnGround();
         }
-        else
-        {
-            VelocityChanged(velocity);
-            AliveChanged(alive);
-            if (lastHitToggle != hitToggle)
-            {
-                HitChanged(hitToggle);
-                lastHitToggle = hitToggle;
-            }
-            IsRunningChanged(isRunning);
-            IsRunningChanged(onGround);
-        }
+        //else
+        //{
+        //    VelocityChanged(velocity);
+        //    AliveChanged(alive);
+        //    if (lastHitToggle != hitToggle)
+        //    {
+        //        HitChanged(hitToggle);
+        //        lastHitToggle = hitToggle;
+        //    }
+        //    IsRunningChanged(isRunning);
+        //    IsRunningChanged(onGround);
+        //}
     }
 
     #region Helper Methods
@@ -81,9 +81,9 @@ public class PlayerAvatarSync : NetworkBehaviour
     private void UpdateAliveHit()
     {
         // Check if health changed
+        Debug.Log("Status.Health: " + status.Health);
         if (status.Health != lastHealth)
         {
-            Debug.Log("Health Changed");
             if (status.Health <= 0)
             {
                 // Check if dead
@@ -103,6 +103,7 @@ public class PlayerAvatarSync : NetworkBehaviour
                     CmdSetAlive(true);
                 }
             }
+
             // Update health
             lastHealth = status.Health;
         }
