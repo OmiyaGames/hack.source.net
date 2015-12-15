@@ -67,7 +67,6 @@ public class PlayerStatus : NetworkBehaviour
                     hurtSound.Play();
                     if (setValueTo > 0)
                     {
-                        playerSetup.avatarAnimations.SetTrigger(PlayerSetup.HitTrigger);
                         CmdSetHealthInvincibility(setValueTo, Network.time);
                     }
                     else
@@ -79,7 +78,6 @@ public class PlayerStatus : NetworkBehaviour
                 {
                     CmdSetHealth(setValueTo);
                 }
-                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, (setValueTo > 0));
             }
         }
     }
@@ -221,6 +219,16 @@ public class PlayerStatus : NetworkBehaviour
             for (int i = 0; i < MaxHealth; ++i)
             {
                 healthIndicators[i].SetActive(i < latestHealth);
+            }
+
+            if(latestHealth > 0)
+            {
+                playerSetup.avatarAnimations.SetTrigger(PlayerSetup.HitTrigger);
+                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, true);
+            }
+            else
+            {
+                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, false);
             }
         }
     }
