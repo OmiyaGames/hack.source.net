@@ -5865,7 +5865,7 @@ MonoBehaviour:
     StrafeSpeed: 8
     RunMultiplier: 2
     RunKey: 304
-    JumpForce: 150
+    JumpForce: 175
     SlopeCurveModifier:
       serializedVersion: 2
       m_Curve:
@@ -8659,7 +8659,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: movementSettings.JumpForce
-      value: 100
+      value: 175
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: cam
@@ -8798,6 +8798,14 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: floatThreshold
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: movementSettings.RunKey
+      value: 33
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Mass
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
