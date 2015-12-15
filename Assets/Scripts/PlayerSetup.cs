@@ -34,10 +34,11 @@ public class PlayerSetup : NetworkBehaviour
     public const string VelocityFloat = "velocity";
     public const string EnabledBool = "Enabled";
     public const string PressedTriger = "Pressed";
+    public const string RunSpeedFloat = "runSpeed";
 
     public event System.Action<PlayerSetup> HackChanged;
     public event System.Action<PlayerSetup, string> NameChanged;
-    static PlayerSetup localInstance = null;//, onlineInstance = null;
+    static PlayerSetup localInstance = null;
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
     static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
@@ -146,6 +147,8 @@ public class PlayerSetup : NetworkBehaviour
     public Animator hudAnimations;
     [SerializeField]
     public Animator avatarAnimations;
+    [SerializeField]
+    float runSpeedMultiplier = 2f;
 
     [Header("HUD info")]
     [SerializeField]
@@ -492,5 +495,14 @@ public class PlayerSetup : NetworkBehaviour
             }
         }
     }
-    #endregion
+
+    [Client]
+    public void ChangeRunSpeed(bool isRunning)
+    {
+        if (isLocalPlayer == true)
+        {
+            avatarAnimations.SetFloat(RunSpeedFloat, (isRunning ? runSpeedMultiplier : 1f));
+        }
+    }
+#endregion
 }

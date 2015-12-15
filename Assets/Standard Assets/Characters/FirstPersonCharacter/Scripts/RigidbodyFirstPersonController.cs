@@ -306,10 +306,10 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 m_Jumping = false;
             }
-            if(m_PreviouslyGrounded != m_IsGrounded)
-            {
-                Debug.Log("Grounded: " + m_IsGrounded);
-            }
+            //if(m_PreviouslyGrounded != m_IsGrounded)
+            //{
+            //    Debug.Log("Grounded: " + m_IsGrounded);
+            //}
         }
     }
 }

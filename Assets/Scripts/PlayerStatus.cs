@@ -132,7 +132,6 @@ public class PlayerStatus : NetworkBehaviour
 
         // Grab components
         playerSetup = GetComponent<PlayerSetup>();
-        //controller = GetComponent<CharacterController>();
 
         // Setup HUD
         SetupHud();
@@ -292,32 +291,6 @@ public class PlayerStatus : NetworkBehaviour
             }
         }
     }
-
-    //private void UpdateWin()
-    //{
-    //    if ((isLocalPlayer == true) && (CurrentState != State.Dead) &&
-    //        (GameState.Instance != null) && 
-    //        !(Singleton.Get<MenuManager>().LastManagedMenu is LevelCompleteMenu))
-    //    {
-    //        if (GameState.Instance.State == GameState.MatchState.Finished)
-    //        {
-    //            Singleton.Get<MenuManager>().Hide<PauseMenu>();
-    //            Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
-    //        }
-    //        else
-    //        {
-    //            foreach(PlayerSetup player in GameState.Instance.Oppositions())
-    //            {
-    //                if(player.Status.CurrentState == State.Dead)
-    //                {
-    //                    Singleton.Get<MenuManager>().Hide<PauseMenu>();
-    //                    Singleton.Get<MenuManager>().Show<LevelCompleteMenu>();
-    //                    break;
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
     private void SetupHud()
     {
