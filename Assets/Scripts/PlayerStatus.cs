@@ -234,21 +234,21 @@ public class PlayerStatus : NetworkBehaviour
             if (latestState == (int)State.Dead)
             {
                 // Indicate death
-                Debug.Log("PlayerStatus: Death detected");
+                //Debug.Log("PlayerStatus: Death detected");
                 Singleton.Get<MenuManager>().Hide<PauseMenu>();
                 Singleton.Get<MenuManager>().Show<LoseMenu>();
 
-                Debug.Log("Menu shown");
+                //Debug.Log("Menu shown");
                 playerSetup.CmdSetLosingPlayer();
             }
             else if (latestState == (int)State.Victory)
             {
                 // Indicate death
-                Debug.Log("PlayerStatus: Victory detected");
+                //Debug.Log("PlayerStatus: Victory detected");
                 Singleton.Get<MenuManager>().Hide<PauseMenu>();
                 Singleton.Get<MenuManager>().Show<WinMenu>();
 
-                Debug.Log("Menu shown");
+                //Debug.Log("Menu shown");
             }
         }
     }
