@@ -108,7 +108,12 @@ public class Bullet : NetworkBehaviour
 
     void OnCollisionEnter(Collision info)
     {
-        if((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer) )
+        //if ((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider))
+        //{
+        //    Debug.Log("hit: " + info.collider.name);
+        //    Debug.Log("Ignoring: " + IgnoredPlayer);
+        //}
+        if ((isServer == true) && (IgnoredPlayer != null) && (info.collider != lastCollider) && (info.collider.name != IgnoredPlayer) )
         {
             if (info.collider.CompareTag("ReflectBullet") == true)
             {
@@ -158,32 +163,32 @@ public class Bullet : NetworkBehaviour
         }
     }
 
-    public void PlayerHit(CharacterController controller, PlayerStatus status)
-    {
-        if ((isServer == true) && (IgnoredPlayer != null) && (controller != lastCharacter) && (controller.name != IgnoredPlayer))
-        {
-            // Check status
-            if (status.IsReflectEnabled == true)
-            {
-                // Flip direction if player is reflecting
-                FlipDirection(controller.name);
-            }
-            else if (status.CurrentState == PlayerStatus.State.Alive)
-            {
-                // Decrease player health
-                status.Health -= 1;
+    //public void PlayerHit(CharacterController controller, PlayerStatus status)
+    //{
+    //    if ((isServer == true) && (IgnoredPlayer != null) && (controller != lastCharacter) && (controller.name != IgnoredPlayer))
+    //    {
+    //        // Check status
+    //        if (status.IsReflectEnabled == true)
+    //        {
+    //            // Flip direction if player is reflecting
+    //            FlipDirection(controller.name);
+    //        }
+    //        else if (status.CurrentState == PlayerStatus.State.Alive)
+    //        {
+    //            // Decrease player health
+    //            status.Health -= 1;
 
-                // Explode
-                Explode();
-            }
-            else
-            {
-                Spark(true);
-            }
+    //            // Explode
+    //            Explode();
+    //        }
+    //        else
+    //        {
+    //            Spark(true);
+    //        }
 
-            lastCharacter = controller;
-        }
-    }
+    //        lastCharacter = controller;
+    //    }
+    //}
 
     void FlipDirection(string playerId)
     {
