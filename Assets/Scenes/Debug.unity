@@ -845,7 +845,7 @@ Transform:
   - {fileID: 1292246884}
   - {fileID: 1151017341}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
 --- !u!1001 &469673005
 Prefab:
   m_ObjectHideFlags: 0
