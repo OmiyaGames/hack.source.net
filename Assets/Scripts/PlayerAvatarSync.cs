@@ -33,7 +33,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     float lastVelocity = 0f, currentVelocity = 0f;
     int lastHealth = PlayerStatus.MaxHealth;
     bool lastRunning = false, currentRunning = false,
-        lastOnGround = true;
+        lastOnGround = true, lastHitToggle = false;
 
     public override void OnStartLocalPlayer()
     {
@@ -50,6 +50,18 @@ public class PlayerAvatarSync : NetworkBehaviour
             UpdateAliveHit();
             UpdateRunning();
             UpdateOnGround();
+        }
+        else
+        {
+            VelocityChanged(velocity);
+            AliveChanged(alive);
+            if (lastHitToggle != hitToggle)
+            {
+                HitChanged(hitToggle);
+                lastHitToggle = hitToggle;
+            }
+            IsRunningChanged(isRunning);
+            IsRunningChanged(onGround);
         }
     }
 
@@ -155,13 +167,11 @@ public class PlayerAvatarSync : NetworkBehaviour
 
     void AliveChanged(bool newAlive)
     {
-        Debug.Log("Alive changed: " + newAlive);
         avatarAnimations.SetBool(AliveBool, newAlive);
     }
 
     void HitChanged(bool newHit)
     {
-        Debug.Log("Triggered hit");
         avatarAnimations.SetTrigger(HitTrigger);
     }
 
