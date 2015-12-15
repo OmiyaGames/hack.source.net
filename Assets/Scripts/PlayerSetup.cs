@@ -331,7 +331,7 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     public void CmdSetLosingPlayer()
     {
-        Debug.Log("PlayerSetup.SetLosingPlayer()");
+        //Debug.Log("PlayerSetup.SetLosingPlayer()");
         GameState.Instance.CmdSetLosingPlayer(name);
     }
 
@@ -345,12 +345,12 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetOpponentsControls(int setValueTo, string ignorePlayer)
     {
-        Debug.Log("Hacking: ignore " + uniquePlayerIdName);
+        //Debug.Log("Hacking: ignore " + uniquePlayerIdName);
         foreach (KeyValuePair<string, PlayerSetup> pair in AllIdentifiedPlayers)
         {
             if (pair.Key != ignorePlayer)
             {
-                Debug.Log("Hacking: affect " + pair.Key);
+                //Debug.Log("Hacking: affect " + pair.Key);
                 pair.Value.currentActiveControls = setValueTo;
             }
         }
@@ -365,14 +365,14 @@ public class PlayerSetup : NetworkBehaviour
     [Command]
     void CmdSetupGameSetup(string name)
     {
-        Debug.Log("Local Name" + name);
+        //Debug.Log("Local Name" + name);
 
         if (GameState.Instance == null)
         {
             // Spawn GameState
             GameObject clone = Instantiate(gameInfoPrefab.gameObject);
             NetworkServer.SpawnWithClientAuthority(clone, connectionToClient);
-            Debug.Log("Clone success!");
+            //Debug.Log("Clone success!");
         }
     }
     #endregion
@@ -408,7 +408,7 @@ public class PlayerSetup : NetworkBehaviour
     {
         if ((string.IsNullOrEmpty(name) == false) && (AllIdentifiedPlayers.ContainsKey(name) == false) && (name != "Player(Clone)"))
         {
-            Debug.Log("Added player: " + name);
+            //Debug.Log("Added player: " + name);
             AllIdentifiedPlayers.Add(name, this);
         }
     }
