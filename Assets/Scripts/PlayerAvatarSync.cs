@@ -13,7 +13,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     [SerializeField]
     float runSpeedMultiplier = 2f;
     [SerializeField]
-    UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+    HackableFpsController controller;
     [SerializeField]
     float floatThreshold = 0.1f;
 
@@ -49,6 +49,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     }
 
     #region Helper Methods
+    [Client]
     private void UpdateRunning()
     {
         currentRunning = controller.Running;
@@ -59,11 +60,13 @@ public class PlayerAvatarSync : NetworkBehaviour
         }
     }
 
+    [Client]
     private void UpdateAliveHit()
     {
         // Check if health changed
         if (status.Health != lastHealth)
         {
+            Debug.Log("Health Changed");
             if (status.Health <= 0)
             {
                 // Check if dead
@@ -88,11 +91,12 @@ public class PlayerAvatarSync : NetworkBehaviour
         }
     }
 
+    [Client]
     private void UpdateVelocity()
     {
         // Check if the velocity has changed
-        currentVelocity = controller.Velocity.magnitude;
-        if (Mathf.Abs(currentVelocity - lastVelocity) > floatThreshold)
+        currentVelocity = controller.LastInput.sqrMagnitude;
+        if (Mathf.Abs(currentVelocity - lastVelocity) > (floatThreshold * floatThreshold))
         {
             CmdSetVelocity(currentVelocity);
             lastVelocity = currentVelocity;
@@ -131,11 +135,13 @@ public class PlayerAvatarSync : NetworkBehaviour
 
     void AliveChanged(bool newAlive)
     {
+        Debug.Log("Alive changed: " + newAlive);
         avatarAnimations.SetBool(AliveBool, newAlive);
     }
 
     void HitChanged(bool newHit)
     {
+        Debug.Log("Triggered hit");
         avatarAnimations.SetTrigger(HitTrigger);
     }
 
