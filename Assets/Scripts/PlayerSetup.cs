@@ -475,16 +475,20 @@ public class PlayerSetup : NetworkBehaviour
     [Client]
     public void PressControls(ActiveControls control, bool pressed)
     {
-        Animator temp = null;
-        if(disableGraphics.TryGetValue(control, out temp) == true)
+        if (isLocalPlayer == true)
         {
-            if(temp.GetBool(PressedTriger) != pressed)
+            Animator temp = null;
+            if (disableGraphics.TryGetValue(control, out temp) == true)
             {
-                if((pressed == true) && ((control & CurrentActiveControls) != 0))
+                if ((temp.gameObject.activeInHierarchy == true) && (temp.GetBool(PressedTriger) != pressed))
                 {
-                    disabledSound.Play();
+                    // Check if button is disabled
+                    if ((pressed == true) && ((control & CurrentActiveControls) == 0))
+                    {
+                        disabledSound.Play();
+                    }
+                    temp.SetBool(PressedTriger, pressed);
                 }
-                temp.SetBool(PressedTriger, pressed);
             }
         }
     }
