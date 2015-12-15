@@ -7,6 +7,7 @@ public class PlayerAvatarSync : NetworkBehaviour
     public const string AliveBool = "alive";
     public const string VelocityFloat = "velocity";
     public const string RunSpeedFloat = "runSpeed";
+    public const string OnGroundBool = "onGround";
 
     [SerializeField]
     Animator avatarAnimations;
@@ -25,11 +26,14 @@ public class PlayerAvatarSync : NetworkBehaviour
     bool hitToggle = false;
     [SyncVar(hook = "IsRunningChanged")]
     bool isRunning = false;
+    [SyncVar(hook = "OnGroundChanged")]
+    bool onGround = true;
 
     PlayerStatus status;
     float lastVelocity = 0f, currentVelocity = 0f;
     int lastHealth = PlayerStatus.MaxHealth;
-    bool lastRunning = false, currentRunning = false;
+    bool lastRunning = false, currentRunning = false,
+        lastOnGround = true;
 
     public override void OnStartLocalPlayer()
     {
@@ -45,6 +49,7 @@ public class PlayerAvatarSync : NetworkBehaviour
             UpdateVelocity();
             UpdateAliveHit();
             UpdateRunning();
+            UpdateOnGround();
         }
     }
 
@@ -102,6 +107,16 @@ public class PlayerAvatarSync : NetworkBehaviour
             lastVelocity = currentVelocity;
         }
     }
+
+    [Client]
+    private void UpdateOnGround()
+    {
+        if (lastOnGround != controller.Grounded)
+        {
+            CmdSetOnGround(controller.Grounded);
+            lastOnGround = controller.Grounded;
+        }
+    }
     #endregion
 
     #region Commands
@@ -124,6 +139,11 @@ public class PlayerAvatarSync : NetworkBehaviour
     void CmdToggleHit()
     {
         hitToggle = !hitToggle;
+    }
+    [Command]
+    void CmdSetOnGround(bool setOnGround)
+    {
+        onGround = setOnGround;
     }
     #endregion
 
@@ -155,6 +175,11 @@ public class PlayerAvatarSync : NetworkBehaviour
         {
             avatarAnimations.SetFloat(RunSpeedFloat, 1f);
         }
+    }
+
+    void OnGroundChanged(bool newOnGround)
+    {
+        avatarAnimations.SetBool(OnGroundBool, newOnGround);
     }
     #endregion
 }
