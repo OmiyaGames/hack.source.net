@@ -7,6 +7,8 @@ public class HackableFpsController : RigidbodyFirstPersonController
 {
     PlayerSetup player;
 
+    Vector2 lastInput;
+
     bool lastLeftDisabled = false,
          lastRightDisabled = false,
          lastForwardDisabled = false,
@@ -14,6 +16,13 @@ public class HackableFpsController : RigidbodyFirstPersonController
         lastJumpDisabled = false,
         lastRunDisabled = false;
 
+    public Vector2 LastInput
+    {
+        get
+        {
+            return lastInput;
+        }
+    }
 
     protected override void Start()
     {
@@ -23,13 +32,10 @@ public class HackableFpsController : RigidbodyFirstPersonController
 
     protected override Vector2 GetMovementInput()
     {
-        Vector2 input = new Vector2
-        {
-            x = Horizontal,
-            y = Vertical
-        };
-        movementSettings.UpdateDesiredTargetSpeed(input);
-        return input;
+        lastInput.x = Horizontal;
+        lastInput.y = Vertical;
+        movementSettings.UpdateDesiredTargetSpeed(lastInput);
+        return lastInput;
     }
 
     protected override bool GetJumpInput()
