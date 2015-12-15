@@ -305,7 +305,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Host Game (at least 1 player must do this)
+  m_Text: Host Game
 --- !u!114 &11425848
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -410,7 +410,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Join Game (hosted by the other player)
+  m_Text: Join Game
 --- !u!114 &11447464
 MonoBehaviour:
   m_ObjectHideFlags: 1
