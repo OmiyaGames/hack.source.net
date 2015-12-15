@@ -220,16 +220,6 @@ public class PlayerStatus : NetworkBehaviour
             {
                 healthIndicators[i].SetActive(i < latestHealth);
             }
-
-            if(latestHealth > 0)
-            {
-                playerSetup.avatarAnimations.SetTrigger(PlayerSetup.HitTrigger);
-                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, true);
-            }
-            else
-            {
-                playerSetup.avatarAnimations.SetBool(PlayerSetup.AliveBool, false);
-            }
         }
     }
 

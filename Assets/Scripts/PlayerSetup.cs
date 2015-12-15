@@ -29,12 +29,8 @@ public class PlayerSetup : NetworkBehaviour
     public const string HackTrigger = "Hack";
     public const string ReflectBool = "Reflect";
     public const string InvincibleBool = "Invincible";
-    public const string HitTrigger = "hit";
-    public const string AliveBool = "alive";
-    public const string VelocityFloat = "velocity";
     public const string EnabledBool = "Enabled";
     public const string PressedTriger = "Pressed";
-    public const string RunSpeedFloat = "runSpeed";
 
     public event System.Action<PlayerSetup> HackChanged;
     public event System.Action<PlayerSetup, string> NameChanged;
@@ -145,10 +141,6 @@ public class PlayerSetup : NetworkBehaviour
     [Header("Animations")]
     [SerializeField]
     public Animator hudAnimations;
-    [SerializeField]
-    public Animator avatarAnimations;
-    [SerializeField]
-    float runSpeedMultiplier = 2f;
 
     [Header("HUD info")]
     [SerializeField]
@@ -298,7 +290,6 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateControlsHud();
-            avatarAnimations.SetFloat(VelocityFloat, rigidBodyInfo.controller.Velocity.sqrMagnitude);
         }
         SetName();
     }
@@ -493,15 +484,6 @@ public class PlayerSetup : NetworkBehaviour
                     temp.SetBool(PressedTriger, pressed);
                 }
             }
-        }
-    }
-
-    [Client]
-    public void ChangeRunSpeed(bool isRunning)
-    {
-        if (isLocalPlayer == true)
-        {
-            avatarAnimations.SetFloat(RunSpeedFloat, (isRunning ? runSpeedMultiplier : 1f));
         }
     }
 #endregion

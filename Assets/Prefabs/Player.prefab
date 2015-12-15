@@ -34,6 +34,7 @@ GameObject:
   - 114: {fileID: 11462078}
   - 95: {fileID: 9557822}
   - 114: {fileID: 11432900}
+  - 114: {fileID: 11476788}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -133,8 +134,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 448350}
   - 95: {fileID: 9597824}
-  - 114: {fileID: 11456152}
-  - 114: {fileID: 11474922}
   - 114: {fileID: 11423686}
   m_Layer: 0
   m_Name: BoxUnityChan
@@ -4901,7 +4900,6 @@ MonoBehaviour:
     oppositionStuff: []
   gameInfoPrefab: {fileID: 11481442, guid: 4e2f0bb97e8e1754f8055348657a753b, type: 2}
   hudAnimations: {fileID: 9557822}
-  avatarAnimations: {fileID: 9597824}
   forwardDisabled: {fileID: 9533768}
   backDisabled: {fileID: 9516508}
   rightDisabled: {fileID: 9556890}
@@ -5656,38 +5654,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11456152
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 104694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 156
-    i1: 149
-    i2: 34
-    i3: 220
-    i4: 28
-    i5: 255
-    i6: 46
-    i7: 244
-    i8: 72
-    i9: 5
-    i10: 28
-    i11: 231
-    i12: 127
-    i13: 123
-    i14: 106
-    i15: 195
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
 --- !u!114 &11456654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5984,25 +5950,21 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &11474922
+--- !u!114 &11476788
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 104694}
+  m_GameObject: {fileID: 100006}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1590678366, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 622561d7e6a060644bf87bafd574763b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Animator: {fileID: 9597824}
-  m_ParameterSendBits: 15
-  param0: 
-  param1: 
-  param2: 
-  param3: 
-  param4: 
-  param5: 
+  avatarAnimations: {fileID: 9597824}
+  runSpeedMultiplier: 2
+  controller: {fileID: 11468164}
+  floatThreshold: 0.1
 --- !u!114 &11478832
 MonoBehaviour:
   m_ObjectHideFlags: 1
