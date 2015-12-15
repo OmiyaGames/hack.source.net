@@ -278,12 +278,17 @@ public class PlayerStatus : NetworkBehaviour
         }
 
         // Check if we are allowed to bring up the reflector
-        if ((isLocalPlayer == true) && (CurrentState != State.Dead) && (IsReflectEnabled == false) && (Network.time > (timeReflectorIsOn + cooldownDuration + reflectDuration)))
+        if (isLocalPlayer == true)
         {
-            // Check if the player pressed reflection
-            if ((CrossPlatformInputManager.GetButtonDown("Reflect") == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
+            bool reflect = CrossPlatformInputManager.GetButtonDown("Reflect");
+            playerSetup.PressControls(PlayerSetup.ActiveControls.Reflect, reflect);
+            if ((CurrentState != State.Dead) && (IsReflectEnabled == false) && (Network.time > (timeReflectorIsOn + cooldownDuration + reflectDuration)))
             {
-                CmdSetReflect(Network.time);
+                // Check if the player pressed reflection
+                if ((reflect == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
+                {
+                    CmdSetReflect(Network.time);
+                }
             }
         }
     }
