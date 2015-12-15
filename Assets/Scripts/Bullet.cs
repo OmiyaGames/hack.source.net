@@ -100,7 +100,7 @@ public class Bullet : NetworkBehaviour
     [Command]
     void CmdSpawnExplosion()
     {
-        Debug.Log("Clone explosion");
+        //Debug.Log("Clone explosion");
         GameObject clone = (GameObject)Instantiate(explosion.gameObject, spawnPosition.position, spawnPosition.rotation);
         NetworkServer.Spawn(clone);
     }
@@ -216,7 +216,7 @@ public class Bullet : NetworkBehaviour
 
     void Explode()
     {
-        Debug.Log("Explode called");
+        //Debug.Log("Explode called");
         CmdSpawnExplosion();
         Destroy(gameObject);
         NetworkServer.Destroy(gameObject);
@@ -224,7 +224,7 @@ public class Bullet : NetworkBehaviour
 
     void Spark(bool destroy)
     {
-        Debug.Log("Spark called");
+        //Debug.Log("Spark called");
         CmdSpawnSpark();
         if (destroy == true)
         {
