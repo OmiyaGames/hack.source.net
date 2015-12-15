@@ -48,6 +48,7 @@ public class PlayerStatus : NetworkBehaviour
 
     PlayerSetup playerSetup;
     bool lastReflectorState = false;
+    int displayHealth = MaxHealth;
     readonly GameObject[] healthIndicators = new GameObject[MaxHealth];
 
     #region Properties
@@ -55,7 +56,7 @@ public class PlayerStatus : NetworkBehaviour
     {
         get
         {
-            return health;
+            return displayHealth;
         }
         set
         {
@@ -214,6 +215,7 @@ public class PlayerStatus : NetworkBehaviour
     [Client]
     private void OnPlayerHealthSynced(int latestHealth)
     {
+        displayHealth = latestHealth;
         if (isLocalPlayer == true)
         {
             for (int i = 0; i < MaxHealth; ++i)

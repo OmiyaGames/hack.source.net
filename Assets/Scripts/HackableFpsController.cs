@@ -9,13 +9,6 @@ public class HackableFpsController : RigidbodyFirstPersonController
 
     Vector2 lastInput;
 
-    bool lastLeftDisabled = false,
-         lastRightDisabled = false,
-         lastForwardDisabled = false,
-         lastBackDisabled = false,
-        lastJumpDisabled = false,
-        lastRunDisabled = false;
-
     public Vector2 LastInput
     {
         get

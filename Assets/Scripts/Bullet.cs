@@ -92,7 +92,7 @@ public class Bullet : NetworkBehaviour
     [Command]
     void CmdSpawnSpark()
     {
-        Debug.Log("Clone spark");
+        //Debug.Log("Clone spark");
         GameObject clone = (GameObject)Instantiate(spark.gameObject, spawnPosition.position, spawnPosition.rotation);
         NetworkServer.Spawn(clone);
     }
