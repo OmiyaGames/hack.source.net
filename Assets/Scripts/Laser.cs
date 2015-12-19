@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
+[RequireComponent(typeof(Animator))]
 public class Laser : MonoBehaviour
 {
+    public const string SpottedBool = "Spotted";
+
     [SerializeField]
     LayerMask mask;
     [SerializeField]
@@ -11,6 +14,7 @@ public class Laser : MonoBehaviour
     [SerializeField]
     Transform spot;
 
+    Animator animator;
     LineRenderer renderer;
     Ray laserRay;
     RaycastHit info;
@@ -19,6 +23,7 @@ public class Laser : MonoBehaviour
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         renderer = GetComponent<LineRenderer>();
         defaultPosition = new Vector3(0, 0, maxDistance);
     }
@@ -31,16 +36,27 @@ public class Laser : MonoBehaviour
         if(Physics.Raycast(laserRay, out info, maxDistance, mask) == true)
         {
             // Convert hit position to local position
-            raycastPosition = transform.worldToLocalMatrix * info.point;
-            raycastPosition.x = 0;
-            raycastPosition.y = 0;
-            renderer.SetPosition(1, raycastPosition);
-            spot.localPosition = raycastPosition;
+            raycastPosition = transform.InverseTransformPoint(info.point);
+            PositionEndPoint(ref raycastPosition);
+
+            // Indicate we hit the player if tagged as such
+            animator.SetBool(SpottedBool, info.collider.CompareTag("Player"));
         }
         else
         {
-            renderer.SetPosition(1, defaultPosition);
-            spot.localPosition = defaultPosition;
+            // Set end to default position
+            PositionEndPoint(ref defaultPosition);
+
+            // Indicate nothing was hit
+            animator.SetBool(SpottedBool, false);
         }
+    }
+
+    void PositionEndPoint(ref Vector3 position)
+    {
+        raycastPosition.x = 0;
+        raycastPosition.y = 0;
+        renderer.SetPosition(1, raycastPosition);
+        spot.localPosition = raycastPosition;
     }
 }
