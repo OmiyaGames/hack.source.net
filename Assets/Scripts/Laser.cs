@@ -8,6 +8,8 @@ public class Laser : MonoBehaviour
     [SerializeField]
     [Range(1f, 500f)]
     float maxDistance = 100f;
+    [SerializeField]
+    Transform spot;
 
     LineRenderer renderer;
     Ray laserRay;
@@ -33,10 +35,12 @@ public class Laser : MonoBehaviour
             raycastPosition.x = 0;
             raycastPosition.y = 0;
             renderer.SetPosition(1, raycastPosition);
+            spot.localPosition = raycastPosition;
         }
         else
         {
             renderer.SetPosition(1, defaultPosition);
+            spot.localPosition = defaultPosition;
         }
     }
 }
