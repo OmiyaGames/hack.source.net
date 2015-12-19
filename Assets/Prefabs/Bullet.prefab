@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 3
-  m_SendInterval: 0.1
+  m_SendInterval: 0.05
   m_SyncRotationAxis: 4
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
@@ -238,6 +238,7 @@ MonoBehaviour:
   - {fileID: 2314222}
   minRange: {r: 0.86764705, g: 0.32536763, b: 0.32536763, a: 1}
   maxRange: {r: 1, g: 0, b: 0, a: 1}
+  scaleRange: {x: 0.5, y: 1.5}
 --- !u!114 &11493904
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3367,6 +3368,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: minRange.b
       value: 0.32536763
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_SendInterval
+      value: 0.05
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
