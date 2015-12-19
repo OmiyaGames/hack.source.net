@@ -35,7 +35,15 @@ public class PauseEnhanced : MonoBehaviour
     {
         // Open the options dialog
         HackMenu menu = manager.Show<HackMenu>();
-        menu.Index = (byte)(id ? 1 : 0);
+		
+		// Set the proper menu index
+        byte currentIndex = 0, otherIndex = 1;
+		if(id == true)
+		{
+			currentIndex = 1;
+			otherIndex = 0;
+		}
+		menu.SetIndexes(currentIndex, otherIndex);
 
         // Indicate button is clicked
         manager.ButtonClick.Play();
