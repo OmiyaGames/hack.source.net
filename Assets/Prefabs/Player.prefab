@@ -52,7 +52,7 @@ GameObject:
   - 4: {fileID: 430760}
   - 33: {fileID: 3393504}
   - 23: {fileID: 2319510}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: UpperLegR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -85,7 +85,7 @@ GameObject:
   - 4: {fileID: 424744}
   - 33: {fileID: 3306010}
   - 23: {fileID: 2378880}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Belly
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118,7 +118,7 @@ GameObject:
   - 4: {fileID: 464982}
   - 33: {fileID: 3317824}
   - 23: {fileID: 2317146}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ArmL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -135,7 +135,7 @@ GameObject:
   - 4: {fileID: 448350}
   - 95: {fileID: 9597824}
   - 114: {fileID: 11423686}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: BoxUnityChan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,7 +152,7 @@ GameObject:
   - 4: {fileID: 433456}
   - 33: {fileID: 3340706}
   - 23: {fileID: 2313894}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: UpperLegL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -220,7 +220,7 @@ GameObject:
   - 4: {fileID: 435838}
   - 33: {fileID: 3359912}
   - 23: {fileID: 2394524}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   - 4: {fileID: 477202}
   - 33: {fileID: 3355742}
   - 23: {fileID: 2319742}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -254,7 +254,7 @@ GameObject:
   - 4: {fileID: 464894}
   - 33: {fileID: 3361702}
   - 23: {fileID: 2367616}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HootL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   - 4: {fileID: 409030}
   - 33: {fileID: 3303770}
   - 23: {fileID: 2308836}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -288,7 +288,7 @@ GameObject:
   - 4: {fileID: 492526}
   - 33: {fileID: 3388990}
   - 23: {fileID: 2341362}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: FootR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -356,7 +356,7 @@ GameObject:
   - 4: {fileID: 421794}
   - 33: {fileID: 3348996}
   - 23: {fileID: 2348556}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -392,7 +392,7 @@ GameObject:
   - 4: {fileID: 450276}
   - 33: {fileID: 3313126}
   - 23: {fileID: 2381628}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HeadRibbonL01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -427,7 +427,7 @@ GameObject:
   - 4: {fileID: 479166}
   - 33: {fileID: 3315882}
   - 23: {fileID: 2377000}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -478,7 +478,7 @@ GameObject:
   - 4: {fileID: 471084}
   - 33: {fileID: 3326708}
   - 23: {fileID: 2386750}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -501,7 +501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &122506
 GameObject:
   m_ObjectHideFlags: 1
@@ -529,7 +529,7 @@ GameObject:
   - 4: {fileID: 499054}
   - 33: {fileID: 3363712}
   - 23: {fileID: 2378258}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -612,7 +612,7 @@ GameObject:
   - 4: {fileID: 476182}
   - 33: {fileID: 3360738}
   - 23: {fileID: 2353036}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -662,7 +662,7 @@ GameObject:
   - 4: {fileID: 452366}
   - 33: {fileID: 3371526}
   - 23: {fileID: 2394194}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ArmR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -712,7 +712,7 @@ GameObject:
   - 4: {fileID: 431884}
   - 33: {fileID: 3304472}
   - 23: {fileID: 2368816}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HandL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -746,7 +746,7 @@ GameObject:
   - 4: {fileID: 408514}
   - 33: {fileID: 3360632}
   - 23: {fileID: 2375386}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ShoulderL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -845,7 +845,7 @@ GameObject:
   - 4: {fileID: 466306}
   - 33: {fileID: 3317924}
   - 23: {fileID: 2339228}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,7 +929,7 @@ GameObject:
   - 4: {fileID: 413684}
   - 33: {fileID: 3398420}
   - 23: {fileID: 2398530}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Hip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -962,7 +962,7 @@ GameObject:
   - 4: {fileID: 470538}
   - 33: {fileID: 3366852}
   - 23: {fileID: 2300004}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HeadRibbonR01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -997,7 +997,7 @@ GameObject:
   - 4: {fileID: 449278}
   - 33: {fileID: 3363824}
   - 23: {fileID: 2375900}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: UpperArmR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1102,7 +1102,7 @@ GameObject:
   - 4: {fileID: 402968}
   - 33: {fileID: 3361064}
   - 23: {fileID: 2392674}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1152,7 +1152,7 @@ GameObject:
   - 4: {fileID: 438188}
   - 33: {fileID: 3385990}
   - 23: {fileID: 2327886}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LegR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1219,7 +1219,7 @@ GameObject:
   - 4: {fileID: 458852}
   - 33: {fileID: 3328386}
   - 23: {fileID: 2384098}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Neck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1255,7 +1255,7 @@ GameObject:
   - 4: {fileID: 481920}
   - 33: {fileID: 3335508}
   - 23: {fileID: 2333926}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: L_HairTail03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1272,7 +1272,7 @@ GameObject:
   - 4: {fileID: 444708}
   - 33: {fileID: 3395252}
   - 23: {fileID: 2305432}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: LegL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1323,7 +1323,7 @@ GameObject:
   - 4: {fileID: 402634}
   - 33: {fileID: 3378522}
   - 23: {fileID: 2389474}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1374,7 +1374,7 @@ GameObject:
   - 4: {fileID: 477534}
   - 33: {fileID: 3330864}
   - 23: {fileID: 2399894}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: UpperArmL
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1458,7 +1458,7 @@ GameObject:
   - 4: {fileID: 428204}
   - 33: {fileID: 3386656}
   - 23: {fileID: 2372684}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1528,7 +1528,7 @@ GameObject:
   - 4: {fileID: 404282}
   - 33: {fileID: 3314936}
   - 23: {fileID: 2396098}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HandR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1580,7 +1580,7 @@ GameObject:
   - 4: {fileID: 433678}
   - 33: {fileID: 3370946}
   - 23: {fileID: 2313402}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: R_HairTail00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1680,7 +1680,7 @@ GameObject:
   - 4: {fileID: 470580}
   - 33: {fileID: 3386128}
   - 23: {fileID: 2354862}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: ShoulderR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1828,7 +1828,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136624}
   m_LocalRotation: {x: 0.35355335, y: 0.85355335, z: -0.35355347, w: 0.1464465}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 498876}
@@ -2108,7 +2108,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 136966}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 90, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 435750}
@@ -2412,8 +2412,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 120920}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.801, z: 0}
+  m_LocalRotation: {x: 0, y: 0.58778524, z: 0, w: 0.809017}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 400002}
@@ -2593,7 +2593,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 101924}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 435750}
@@ -2707,7 +2707,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 100
+  far clip plane: 200
   field of view: 60
   orthographic: 1
   orthographic size: 75
@@ -5553,6 +5553,7 @@ MonoBehaviour:
     m_Bits: 513
   maxDistance: 100
   spot: {fileID: 464018}
+  bufferDistance: 0.2
 --- !u!114 &11441914
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6707,11 +6708,11 @@ ParticleSystem:
         m_NumAlphaKeys: 2
       minColor:
         serializedVersion: 2
-        rgba: 4294967295
+        rgba: 4278215935
       maxColor:
         serializedVersion: 2
         rgba: 4293675410
-      minMaxState: 0
+      minMaxState: 2
     startSize:
       scalar: 0.2
       maxCurve:
@@ -6849,8 +6850,8 @@ ParticleSystem:
   ShapeModule:
     serializedVersion: 2
     enabled: 1
-    type: 0
-    radius: 0.34
+    type: 1
+    radius: 1
     angle: 25
     length: 5
     boxX: 1
@@ -6871,7 +6872,7 @@ ParticleSystem:
     serializedVersion: 2
     m_Type: 0
     rate:
-      scalar: 10
+      scalar: 100
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -7074,10 +7075,10 @@ ParticleSystem:
       maxGradient:
         key0:
           serializedVersion: 2
-          rgba: 2499805183
+          rgba: 16777215
         key1:
           serializedVersion: 2
-          rgba: 16777215
+          rgba: 2499805183
         key2:
           serializedVersion: 2
           rgba: 0
@@ -7104,16 +7105,16 @@ ParticleSystem:
         ctime5: 0
         ctime6: 0
         ctime7: 0
-        atime0: 20432
-        atime1: 65535
-        atime2: 0
+        atime0: 0
+        atime1: 7325
+        atime2: 65535
         atime3: 0
         atime4: 0
         atime5: 0
         atime6: 0
         atime7: 0
         m_NumColorKeys: 2
-        m_NumAlphaKeys: 2
+        m_NumAlphaKeys: 3
       minGradient:
         key0:
           serializedVersion: 2
