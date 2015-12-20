@@ -2,23 +2,34 @@
 
 public class RandomizeColor : MonoBehaviour
 {
+    public const int ConsistentSeed = 10101;
+
     [SerializeField]
     Renderer[] allRenderers;
     [SerializeField]
     Color minRange;
     [SerializeField]
     Color maxRange;
+    [SerializeField]
+    bool makeConsistent = false;
 
     [Header("Randomizer")]
     [SerializeField]
     Vector2 scaleRange = new Vector2(0.5f, 1.5f);
 
     // Use this for initialization
+    [ContextMenu("Randomize Color")]
     void Start ()
     {
         HSBColor min = HSBColor.FromColor(minRange);
         HSBColor max = HSBColor.FromColor(maxRange);
         HSBColor newColor = new HSBColor();
+
+        int seed = Random.seed;
+        if(makeConsistent == true)
+        {
+            Random.seed = ConsistentSeed;
+        }
         foreach (Renderer renderer in allRenderers)
         {
             foreach(Material material in renderer.materials)
@@ -29,14 +40,18 @@ public class RandomizeColor : MonoBehaviour
                 material.color = newColor.ToColor();
             }
         }
-	}
-	
-	// Update is called once per frame
+        if (makeConsistent == true)
+        {
+            Random.seed = seed;
+        }
+    }
+
+    // Update is called once per frame
     [ContextMenu("Get All Renderers")]
-	void GetRenderers()
+    void GetRenderers()
     {
         allRenderers = GetComponentsInChildren<Renderer>();
-	}
+    }
 
     // Update is called once per frame
     [ContextMenu("Random Scale")]
