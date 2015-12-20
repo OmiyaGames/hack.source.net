@@ -41,6 +41,12 @@ public class PlayerSetup : NetworkBehaviour
     static readonly Dictionary<string, ActiveControls> controlsConversion = new Dictionary<string, ActiveControls>();
     static readonly Dictionary<string, PlayerSetup> allPlayersCache = new Dictionary<string, PlayerSetup>();
 
+    //[ContextMenu("GetRenderers")]
+    //public void Helper()
+    //{
+    //    rigidBodyInfo.updateRenderersVisibility = rigidBodyInfo.model.GetComponentsInChildren<Renderer>();
+    //}
+
     #region Helper Classes
     [System.Serializable]
     public class RigidBodyInfo
@@ -50,23 +56,66 @@ public class PlayerSetup : NetworkBehaviour
         public GameObject[] oppositionStuff;
         [Header("Layers")]
         public GameObject[] updateLayers;
+        [Header("Shadows")]
+        //public GameObject model;
+        public Renderer[] updateRenderersVisibility;
 
         public void Setup(bool isLocal)
         {
-            if(controller != null)
+            if (controller != null)
             {
                 controller.enabled = isLocal;
             }
-            if (playerStuff != null)
+            SetupPlayerStuff(isLocal);
+            SetupOppositionStuff(isLocal);
+            SetupUpdateLayers(isLocal);
+            SetupUpdateRenderersVisibility(isLocal);
+        }
+
+        private void SetupUpdateRenderersVisibility(bool isLocal)
+        {
+            if (updateRenderersVisibility != null)
             {
-                for (int i = 0; i < playerStuff.Length; ++i)
+                for (int i = 0; i < updateRenderersVisibility.Length; ++i)
                 {
-                    if (playerStuff[i] != null)
+                    if (updateRenderersVisibility[i] != null)
                     {
-                        playerStuff[i].SetActive(isLocal);
+                        if (isLocal == true)
+                        {
+                            updateRenderersVisibility[i].shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+                        }
+                        else
+                        {
+                            updateRenderersVisibility[i].shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.On;
+                        }
                     }
                 }
             }
+        }
+
+        private void SetupUpdateLayers(bool isLocal)
+        {
+            if (updateLayers != null)
+            {
+                for (int i = 0; i < updateLayers.Length; ++i)
+                {
+                    if (updateLayers[i] != null)
+                    {
+                        if (isLocal == true)
+                        {
+                            updateLayers[i].layer = GameSetup.playerAvatarLayerInt;
+                        }
+                        else
+                        {
+                            updateLayers[i].layer = GameSetup.oppositionAvatarLayerInt;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void SetupOppositionStuff(bool isLocal)
+        {
             if (oppositionStuff != null)
             {
                 for (int i = 0; i < oppositionStuff.Length; ++i)
@@ -77,20 +126,17 @@ public class PlayerSetup : NetworkBehaviour
                     }
                 }
             }
-            if(updateLayers != null)
+        }
+
+        private void SetupPlayerStuff(bool isLocal)
+        {
+            if (playerStuff != null)
             {
-                for (int i = 0; i < updateLayers.Length; ++i)
+                for (int i = 0; i < playerStuff.Length; ++i)
                 {
-                    if (updateLayers[i] != null)
+                    if (playerStuff[i] != null)
                     {
-                        if(isLocal == true)
-                        {
-                            updateLayers[i].layer = GameSetup.playerAvatarLayerInt;
-                        }
-                        else
-                        {
-                            updateLayers[i].layer = GameSetup.oppositionAvatarLayerInt;
-                        }
+                        playerStuff[i].SetActive(isLocal);
                     }
                 }
             }
