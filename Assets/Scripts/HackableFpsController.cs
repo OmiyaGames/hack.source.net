@@ -59,19 +59,18 @@ public class HackableFpsController : RigidbodyFirstPersonController
         {
             float returnValue = CrossPlatformInputManager.GetAxis("Horizontal");
 
+            player.PressControls(PlayerSetup.ActiveControls.Left, (returnValue < -PlayerSetup.PercentThreshold));
+            player.PressControls(PlayerSetup.ActiveControls.Right, (returnValue > PlayerSetup.PercentThreshold));
+
             // Check left
             if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Left) == false))
             {
                 returnValue = 0;
             }
-            player.PressControls(PlayerSetup.ActiveControls.Left, (returnValue < 0));
-
-            // Check right
-            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Right) == false))
+            else if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Right) == false))
             {
                 returnValue = 0;
             }
-            player.PressControls(PlayerSetup.ActiveControls.Right, (returnValue > 0));
             return returnValue;
         }
     }
@@ -82,18 +81,18 @@ public class HackableFpsController : RigidbodyFirstPersonController
         {
             float returnValue = CrossPlatformInputManager.GetAxis("Vertical");
 
+            player.PressControls(PlayerSetup.ActiveControls.Back, (returnValue < -PlayerSetup.PercentThreshold));
+            player.PressControls(PlayerSetup.ActiveControls.Forward, (returnValue > PlayerSetup.PercentThreshold));
+
             // Check back
             if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Back) == false))
             {
                 returnValue = 0;
             }
-            player.PressControls(PlayerSetup.ActiveControls.Back, (returnValue < 0));
-
-            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Forward) == false))
+            else if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Forward) == false))
             {
                 returnValue = 0;
             }
-            player.PressControls(PlayerSetup.ActiveControls.Forward, (returnValue > 0));
 
             return returnValue;
         }

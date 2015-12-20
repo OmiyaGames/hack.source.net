@@ -33,6 +33,7 @@ public class PlayerSetup : NetworkBehaviour
     public const string RadarBool = "RadarVisible";
     public const string RunningBool = "IsRunning";
     public const string PressedTriger = "Pressed";
+    public const float PercentThreshold = 0.15f;
 
     public event System.Action<PlayerSetup> HackChanged;
     public event System.Action<PlayerSetup, string> NameChanged;
@@ -284,7 +285,7 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateControlsHud();
-			running = (rigidBodyInfo.controller.Running == true) && (rigidBodyInfo.controller.Velocity.sqrMagnitude > 0.1f);
+			running = (rigidBodyInfo.controller.Running == true) && (rigidBodyInfo.controller.Velocity.sqrMagnitude > PercentThreshold);
             hudAnimations.SetBool(RunningBool, running);
         }
         SetName();
@@ -463,6 +464,8 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
+    //const ActiveControls DebugControl = ActiveControls.None;//ActiveControls.Run;
+
     [Client]
     public void PressControls(ActiveControls control, bool pressed)
     {
@@ -471,6 +474,10 @@ public class PlayerSetup : NetworkBehaviour
             Animator temp = null;
             if (disableGraphics.TryGetValue(control, out temp) == true)
             {
+                //if(DebugControl == control)
+                //{
+                //    Debug.Log("Animationbool: " + temp.GetBool(PressedTriger) + ", Set To: " + pressed);
+                //}
                 if ((temp.gameObject.activeInHierarchy == true) && (temp.GetBool(PressedTriger) != pressed))
                 {
                     // Check if button is disabled
