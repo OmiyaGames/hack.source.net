@@ -25,6 +25,8 @@ public class HackMenu : IMenu
     Button Run;
     [SerializeField]
     Button Reflect;
+    [SerializeField]
+    Button Radar;
 
     readonly Dictionary<PlayerSetup.ActiveControls, Button> buttons = new Dictionary<PlayerSetup.ActiveControls, Button>();
     readonly Dictionary<PlayerSetup.ActiveControls, Text> texts = new Dictionary<PlayerSetup.ActiveControls, Text>();
