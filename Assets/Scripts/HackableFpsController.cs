@@ -35,7 +35,7 @@ public class HackableFpsController : RigidbodyFirstPersonController
     {
         bool returnFlag = base.GetJumpInput();
         player.PressControls(PlayerSetup.ActiveControls.Jump, returnFlag);
-        if ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Jump) == 0)
+        if (player.IsControlActive(PlayerSetup.ActiveControls.Jump) == false)
         {
             returnFlag = false;
         }
@@ -46,12 +46,9 @@ public class HackableFpsController : RigidbodyFirstPersonController
     {
         bool returnFlag = CrossPlatformInputManager.GetButton("Run");
         player.PressControls(PlayerSetup.ActiveControls.Run, returnFlag);
-        if ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Run) == 0)
+        if (player.IsControlActive(PlayerSetup.ActiveControls.Run) == false)
         {
             returnFlag = false;
-        }
-        if (returnFlag == true)
-        {
         }
         return returnFlag;
     }
@@ -63,14 +60,14 @@ public class HackableFpsController : RigidbodyFirstPersonController
             float returnValue = CrossPlatformInputManager.GetAxis("Horizontal");
 
             // Check left
-            if ((returnValue < 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Left) == 0))
+            if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Left) == false))
             {
                 returnValue = 0;
             }
             player.PressControls(PlayerSetup.ActiveControls.Left, (returnValue < 0));
 
             // Check right
-            if ((returnValue > 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Right) == 0))
+            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Right) == false))
             {
                 returnValue = 0;
             }
@@ -86,13 +83,13 @@ public class HackableFpsController : RigidbodyFirstPersonController
             float returnValue = CrossPlatformInputManager.GetAxis("Vertical");
 
             // Check back
-            if ((returnValue < 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Back) == 0))
+            if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Back) == false))
             {
                 returnValue = 0;
             }
             player.PressControls(PlayerSetup.ActiveControls.Back, (returnValue < 0));
 
-            if ((returnValue > 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Forward) == 0))
+            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Forward) == false))
             {
                 returnValue = 0;
             }

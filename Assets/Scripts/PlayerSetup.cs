@@ -27,10 +27,11 @@ public class PlayerSetup : NetworkBehaviour
     }
 
     public const string ShootTrigger = "Shoot";
-    public const string HackTrigger = "Hack";
     public const string ReflectBool = "Reflect";
     public const string InvincibleBool = "Invincible";
     public const string EnabledBool = "Enabled";
+    public const string RadarBool = "RadarVisible";
+    public const string RunningBool = "IsRunning";
     public const string PressedTriger = "Pressed";
 
     public event System.Action<PlayerSetup> HackChanged;
@@ -43,7 +44,7 @@ public class PlayerSetup : NetworkBehaviour
     [System.Serializable]
     public class RigidBodyInfo
     {
-        public UnityStandardAssets.Characters.FirstPerson.RigidbodyFirstPersonController controller;
+        public HackableFpsController controller;
         public GameObject[] playerStuff;
         public GameObject[] oppositionStuff;
         [Header("Layers")]
@@ -174,7 +175,8 @@ public class PlayerSetup : NetworkBehaviour
     ActiveControls lastFramesControls = ActiveControls.All;
     NetworkInstanceId playerId;
     PlayerStatus playerStatus;
-
+	bool running;
+	
     readonly ActiveControls[] hackedControls = new ActiveControls[] { ActiveControls.None, ActiveControls.None };
     readonly Dictionary<ActiveControls, Animator> disableGraphics = new Dictionary<ActiveControls, Animator>();
     
@@ -282,6 +284,8 @@ public class PlayerSetup : NetworkBehaviour
         if (isLocalPlayer == true)
         {
             UpdateControlsHud();
+			running = (rigidBodyInfo.controller.Running == true) && (rigidBodyInfo.controller.Velocity.sqrMagnitude > 0.1f);
+            hudAnimations.SetBool(RunningBool, running);
         }
         SetName();
     }
@@ -451,8 +455,9 @@ public class PlayerSetup : NetworkBehaviour
             // Update controls
             foreach (KeyValuePair<ActiveControls, Animator> pair in disableGraphics)
             {
-                pair.Value.SetBool(EnabledBool, ((pair.Key & CurrentActiveControls) != 0));
+                pair.Value.SetBool(EnabledBool, IsControlActive(pair.Key));
             }
+            hudAnimations.SetBool(RadarBool, IsControlActive(ActiveControls.Radar));
             hackedSound.Play();
             lastFramesControls = CurrentActiveControls;
         }
@@ -469,7 +474,7 @@ public class PlayerSetup : NetworkBehaviour
                 if ((temp.gameObject.activeInHierarchy == true) && (temp.GetBool(PressedTriger) != pressed))
                 {
                     // Check if button is disabled
-                    if ((pressed == true) && ((control & CurrentActiveControls) == 0))
+                    if ((pressed == true) && (IsControlActive(control) == false))
                     {
                         disabledSound.Play();
                     }
@@ -477,6 +482,11 @@ public class PlayerSetup : NetworkBehaviour
                 }
             }
         }
+    }
+
+    public bool IsControlActive(ActiveControls control)
+    {
+        return ((control & CurrentActiveControls) != 0);
     }
 #endregion
 }

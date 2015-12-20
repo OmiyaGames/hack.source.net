@@ -38,11 +38,11 @@ public class HackableFpsCharacterController : MonoBehaviour
         get
         {
             float returnValue = CrossPlatformInputManager.GetAxis("Horizontal");
-            if ((returnValue < 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Left) == 0))
+            if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Left) == false))
             {
                 returnValue = 0;
             }
-            if ((returnValue > 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Right) == 0))
+            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Right) == false))
             {
                 returnValue = 0;
             }
@@ -55,11 +55,11 @@ public class HackableFpsCharacterController : MonoBehaviour
         get
         {
             float returnValue = CrossPlatformInputManager.GetAxis("Vertical");
-            if ((returnValue < 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Back) == 0))
+            if ((returnValue < 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Back) == false))
             {
                 returnValue = 0;
             }
-            if ((returnValue > 0) && ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Forward) == 0))
+            if ((returnValue > 0) && (player.IsControlActive(PlayerSetup.ActiveControls.Forward) == false))
             {
                 returnValue = 0;
             }
@@ -82,7 +82,7 @@ public class HackableFpsCharacterController : MonoBehaviour
 
     private bool GetJumpInput()
     {
-        if ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Jump) != 0)
+        if (player.IsControlActive(PlayerSetup.ActiveControls.Jump) == false)
         {
             return CrossPlatformInputManager.GetButtonDown("Jump");
         }
@@ -201,7 +201,7 @@ public class HackableFpsCharacterController : MonoBehaviour
 
     private bool GetRunInput()
     {
-        if ((player.CurrentActiveControls & PlayerSetup.ActiveControls.Run) != 0)
+        if (player.IsControlActive(PlayerSetup.ActiveControls.Run) == true)
         {
             return CrossPlatformInputManager.GetButton("Run");
         }
