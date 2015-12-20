@@ -1418,6 +1418,74 @@ Prefab:
       propertyPath: m_SizeDelta.y
       value: 19.106
       objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: bloomIntensity
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: lensFlareVignetteMask
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: lensFlareShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: screenBlendShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: blurAndFlaresShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11420622, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: brightPassFilterShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445072, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445072, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: chromaticAberration
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445072, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: vignetteShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445072, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: separableBlurShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11445072, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: chromAberrationShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494674, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494674, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: focalLength
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494674, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: dofHdrShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494674, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: dx11BokehShader
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11494674, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
+      propertyPath: dx11BokehTexture
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9c9522dc1cff2ef448051ce77f7b6ac3, type: 2}
   m_IsPrefabParent: 0

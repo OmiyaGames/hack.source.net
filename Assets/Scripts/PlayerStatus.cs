@@ -284,7 +284,7 @@ public class PlayerStatus : NetworkBehaviour
             if ((CurrentState != State.Dead) && (IsReflectEnabled == false) && (Network.time > (timeReflectorIsOn + cooldownDuration + reflectDuration)))
             {
                 // Check if the player pressed reflection
-                if ((reflect == true) && ((playerSetup.CurrentActiveControls & PlayerSetup.ActiveControls.Reflect) != 0))
+                if ((reflect == true) && (playerSetup.IsControlActive(PlayerSetup.ActiveControls.Reflect) == true))
                 {
                     CmdSetReflect(Network.time);
                 }
