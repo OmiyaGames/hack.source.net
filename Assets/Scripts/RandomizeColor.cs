@@ -2,16 +2,12 @@
 
 public class RandomizeColor : MonoBehaviour
 {
-    public const int ConsistentSeed = 10101;
-
     [SerializeField]
     Renderer[] allRenderers;
     [SerializeField]
     Color minRange;
     [SerializeField]
     Color maxRange;
-    [SerializeField]
-    bool makeConsistent = false;
 
     [Header("Randomizer")]
     [SerializeField]
@@ -21,28 +17,39 @@ public class RandomizeColor : MonoBehaviour
     [ContextMenu("Randomize Color")]
     void Start ()
     {
-        HSBColor min = HSBColor.FromColor(minRange);
-        HSBColor max = HSBColor.FromColor(maxRange);
-        HSBColor newColor = new HSBColor();
+#if !UNITY_EDITOR
+        if (enabled == true)
+#endif
+        {
+            HSBColor min = HSBColor.FromColor(minRange);
+            HSBColor max = HSBColor.FromColor(maxRange);
+            HSBColor newColor = new HSBColor();
 
-        int seed = Random.seed;
-        if(makeConsistent == true)
-        {
-            Random.seed = ConsistentSeed;
-        }
-        foreach (Renderer renderer in allRenderers)
-        {
-            foreach(Material material in renderer.materials)
+            foreach (Renderer renderer in allRenderers)
             {
-                newColor.Hue = Random.value;
-                newColor.Saturation = Random.Range(min.Saturation, max.Saturation);
-                newColor.Brightness = Random.Range(min.Brightness, max.Brightness);
-                material.color = newColor.ToColor();
+                foreach (Material material in renderer.materials)
+                {
+                    newColor.Hue = Random.value;
+                    newColor.Saturation = Random.Range(min.Saturation, max.Saturation);
+                    newColor.Brightness = Random.Range(min.Brightness, max.Brightness);
+                    material.color = newColor.ToColor();
+                }
             }
         }
-        if (makeConsistent == true)
+    }
+
+#if UNITY_EDITOR
+    [ContextMenu("Revert Color")]
+    void RevertColor()
+    {
+        int size;
+        foreach (Renderer renderer in allRenderers)
         {
-            Random.seed = seed;
+            size = renderer.materials.Length;
+            for (int i = 0; i < size; ++i)
+            {
+                renderer.materials[i] = renderer.sharedMaterials[i];
+            }
         }
     }
 
@@ -66,4 +73,5 @@ public class RandomizeColor : MonoBehaviour
             renderer.transform.rotation = Quaternion.Euler(angles);
         }
     }
+#endif
 }
