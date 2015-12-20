@@ -6,6 +6,8 @@ using System;
 
 public class JoinMenu : IMenu
 {
+    public const string IpAddressPrefs = "IP Address";
+    public const string DefaultIpAddress = "127.0.0.1";
     public const string StartConnectionText = "Connect to IP Address:";
     public const FontStyle StartConnectionStyle = FontStyle.Normal;
     public const string WorkingOnConnectionText = "Connecting to {0}...";
@@ -44,6 +46,11 @@ public class JoinMenu : IMenu
     {
         base.Show(stateChanged);
 
+        // Setup the ipAddress
+        lastIpAddress = PlayerPrefs.GetString(IpAddressPrefs, DefaultIpAddress);
+        ipAddress.text = lastIpAddress;
+
+        // Setup controls
         ipAddress.interactable = true;
         connectButton.interactable = true;
         connectLabel.text = StartConnectionText;
@@ -53,6 +60,7 @@ public class JoinMenu : IMenu
     public void OnConnectClicked()
     {
         lastIpAddress = ipAddress.text;
+        PlayerPrefs.GetString(IpAddressPrefs, lastIpAddress);
 
         // Update UI
         ipAddress.interactable = false;
