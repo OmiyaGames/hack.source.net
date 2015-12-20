@@ -5041,23 +5041,40 @@ MonoBehaviour:
     - {fileID: 158658}
     - {fileID: 130406}
     - {fileID: 120920}
-    - {fileID: 167452}
-    - {fileID: 116562}
-    - {fileID: 148050}
-    - {fileID: 127476}
-    - {fileID: 113152}
-    - {fileID: 117568}
-    - {fileID: 162416}
-    - {fileID: 154426}
-    - {fileID: 110920}
-    - {fileID: 188350}
-    - {fileID: 109732}
-    - {fileID: 120636}
-    - {fileID: 110554}
-    - {fileID: 174576}
-    - {fileID: 140724}
-    - {fileID: 160364}
-    - {fileID: 124032}
+    updateRenderersVisibility:
+    - {fileID: 2317146}
+    - {fileID: 2394194}
+    - {fileID: 2378880}
+    - {fileID: 2378258}
+    - {fileID: 2341362}
+    - {fileID: 2368816}
+    - {fileID: 2396098}
+    - {fileID: 2389474}
+    - {fileID: 2381628}
+    - {fileID: 2300004}
+    - {fileID: 2398530}
+    - {fileID: 2367616}
+    - {fileID: 2353036}
+    - {fileID: 2348556}
+    - {fileID: 2377000}
+    - {fileID: 2333926}
+    - {fileID: 2392674}
+    - {fileID: 2308836}
+    - {fileID: 2305432}
+    - {fileID: 2327886}
+    - {fileID: 2384098}
+    - {fileID: 2313402}
+    - {fileID: 2394524}
+    - {fileID: 2386750}
+    - {fileID: 2319742}
+    - {fileID: 2372684}
+    - {fileID: 2339228}
+    - {fileID: 2375386}
+    - {fileID: 2354862}
+    - {fileID: 2399894}
+    - {fileID: 2375900}
+    - {fileID: 2313894}
+    - {fileID: 2319510}
   characterControllerInfo:
     controller: {fileID: 0}
     playerStuff: []
@@ -5284,7 +5301,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 141628}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7fceaeb339b971b429c4cc600acabd13, type: 3}
   m_Name: 
@@ -5294,7 +5311,7 @@ MonoBehaviour:
   hdr: 0
   sepBlurSpread: 2.5
   quality: 1
-  bloomIntensity: 0.9
+  bloomIntensity: 0.5
   bloomThreshold: 0.5
   bloomThresholdColor: {r: 1, g: 1, b: 1, a: 1}
   bloomBlurIterations: 2
@@ -5309,13 +5326,11 @@ MonoBehaviour:
   flareColorB: {r: 0.4, g: 0.8, b: 0.8, a: 0.75}
   flareColorC: {r: 0.8, g: 0.4, b: 0.8, a: 0.75}
   flareColorD: {r: 0.8, g: 0.4, b: 0, a: 0.75}
-  lensFlareVignetteMask: {fileID: 2800000, guid: 95ef4804fe0be4c999ddaa383536cde8,
-    type: 3}
-  lensFlareShader: {fileID: 4800000, guid: 459fe69d2f6d74ddb92f04dbf45a866b, type: 3}
-  screenBlendShader: {fileID: 4800000, guid: 7856cbff0a0ca45c787d5431eb805bb0, type: 3}
-  blurAndFlaresShader: {fileID: 4800000, guid: be6e39cf196f146d5be72fbefb18ed75, type: 3}
-  brightPassFilterShader: {fileID: 4800000, guid: 0aeaa4cb29f5d4e9c8455f04c8575c8c,
-    type: 3}
+  lensFlareVignetteMask: {fileID: 0}
+  lensFlareShader: {fileID: 0}
+  screenBlendShader: {fileID: 0}
+  blurAndFlaresShader: {fileID: 0}
+  brightPassFilterShader: {fileID: 0}
 --- !u!114 &11420804
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5758,23 +5773,22 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125104}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dd6d4281e5d7cd44d8c6e38bc2c1b8d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mode: 0
   intensity: 0.036
-  chromaticAberration: 0
+  chromaticAberration: 0.2
   axialAberration: 0.5
   blur: 0
   blurSpread: 0.75
   luminanceDependency: 0.25
   blurDistance: 2.5
-  vignetteShader: {fileID: 4800000, guid: 627943dc7a9a74286b70a4f694a0acd5, type: 3}
-  separableBlurShader: {fileID: 4800000, guid: e97c14fbb5ea04c3a902cc533d7fc5d1, type: 3}
-  chromAberrationShader: {fileID: 4800000, guid: 2b4f29398d9484ccfa9fd220449f5eee,
-    type: 3}
+  vignetteShader: {fileID: 0}
+  separableBlurShader: {fileID: 0}
+  chromAberrationShader: {fileID: 0}
 --- !u!114 &11446094
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6413,13 +6427,13 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 125104}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bd70d448b18cfbc46af26466f752332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   visualizeFocus: 0
-  focalLength: 20
+  focalLength: 10
   focalSize: 0.05
   aperture: 0.5
   focalTransform: {fileID: 0}
@@ -6429,11 +6443,11 @@ MonoBehaviour:
   blurSampleCount: 2
   nearBlur: 0
   foregroundOverlap: 1
-  dofHdrShader: {fileID: 4800000, guid: acd613035ff3e455e8abf23fdc8c8c24, type: 3}
-  dx11BokehShader: {fileID: 4800000, guid: d8e82664aa8686642a424c88ab10164a, type: 3}
+  dofHdrShader: {fileID: 0}
+  dx11BokehShader: {fileID: 0}
   dx11BokehThreshold: 0.5
   dx11SpawnHeuristic: 0.0875
-  dx11BokehTexture: {fileID: 2800000, guid: a4cdca73d61814d33ac1587f6c163bca, type: 3}
+  dx11BokehTexture: {fileID: 0}
   dx11BokehScale: 1.2
   dx11BokehIntensity: 2.5
 --- !u!114 &11495000
