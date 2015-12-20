@@ -18,11 +18,12 @@ public class PlayerSetup : NetworkBehaviour
         Jump = 1 << 4,
         Run = 1 << 5,
         Reflect = 1 << 6,
+        Radar = 1 << 7,
 
-        NumControls = 7,
+        NumControls = 8,
 
         // combinations
-        All = Forward | Back | Right | Left | Jump | Run | Reflect
+        All = Forward | Back | Right | Left | Jump | Run | Reflect | Radar
     }
 
     public const string ShootTrigger = "Shoot";
@@ -236,15 +237,6 @@ public class PlayerSetup : NetworkBehaviour
             }
             return returnControls;
         }
-        //private set
-        //{
-        //    int setValueTo = (int)value;
-        //    if (currentActiveControls != setValueTo)
-        //    {
-        //        // Send the server the information of the current active controls
-        //        TransmitOurControls(setValueTo);
-        //    }
-        //}
     }
 
     public ActiveControls[] DeactivatedControls
