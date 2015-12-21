@@ -13,13 +13,14 @@ public class RandomizeColor : MonoBehaviour
     [SerializeField]
     Vector2 scaleRange = new Vector2(0.5f, 1.5f);
 
+    [Header("Editor-only")]
+    [SerializeField]
+    Material[] allMaterials;
+
     // Use this for initialization
-    [ContextMenu("Randomize Color")]
     void Start ()
     {
-#if !UNITY_EDITOR
         if (enabled == true)
-#endif
         {
             HSBColor min = HSBColor.FromColor(minRange);
             HSBColor max = HSBColor.FromColor(maxRange);
@@ -39,6 +40,23 @@ public class RandomizeColor : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    [ContextMenu("Randomize Materials")]
+    void MaterialRandomizer()
+    {
+        foreach (Renderer renderer in allRenderers)
+        {
+            if (renderer.sharedMaterials.Length > 0)
+            {
+                Material[] randomMaterials = new Material[renderer.sharedMaterials.Length];
+                for (int i = 0; i < renderer.sharedMaterials.Length; ++i)
+                {
+                    randomMaterials[i] = allMaterials[Random.Range(0, allMaterials.Length)];
+                }
+                renderer.sharedMaterials = randomMaterials;
+            }
+        }
+    }
+
     [ContextMenu("Revert Color")]
     void RevertColor()
     {
